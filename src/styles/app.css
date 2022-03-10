@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app_main {
+    background: rgb(161, 161, 161);
+    width: 600px;
+    display: block;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}

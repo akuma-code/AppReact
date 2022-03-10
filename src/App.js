@@ -1,33 +1,31 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import Counter from './Components/Counter';
+import './styles/app.css'
+
 
 
 function App() {
-    let [state, setState] = useState(0)
-    const [value, setValue] = useState('input txt')
-    function increment() {
-        setState(state + 1)
-        console.log('state :>> ', state);
-    }
-    function decrement() {
-        setState(state - 1)
+    const [value, setValue] = useState('')
+
+    function inp(e) {
+        setValue(e.target.value)
     }
 
-    function showValue() {
-        setValue()
-    }
     return (
-        <div className={"app_main"}>
-            <h1>{state}</h1>
-            <h3>{value}</h3>
+        <div className="app_main">
+            <Counter />
+            <Counter />
+            <Counter />
             <input
+                style="margin: 10px"
                 type="text"
                 placeholder="VALUE"
                 value={value}
-                onChange={e => setValue(e.target.value)}
+                onChange={inp}
             ></input>
-            <button onClick={increment}>MORE</button>
-            <button onClick={decrement}>LESS</button>
+            <h3>{value}</h3>
+
         </div>
     );
 }
