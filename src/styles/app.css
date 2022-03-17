@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app__main {
+    display: flex;
+    width: 600px;
+    height: 800px;
+    background: lightgreen;
+    margin-left: 15px;
+    margin-top: 15px;
+}
