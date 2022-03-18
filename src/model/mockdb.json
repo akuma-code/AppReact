@@ -1,0 +1,27 @@
+[
+    {
+        "name": "OK01",
+        "amount": 5,
+        "options": ""
+    },
+    {
+        "name": "OK02",
+        "amount": 4,
+        "options": ""
+    },
+    {
+        "name": "OK03",
+        "amount": 7,
+        "options": ""
+    },
+    {
+        "name": "OK04",
+        "amount": 2,
+        "options": ""
+    },
+    {
+        "name": "OK05",
+        "amount": 9,
+        "options": ""
+    }
+]

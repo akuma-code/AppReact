@@ -2,6 +2,7 @@ import React from 'react'
 import './StoreCard.css'
 
 const StoreCard = (props) => {
+    const { name, amount, ...options } = props
     return (
         <fieldset
             className="card"
@@ -9,15 +10,15 @@ const StoreCard = (props) => {
             <div className="card__block">
                 <div className="card__img">OK IMG</div>
                 <div className="card__desc">
-                    <span>Цена: { props.price } руб.</span>
-                    <span>Осталось: { props.amount } шт.</span>
-                    <span>Р-ры: { props.size } мм</span>
+                    <span>Цена: {options.price} руб.</span>
+                    <span>Осталось: {amount} шт.</span>
+                    <span>Р-ры: {options.size} мм</span>
                 </div>
             </div>
 
             <div className="card__prod">PRODUCTION</div>
             <legend>
-                OKNO 01
+                {options.name}
             </legend>
         </fieldset>
     )
