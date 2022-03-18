@@ -1,0 +1,51 @@
+.card {
+    display: flex;
+    width: 300px;
+    min-height: 120px;
+    height: fit-content;
+    background: lightgray;
+    flex-direction: column;
+    margin: 5px 5px;
+}
+
+.card>legend {
+    border: 1px solid #000;
+    background: inherit;
+    margin-left: 10px;
+}
+
+.card__img {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #000;
+    margin: 5px 5px;
+    place-items: center;
+    justify-content: center;
+}
+
+.card__desc {
+    display: flex;
+    flex-flow: column nowrap;
+    border: 1px solid #000;
+    margin: 5px 5px;
+    width: 160px;
+    place-items: center;
+    justify-content: center;
+}
+
+.card__prod {
+    display: flex;
+    border: 1px solid #000;
+    margin: 5px 5px;
+    font-size: 25px;
+    justify-content: center;
+    flex-direction: row;
+    align-content: center;
+}
+
+.card__block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

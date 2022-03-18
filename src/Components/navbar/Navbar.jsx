@@ -9,6 +9,7 @@ const Navbar = () => {
             <div className={ cl.navbar__item }>Производство</div>
             <div className={ cl.navbar__item }>Админка</div>
             <div className={ cl.navbar__item }>Выйти</div>
+            <hr />
         </div>
     )
 }
