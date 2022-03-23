@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StoreCard from "./Components/UI/card/StoreCard";
 import Navbar from "./Components/navbar/Navbar";
-
+import path from 'path'
 import './styles/app.css'
 import { _getData } from './utils/useMockData';
 
@@ -35,8 +35,7 @@ function App() {
             }
         },
     ]
-    const tojs = JSON.stringify(mocklist);
-    console.log(mocklist)
+
 
     return (
         <div className="app__main">
