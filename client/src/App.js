@@ -35,7 +35,8 @@ function App() {
             }
         },
     ]
-
+    const tojs = JSON.stringify(mocklist);
+    console.log(mocklist)
 
     return (
         <div className="app__main">
