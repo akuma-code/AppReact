@@ -7,7 +7,7 @@ const oknoRouter = require('./oknoRouter')
 
 
 router.use('/user', userRouter)
-router.use('/sklad', skladRouter)
 router.use('/okno', oknoRouter)
+router.use('/ogo', skladRouter)
 
 module.exports = router

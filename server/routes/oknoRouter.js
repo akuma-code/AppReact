@@ -5,6 +5,6 @@ const oknoController = require('../controllers/oknoController')
 router.post('/', oknoController.create)
 router.get('/', oknoController.getAll)
 router.get('/:id', oknoController.getOne)
-router.delete('/:id/delete', oknoController.delete)
+router.delete('/:id', oknoController.delete)
 
 module.exports = router

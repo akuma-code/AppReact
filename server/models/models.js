@@ -31,6 +31,7 @@ const OknoInfo = sequelize.define('okno_info', {
 
 const Ogo_SKLAD = sequelize.define('ogo_sklad', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    title: { type: DataTypes.STRING, allowNull: false },
     count: { type: DataTypes.INTEGER }
 })
 
