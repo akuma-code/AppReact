@@ -51,11 +51,11 @@ BasketOkno.belongsTo(Okno)
 Ogo_SKLAD.hasMany(Okno)
 Okno.belongsTo(Ogo_SKLAD)
 
-module.exports = {
-    User,
-    Basket,
-    BasketOkno,
-    OknoInfo,
-    Ogo_SKLAD,
-    Okno
-}
+// module.exports = {
+//     User,
+//     Basket,
+//     BasketOkno,
+//     OknoInfo,
+//     Ogo_SKLAD,
+//     Okno
+// }
