@@ -1,14 +1,14 @@
 const ApiError = require("../Error/ApiError")
-const { SKLAD } = require('../models/typeModels')
+const { Production_db } = require('../models/typeModels')
 
 
-class skladController {
+class ProductionController {
     async create(req, res, next) {
         try {
-            const { type } = req.body
-            const sItem = await SKLAD.create({ type })
+            const { type, date, count } = req.body
+            const ProductionItem = await Production_db.create({ type, date, count })
 
-            return res.json(sItem)
+            return res.json(ProductionItem)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
@@ -16,13 +16,13 @@ class skladController {
     }
 
     async getAll(req, res) {
-        const items = await SKLAD.findAll()
+        const items = await Production_db.findAll()
         return res.json(items)
     }
 
     async getOne(req, res) {
         const { id } = req.params
-        const items = await SKLAD.findAndCountAll({ where: { id } })
+        const items = await Production_db.findAndCountAll({ where: { id } })
         return res.json(items)
     }
 
@@ -32,8 +32,7 @@ class skladController {
     async delete(req, res) {
         const { id } = req.params
         try {
-            const item = await SKLAD.findOne({ where: { id } })
-            console.log('Deleted: ', item);
+            const item = await Production_db.findOne({ where: { id } })
             item.destroy()
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -42,4 +41,4 @@ class skladController {
     }
 }
 
-module.exports = new skladController()
+module.exports = new ProductionController()

@@ -29,12 +29,7 @@ const OkTypeInfo = sequelize.define('oktype_info', {
     description: { type: DataTypes.STRING, allowNull: false },
 })
 
-const WareHouse_db = sequelize.define('warehouse', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    current: { type: DataTypes.INTEGER },
-    total: { type: DataTypes.INTEGER, defaultValue: 5 },
-})
+
 const Production_db = sequelize.define('production', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, allowNull: false },
@@ -42,6 +37,20 @@ const Production_db = sequelize.define('production', {
     dateStart: { type: DataTypes.DATE, allowNull: true },
     dateReady: { type: DataTypes.DATE, allowNull: true },
 })
+
+const SKLAD = sequelize.define('SKLAD', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    type: { type: DataTypes.STRING, allowNull: false },
+})
+
+
+const Amount = sequelize.define('amount', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    type: { type: DataTypes.STRING, allowNull: false },
+    count: { type: DataTypes.INTEGER, defaultValue: 5 },
+})
+
+
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
@@ -55,12 +64,20 @@ OkTypeInfo.belongsTo(OkType)
 OkType.hasMany(BasketOkType)
 BasketOkType.belongsTo(OkType)
 
-WareHouse_db.hasMany(OkType)
-OkType.belongsTo(WareHouse_db)
+SKLAD.hasOne(Amount)
+Amount.belongsTo(SKLAD)
 
-WareHouse_db.hasOne(Production_db)
-Production_db.belongsTo(WareHouse_db)
+SKLAD.hasOne(Production_db)
+Production_db.belongsTo(SKLAD)
+
+SKLAD.hasMany(OkType)
+OkType.belongsTo(SKLAD)
+
+Production_db.hasMany(OkType)
+OkType.belongsTo(Production_db)
+
+
 
 module.exports = {
-    User, Basket, OkType, OkTypeInfo, WareHouse_db, Production_db, BasketOkType
+    User, Basket, OkType, OkTypeInfo, SKLAD, Production_db, BasketOkType, Amount
 }
