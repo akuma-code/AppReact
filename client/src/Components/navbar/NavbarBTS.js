@@ -1,31 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from "react-router-dom"
 import { SHOP_ROUTE } from "../../utils/consts"
+import { Navbar, Nav, Button, Container } from 'react-bootstrap'
+import { Context } from '../../index.js'
 
-const NavbarBTS = () => {
+
+const NavbarBT = () => {
+    const user = useContext(Context).user
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div className="container-fluid" style={ { display: 'flex', justifyContent: 'space-between', flexDirection: 'row' } }>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link" aria-current="page" href="#">STORE</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Production</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">LOGIN</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">LOGOUT</a>
-                        </li>
-                    </ul>
-                </div>
-                <NavLink to={ SHOP_ROUTE } style={ { color: 'white', fontSize: '1.3em', marginRight: 30 } }>СКЛАД ГОТОВЫХ ОКОН</NavLink>
-            </div>
-        </nav>
+        <Navbar bg="dark" variant="dark"  >
+            <NavLink className="ml-0 container" style={{ color: 'white', paddingLeft: 45, fontSize: '1.4em' }} to={SHOP_ROUTE}
+            >
+                СКЛАДСКИЕ ОСТАТКИ
+            </NavLink>
+
+            {user.isAuth ?
+                <Container className="mr-auto">
+                    <Nav >
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }}>Авторизация</Button>
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }}>Админка</Button>
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }}>Выход</Button>
+                    </Nav>
+                </Container>
+                : <Container className="mr-auto">
+                    <Nav >
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }} >Авторизация</Button>
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }} disabled>Админка</Button>
+                        <Button variant={"outline-light"} style={{ marginRight: 10 }} disabled>Выход</Button>
+                    </Nav>
+                </Container>
+            }
+
+
+        </Navbar>
+
     )
 }
 
-export default NavbarBTS
+export default NavbarBT
