@@ -3,7 +3,7 @@ const router = new Router();
 const userController = require('../controllers/userController')
 const authMiddleWare = require('../middleware/authMiddleWare')
 
-router.post('/registration', userController.registration)
+router.post('/reg', userController.registration)
 router.post('/login', userController.login)
 router.get('/auth', authMiddleWare, userController.check)
 

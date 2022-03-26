@@ -12,7 +12,7 @@ const generateJWT = (id, email, role) => {
 }
 class userController {
     async registration(req, res, next) {
-        const { email, password, role } = req.body
+        const { email, password, role = 'ADMIN' } = req.body
         if (!email || !password) {
             return next(ApiError.badRequest('Incorrect email or pass'))
         }

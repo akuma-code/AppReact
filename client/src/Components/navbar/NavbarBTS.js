@@ -7,35 +7,35 @@ import { observer } from 'mobx-react-lite'
 import { useHistory } from 'react-router-dom'
 
 const NavbarBT = observer(() => {
-    const user = useContext(Context).user
+    const { user } = useContext(Context)
     const history = useHistory()
     return (
         <Navbar bg="dark" variant="dark"  >
             <Container>
 
-                <NavLink className="ml-0 container" style={ { color: 'white', paddingLeft: 45, fontSize: '1.4em' } } to={ SHOP_ROUTE }
+                <NavLink className="ml-0 container" style={{ color: 'white', paddingLeft: 45, fontSize: '1.4em' }} to={SHOP_ROUTE}
                 >
                     СКЛАДСКИЕ ОСТАТКИ
                 </NavLink>
 
-                { user.isAuth ?
+                {user.isAuth ?
                     <Container className="mr-auto">
                         <Nav >
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(ADMIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(ADMIN_ROUTE)}
                                 className="mr-0"
                             >Админка
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(AUTH_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(LOGIN_ROUTE)}
                                 className="mr-5"
-                            >Авторизация
+                            >Регистрация
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(LOGIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(LOGIN_ROUTE)}
                                 className="mr-5"
                             >Выход
                             </Button>
@@ -44,21 +44,21 @@ const NavbarBT = observer(() => {
                     : <Container className="mr-auto">
                         <Nav >
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(ADMIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(ADMIN_ROUTE)}
                                 className="mr-0"
                                 disabled
                             >Админка
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(AUTH_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(AUTH_ROUTE)}
                                 className="mr-5"
                             >Авторизация
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(LOGIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(LOGIN_ROUTE)}
                                 className="mr-5"
                             >Выход
                             </Button>
