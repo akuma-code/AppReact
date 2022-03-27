@@ -12,18 +12,15 @@ const Auth = () => {
     const [pass, setPass] = useState('')
 
     const clickHandler = async (email, pass) => {
-
+        let response;
         if (isLogin) {
-            const response = await login(email, pass)
-            console.log('login');
-            return response
+            response = await login(email, pass)
 
         } else {
-            console.log('reg')
-            const response = await registration(email, pass)
-            return response
-
+            response = await registration(email, pass)
         }
+
+        return response
     }
 
     return (
