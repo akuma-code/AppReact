@@ -1,60 +1,75 @@
-import React, { useState } from 'react'
+import { observer } from "mobx-react-lite"
+import React, { useContext, useState } from 'react'
 import { Button, Card, Container, Form, Row } from "react-bootstrap"
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, useHistory, useLocation } from "react-router-dom"
 import { login, registration } from '../http/userAPI'
-import { LOGIN_ROUTE, REG_ROUTE } from "../utils/consts"
+import { LOGIN_ROUTE, REG_ROUTE, SHOP_ROUTE } from "../utils/consts"
+import { Context } from '../index'
 
-const Auth = () => {
+
+
+const Auth = observer(() => {
     const location = useLocation()
-    console.log(location.pathname);
+    const { user } = useContext(Context)
+    const history = useHistory()
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('')
 
     const clickHandler = async (email, pass) => {
-        let response;
-        if (isLogin) {
-            response = await login(email, pass)
+        let data
 
-        } else {
-            response = await registration(email, pass)
+        try {
+            if (isLogin) {
+                data = await login(email, pass)
+
+            } else {
+                data = await registration(email, pass)
+            }
+            user.setUser(user)
+            user.setIsAuth(true)
+            history.push(SHOP_ROUTE)
+            return data
+        } catch (e) {
+
+            alert(e.response.data.ApiError)
         }
 
-        return response
     }
 
     return (
         <Container className="d-flex justify-content-center align-items-center"
-            style={{ height: window.innerHeight - 54 }}
+            style={ { height: window.innerHeight - 54 } }
         >
-            <Card style={{ width: 600 }} className="p-5">
-                <h2 className="m-auto">{isLogin ? 'Войти' : 'Регистрация'}</h2>
+            <Card style={ { width: 600 } } className="p-5">
+                <h2 className="m-auto">{ isLogin ? 'Войти' : 'Регистрация' }</h2>
                 <Form className="d-flex flex-column"                >
                     <Form.Control
                         placeholder="input email"
                         className="mt-3"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
+                        onChange={ (e) => setEmail(e.target.value) }
+                        value={ email }
                     />
                     <Form.Control
                         placeholder="input password"
                         className="mt-3"
                         type="password"
                         autoComplete="true"
-                        onChange={(e) => setPass(e.target.value)}
-                        value={pass}
+                        onChange={ (e) => setPass(e.target.value) }
+                        value={ pass }
                     />
                     <Row className="d-flex mt-3 justify-content-between" >
                         <Button
-                            onClick={() => clickHandler(email, pass)}
+                            onClick={ () => clickHandler(email, pass) }
                             className="m-3 pr-3"
-                            variant={"outline-success"}
+                            variant={ "outline-success" }
                         >
-                            {isLogin ? "Войти" : "Зарегистрировать"}
+                            { isLogin ? "Войти" : "Зарегистрировать" }
                         </Button>
-                        <NavLink to={REG_ROUTE}
+                        <NavLink
+                            to={ REG_ROUTE }
                             className="mt-1">
-                            {isLogin ? "Регистрация нового пользователя" : ""}
+                            { isLogin ? "Регистрация нового пользователя" : "" }
                         </NavLink>
                     </Row>
                 </Form>
@@ -63,6 +78,6 @@ const Auth = () => {
 
         </Container>
     )
-}
+})
 
 export default Auth
