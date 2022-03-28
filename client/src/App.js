@@ -8,6 +8,7 @@ import AppRouter from "./Components/AppRouter";
 import { observer } from "mobx-react-lite";
 import { Context } from ".";
 import { check } from './http/userAPI'
+import { Spinner } from 'react-bootstrap';
 
 
 
@@ -24,6 +25,9 @@ const App = observer(() => {
 
     }, []);
 
+    if (loading) {
+        return <Spinner animation={"grow"} />
+    }
 
     return (
         <BrowserRouter>

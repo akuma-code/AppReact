@@ -17,7 +17,7 @@ App.use(cors());
 App.use(fileUpload({}))
 
 App.use(express.static(path.resolve(__dirname + 'static')));
-App.use(express.static(path.resolve(__dirname + 'DB')));
+
 
 App.use('/api', router)
 

@@ -70,11 +70,11 @@ Amount.belongsTo(SKLAD)
 SKLAD.hasOne(Production_db)
 Production_db.belongsTo(SKLAD)
 
-SKLAD.hasMany(OkType)
-OkType.belongsTo(SKLAD)
+// SKLAD.hasMany(OkType)
+// OkType.belongsTo(SKLAD)
 
-Production_db.hasMany(OkType)
-OkType.belongsTo(Production_db)
+// Production_db.hasMany(OkType)
+// OkType.belongsTo(Production_db)
 
 
 

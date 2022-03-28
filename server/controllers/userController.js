@@ -28,7 +28,20 @@ class userController {
 
         return res.json({ token })
     }
+    async getAll(req, res) {
+        try {
+            const allUsers = User.findAndCountAll()
+            return res.json(allUsers)
+        } catch (e) {
+            next(e)
+        }
+    }
 
+    async getOne(req, res) {
+        const { id } = req.params
+        const user = await User.findOne({ where: { id }, })
+        return res.json(user)
+    }
 
     async login(req, res, next) {
         const { email, password } = req.body

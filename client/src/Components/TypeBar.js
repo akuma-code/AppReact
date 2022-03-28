@@ -12,17 +12,17 @@ const TypeBar = observer(() => {
             className="mt-4"
         >
             <ListGroup>
-                { ogo.types.map(item =>
+                {ogo.amount.map(item =>
                     <ListGroup.Item
                         className="mt-2"
-                        style={ { cursor: "pointer" } }
-                        key={ item.id }
-                        active={ item.id === ogo.selectedType.id }
-                        onClick={ () => ogo.setSelectedType(item) }
+                        style={{ cursor: "pointer" }}
+                        key={item.id}
+                        active={item.id === ogo.selectedType.id}
+                        onClick={() => ogo.setSelectedType(item)}
                     >
-                        { item.type } : { item.price }
+                        {item.type} : осталось {item.count} шт.
                     </ListGroup.Item>
-                ) }
+                )}
             </ListGroup>
         </Container>
     )
