@@ -9,9 +9,9 @@ const OkList = observer(() => {
     const { ogo } = useContext(Context);
     return (
         <Row className="d-flex">
-            {ogo.types.map(item =>
-                <OkItem key={item.id} okitem={item} type_id={item.id} />
-            )}
+            { ogo.types.map(item =>
+                <OkItem key={ item.id } okitem={ item } />
+            ) }
         </Row>
     )
 })

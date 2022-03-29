@@ -1,5 +1,5 @@
 const { v4 } = require('uuid')
-const { Okno, OknoInfo } = require('../models/models')
+const { OkType, OkTypeInfo } = require('../models/models')
 const path = require('path')
 const ApiError = require('../Error/ApiError')
 
@@ -12,12 +12,12 @@ class oknoController {
 
             img.mv(path.resolve(__dirname, '..', 'static', filename));
 
-            const okno = await Okno.create({ name, price, img: filename });
+            const okno = await OkType.create({ name, price, img: filename });
 
             if (info) {
                 info = JSON.parse(info)
                 info.forEach(i =>
-                    Okno.create({
+                    OkType.create({
                         title: i.title,
                         desription: i.description,
                         okno_id: okno.id
@@ -31,14 +31,14 @@ class oknoController {
 
     }
     async getAll(req, res) {
-        const okna = await Okno.findAndCountAll()
+        const okna = await OkType.findAndCountAll()
         return res.json(okna)
     }
     async getOne(req, res) {
         const { id } = req.params
-        const okno = await Okno.findOne({
+        const okno = await OkType.findOne({
             where: { id },
-            include: [{ model: OknoInfo, as: 'info' }]
+            include: [{ model: OkTypeInfo, as: 'info' }]
         })
         return res.json(okno)
     }
@@ -46,7 +46,7 @@ class oknoController {
     async delete(req, res) {
         const { id } = req.params
         try {
-            const item = await Okno.findOne({ where: { id } })
+            const item = await OkType.findOne({ where: { id } })
             console.log('Deleted: ', item);
             item.destroy()
         } catch (error) {

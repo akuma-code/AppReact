@@ -3,17 +3,14 @@ import { makeAutoObservable } from 'mobx'
 
 export default class OgoStore {
     constructor () {
-        this._types = [
-            // { id: 1, type: "OK1", price: 5100, img: "" },
-            // { id: 2, type: "OK2", price: 4500, img: "" },
-            // { id: 3, type: "OK3", price: 8100, img: "" },
-        ]
+        this._types = []
         this._amount = [
             { id: 1, type: "OK1", count: 5 },
             { id: 2, type: "OK2", count: 5 },
             { id: 3, type: "OK3", count: 5 },
 
         ]
+        this._type = {}
         this._selectedType = {}
         makeAutoObservable(this)
     }
@@ -21,12 +18,18 @@ export default class OgoStore {
     setTypes(types) {
         this._types = types
     }
+    setType(type) {
+        this._type = type
+    }
     setAmount(amount) {
         this._amount = amount
     }
 
     get types() {
         return this._types
+    }
+    get type() {
+        return this._type
     }
     get amount() {
         return this._amount

@@ -1,31 +1,28 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card, Col, Container, Image, Row } from 'react-bootstrap'
 import { Context } from '../index'
-import { fetchTypes } from '../http/typesAPI'
+import { fetchTypes, fetchOneType } from '../http/typesAPI'
 import { observer } from 'mobx-react-lite'
+import { useParams } from "react-router-dom"
 
 
-const OknoPage = observer((type_id) => {
+const OknoPage = observer(() => {
 
-    const { ogo } = useContext(Context);
+    const [item, setItem] = useState({ info: [] })
+
+    const { id } = useParams()
 
     useEffect(() => {
-        fetchTypes().then(data => ogo.setTypes(data))
+        fetchOneType(id).then(data => setItem(data))
     }, [])
 
 
-    const item = ogo.types.filter(type => type.id == type_id.match.params.id)[0]
-    const desc = [
-        { id: 1, title: "профиль", desc: "WHS" },
-        { id: 2, title: "стеклопакет", desc: "24мм" },
-        { id: 3, title: "размеры", desc: "795х465 мм" },
-    ]
     return (
         <Container
             className="d-flex flex-column mt-2"
         >
             <Col md={ 4 }>
-                <Image width={ 600 } src={ process.env.REACT_APP_API_URL + '/' + item.img } className="ml-0 mt-2" />
+                <Image width={ 400 } src={ process.env.REACT_APP_API_URL + '/' + item.img } className="ml-0 mt-2" />
             </Col>
             <Row
                 className="d-flex justify-content-between mt-1 mx-1 w-700"
@@ -46,7 +43,7 @@ const OknoPage = observer((type_id) => {
             <Card className="d-flex justify-content-around align-items-center"
             >
                 <h3>Описание</h3>
-                { desc.map((info, index) =>
+                { item.info.map((info, index) =>
                     <Row key={ info.id } style={ {
                         backgroundColor: (index % 2 === 0) ? "lightgray" : "darkgray",
                         width: "90%"

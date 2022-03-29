@@ -17,10 +17,10 @@ class TypeController {
             if (info) {
                 info = JSON.parse(info)
                 info.forEach(i =>
-                    OkType.create({
+                    OkTypeInfo.create({
                         title: i.title,
-                        desription: i.description,
-                        type_id: okno.id
+                        desc: i.desc,
+                        typeId: okno.id
                     }))
             }
 

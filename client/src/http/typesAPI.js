@@ -13,8 +13,8 @@ export const fetchTypes = async () => {
     return data.rows
 }
 
-export const fetchOneWindow = async (id) => {
-    const { data } = await $host.get('api/okno/' + id)
-    console.log(data);
-    return data.rows
+export const fetchOneType = async (id) => {
+    const { data } = await $host.get('api/type/' + id)
+    console.log('oneType', data);
+    return data
 }
