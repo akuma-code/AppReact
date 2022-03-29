@@ -6,22 +6,27 @@ const ApiError = require('../Error/ApiError')
 class TypeController {
     async create(req, res, next) {
         try {
-            let { type, price, info } = req.body;
+            let { type, price, info, typeId } = req.body;
             const { img } = req.files;
             let filename = v4() + ".jpg";
 
             img.mv(path.resolve(__dirname, '..', 'static', filename));
 
-            const okno = await OkType.create({ type, price, img: filename });
+            const okno = await OkType.create({ type, typeId, price, img: filename });
 
             if (info) {
-                info = JSON.parse(info)
-                info.forEach(i =>
-                    OkTypeInfo.create({
-                        title: i.title,
-                        desc: i.desc,
-                        typeId: okno.id
-                    }))
+                try {
+                    info = JSON.parse(info)
+                    info.forEach((i) =>
+                        OkTypeInfo.create({
+                            title: i.title,
+                            desc: i.desc,
+                            oktypeId: typeId
+                        }))
+                } catch (error) {
+                    next(console.warn(error.message))
+                }
+
             }
 
             return res.json(okno)

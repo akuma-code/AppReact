@@ -18,7 +18,6 @@ const CreateType = observer(({ show, onHide }) => {
 
     const addInfo = () => {
         setInfo([...info, { title: '', desc: '', number: Date.now() }])
-        console.log(info)
     }
 
     const removeInfo = (number) => {
@@ -27,26 +26,27 @@ const CreateType = observer(({ show, onHide }) => {
 
     const changeInfo = (key, value, number) => {
         setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i))
+        console.log(info)
     }
 
     const selectFile = e => {
         setFile(e.target.files[0])
     }
+    console.log(form);
     const addOkType = () => {
-        const formData = new FormData()
-        formData.append('type', currentType)
-        formData.append('price', price)
-        formData.append('img', file)
-        formData.append('typeId', ogo.selectedType.id)
-        formData.append('info', JSON.stringify(info))
-
-        createType(formData).then(data => onHide())
+        const form = new FormData();
+        form.append('type', currentType)
+        form.append('price', price)
+        form.append('img', file)
+        form.append('typeId', currentType.id)
+        form.append('info', JSON.stringify(info))
+        createType(form).then(data => onHide())
     }
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
@@ -60,79 +60,81 @@ const CreateType = observer(({ show, onHide }) => {
                         <Dropdown >
                             <Dropdown.Toggle className='mt-2 mx-1'>Выбрать тип</Dropdown.Toggle>
                             <Dropdown.Menu>
-                                { ogo.types.map(item =>
+                                {ogo.types.map(item =>
                                     <Dropdown.Item
-                                        key={ item.id }
-                                        onClick={ () => setCurrentType(item.type) }
+                                        key={item.id}
+                                        onClick={() => setCurrentType(item.type)}
                                     >
-                                        { item.type }
+                                        {item.type}
                                     </Dropdown.Item>
-                                ) }
+                                )}
                             </Dropdown.Menu>
                         </Dropdown>
                         <Form.Control
                             className='mt-2 '
                             placeholder="название типа"
-                            value={ currentType }
-                            onChange={ (e) => setCurrentType(e.target.value) }
+                            value={currentType}
+                            onChange={(e) => setCurrentType(e.target.value)}
                         />
                     </Container>
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={ price }
-                        onChange={ (e) => setPrice(e.target.value) }
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
                     />
                     <Form.Control
                         className='mt-2 custom-file-input'
                         placeholder="изображение"
                         type='file'
 
-                        onChange={ (e) => selectFile(e) }
+                        onChange={(e) => selectFile(e)}
                     />
-                    { info.map(i =>
+
+                    <Button
+                        className="w-100 mt-2 btn-secondary"
+                        variant={'outline-dark'}
+                        onClick={addInfo}
+                    >
+                        Добавить инфо
+                    </Button>
+                    {info.map(i =>
                         <Row className='mt-2'
-                            key={ i.number }>
-                            <Col md={ 4 }>
+                            key={i.number}>
+                            <Col md={4}>
                                 <Form.Control
                                     placeholder='название'
-                                    value={ i.title }
-                                    onChange={ (e) => changeInfo('title', e.target.value, i.number) }
+                                    value={i.title}
+                                    onChange={(e) => changeInfo('title', e.target.value, i.number)}
                                 />
                             </Col>
-                            <Col md={ 4 }>
+                            <Col md={4}>
                                 <Form.Control
                                     placeholder='описание'
-                                    value={ i.desc }
-                                    onChange={ (e) => changeInfo('desc', e.target.value, i.number) }
+                                    value={i.desc}
+                                    onChange={(e) => changeInfo('desc', e.target.value, i.number)}
                                 />
                             </Col>
-                            <Col md={ 4 }>
+                            <Col md={4}>
                                 <Button
-                                    variant={ 'outline-dark' }
+                                    variant={'outline-dark'}
                                     className='btn btn-danger'
-                                    onClick={ () => removeInfo(i.number) }
+                                    onClick={() => removeInfo(i.number)}
                                 >
                                     Удалить
                                 </Button>
                             </Col>
                         </Row>
-                    ) }
+                    )}
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
-                    variant={ 'outline-dark' }
-                    onClick={ addInfo }
-                >
-                    Добавить инфо
-                </Button>
-                <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addOkType }
+                    variant={'outline-dark'}
+                    onClick={addOkType}
                 >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

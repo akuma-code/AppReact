@@ -25,6 +25,7 @@ const OkType = sequelize.define('oktype', {
 
 const OkTypeInfo = sequelize.define('oktype_info', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    typeid: { type: DataTypes.INTEGER },
     title: { type: DataTypes.STRING, allowNull: false },
     desc: { type: DataTypes.STRING, allowNull: false },
 })
