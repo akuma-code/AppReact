@@ -13,3 +13,15 @@
     margin-top: 15px;
     flex-flow: column wrap;
 }
+
+.db_main {
+    display: flex;
+
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    background-color: bisque;
+    width: 500px;
+    height: 500px;
+}

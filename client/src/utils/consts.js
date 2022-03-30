@@ -6,4 +6,5 @@ export const SHOP_ROUTE = '/';
 export const BASKET_ROUTE = '/basket';
 export const OKNO_ROUTE = '/okno';
 export const OKTYPE_ROUTE = '/type';
+export const DB_ROUTE = '/db';
 
