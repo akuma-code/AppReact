@@ -22,7 +22,7 @@ class TypeController {
                         OkTypeInfo.create({
                             title: i.title,
                             desc: i.desc,
-                            typeid: okno.id
+                            typeId: okno.id
                         }))
                 } catch (error) {
                     console.log("#####", error.message)
@@ -41,8 +41,9 @@ class TypeController {
         return res.json(okna)
     }
     async getOne(req, res) {
-        const { id } = req.params
         try {
+            const { id } = req.params
+            const typeid = id
             const okno = await OkType.findOne({
                 where: { id },
                 include: [{ model: OkTypeInfo, as: 'info' }]
@@ -51,7 +52,7 @@ class TypeController {
             // console.log('okno', okno)
             return res.json(okno)
         } catch (error) {
-            console.log(error.message)
+            console.log('#######', error.message)
         }
 
     }

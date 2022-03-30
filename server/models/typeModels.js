@@ -16,7 +16,7 @@ const BasketOkType = sequelize.define('basket_oktype', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 })
 
-const OkType = sequelize.define('oktype', {
+const OkType = sequelize.define('type', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     type: { type: DataTypes.STRING, unique: true, allowNull: false },
     price: { type: DataTypes.INTEGER, allowNull: false },
@@ -25,9 +25,8 @@ const OkType = sequelize.define('oktype', {
 
 const OkTypeInfo = sequelize.define('oktype_info', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    typeid: { type: DataTypes.INTEGER, foreignKey: OkType.id },
-    title: { type: DataTypes.STRING, allowNull: false },
-    desc: { type: DataTypes.STRING, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false, defaultValue: "No Title" },
+    desc: { type: DataTypes.STRING, allowNull: false, defaultValue: "No Description" },
 })
 
 
