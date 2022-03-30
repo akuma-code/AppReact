@@ -29,7 +29,10 @@ const Admin = () => {
             >
                 Еще чето на всякий случай
             </Button>
-            <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
+            <CreateType
+                show={typeVisible}
+                onHide={() => setTypeVisible(false)}
+            />
         </Container>
     )
 }
