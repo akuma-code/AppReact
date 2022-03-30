@@ -25,7 +25,7 @@ const OkType = sequelize.define('oktype', {
 
 const OkTypeInfo = sequelize.define('oktype_info', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    typeid: { type: DataTypes.INTEGER },
+    typeid: { type: DataTypes.INTEGER, foreignKey: OkType.id },
     title: { type: DataTypes.STRING, allowNull: false },
     desc: { type: DataTypes.STRING, allowNull: false },
 })
@@ -65,11 +65,11 @@ OkTypeInfo.belongsTo(OkType)
 OkType.hasMany(BasketOkType)
 BasketOkType.belongsTo(OkType)
 
-SKLAD.hasOne(Amount)
-Amount.belongsTo(SKLAD)
+// SKLAD.hasOne(Amount)
+// Amount.belongsTo(SKLAD)
 
-SKLAD.hasOne(Production_db)
-Production_db.belongsTo(SKLAD)
+// SKLAD.hasOne(Production_db)
+// Production_db.belongsTo(SKLAD)
 
 // SKLAD.hasMany(OkType)
 // OkType.belongsTo(SKLAD)

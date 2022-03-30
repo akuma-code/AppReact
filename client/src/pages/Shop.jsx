@@ -15,7 +15,7 @@ const Shop = observer(() => {
     useEffect(() => {
         fetchTypes().then(data => ogo.setTypes(data))
     }, [])
-
+    console.log('ogo', ogo);
 
     return (
         <Container>
@@ -23,7 +23,10 @@ const Shop = observer(() => {
                 <Col md={ 3 }>
                     <TypeBar />
                 </Col>
-                <Col md={ 2 }>
+                <Col
+                    md={ 2 }
+
+                >
                     <OkList />
                 </Col>
             </Row>

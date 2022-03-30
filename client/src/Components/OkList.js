@@ -7,10 +7,15 @@ import OkItem from "./OkItem";
 
 const OkList = observer(() => {
     const { ogo } = useContext(Context);
+
     return (
         <Row className="d-flex">
             { ogo.types.map(item =>
-                <OkItem key={ item.id } okitem={ item } />
+                <OkItem
+                    key={ item.id }
+                    okitem={ item }
+
+                />
             ) }
         </Row>
     )
