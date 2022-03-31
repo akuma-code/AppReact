@@ -50,7 +50,11 @@ const Amount = sequelize.define('amount', {
     count: { type: DataTypes.INTEGER, defaultValue: 5 },
 })
 
+const Shop = sequelize.define('shop', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    okna: { type: DataTypes.STRING, allowNull: true },
 
+})
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
@@ -63,6 +67,10 @@ OkTypeInfo.belongsTo(OkType)
 
 OkType.hasMany(BasketOkType)
 BasketOkType.belongsTo(OkType)
+
+Shop.hasMany(OkType)
+OkType.belongsTo(Shop)
+
 
 // SKLAD.hasOne(Amount)
 // Amount.belongsTo(SKLAD)

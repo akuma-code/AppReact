@@ -20,11 +20,11 @@ const Shop = observer(() => {
     return (
         <Container>
             <Row>
-                <Col md={ 3 }>
+                <Col md={3}>
                     <TypeBar />
                 </Col>
                 <Col
-                    md={ 2 }
+                    md={2}
 
                 >
                     <OkList />

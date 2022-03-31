@@ -39,7 +39,7 @@ const DBPage = observer(() => {
                 <Col>
                     <ButtonGroup>
                         <Button
-                            onClick={ () => fetchTypes().then(data => setDbList(data)) }
+                            onClick={() => fetchTypes().then(data => setDbList(data))}
                         >
                             Получить данные из БД
                         </Button>
@@ -47,40 +47,40 @@ const DBPage = observer(() => {
                 </Col>
                 <Col>
                     <ListGroup>
-                        { ogo.types.map(typeItem =>
-                            <ListGroup.Item key={ typeItem.id } className='d-flex flex-column'>
+                        {ogo.types.map(typeItem =>
+                            <ListGroup.Item key={typeItem.id} className='d-flex flex-column'>
                                 <div>
-                                    id: { typeItem.id }
+                                    id: {typeItem.id}
                                 </div>
                                 <div>
-                                    type: { typeItem.type }
+                                    type: {typeItem.type}
                                 </div>
                                 <AkuToggleBtn
-                                    clickHandler={ () => addToShop(typeItem) }
+                                    clickHandler={() => addToShop(typeItem)}
 
                                     btnName='Добавить на главную'
-                                    props={ {
+                                    props={{
                                         id: typeItem.id,
                                         checked: checked
-                                    } }
+                                    }}
                                 >
 
                                 </AkuToggleBtn>
                                 <Button
                                     size="sm"
                                     className="mt-1"
-                                    variant={ "outline-secondary" }
-                                    onClick={ () => history.push(OKNO_ROUTE + '/' + typeItem.id) }
+                                    variant={"outline-secondary"}
+                                    onClick={() => history.push(OKNO_ROUTE + '/' + typeItem.id)}
                                 >Открыть
                                 </Button>
                                 <Button
                                     className="mt-1"
-                                    variant={ "outline-danger" }
-                                    onClick={ () => deleteHandler(typeItem.id) }
+                                    variant={"outline-danger"}
+                                    onClick={() => deleteHandler(typeItem.id)}
                                 >Удалить тип
                                 </Button>
                             </ListGroup.Item>
-                        ) }
+                        )}
                     </ListGroup>
                 </Col>
             </Row>

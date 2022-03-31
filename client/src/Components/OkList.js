@@ -1,22 +1,22 @@
 import { observer } from "mobx-react-lite"
 import React from 'react'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Container, ListGroup, Row } from "react-bootstrap";
 import { Context } from "..";
 import OkItem from "./OkItem";
 
 const OkList = observer(() => {
     const { ogo } = useContext(Context);
-
+    const [shop, setShop] = useState([]);
     return (
         <Row className="d-flex">
-            { ogo.shop.map(item =>
+            {ogo.types.map(item =>
                 <OkItem
-                    key={ item.id }
-                    okitem={ item }
+                    key={item.id}
+                    okitem={item}
 
                 />
-            ) }
+            )}
         </Row>
     )
 })
