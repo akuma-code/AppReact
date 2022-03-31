@@ -4,25 +4,25 @@ import { useHistory } from 'react-router-dom';
 import '../styles/app.css'
 import { Button, ButtonGroup, Col, Container, ListGroup, Row } from 'react-bootstrap'
 import { Context } from '..';
-import { fetchTypes } from '../http/typesAPI';
+import { fetchTypes, removeType } from '../http/typesAPI';
 
 const DBPage = observer(() => {
     const history = useHistory()
     const { ogo } = useContext(Context)
     const [dbList, setDbList] = useState([])
-    const type_bd = () => fetchTypes().then(data => setDbList(data))
     useEffect(() => {
-        type_bd()
-    }, []);
+        fetchTypes().then(data => setDbList(data))
+    }, [])
+
     const destruct = (item) => Object.entries(...item)
     // console.log(destruct(dbList));
     return (
-        <Container className='d-flex ml-0'>
+        <Container className='d-flex mt-2'>
             <Row>
                 <Col>
                     <ButtonGroup>
                         <Button
-                            onClick={() => type_bd()}
+                            onClick={ () => fetchTypes().then(data => setDbList(data)) }
                         >
                             Получить данные из БД
                         </Button>
@@ -30,13 +30,21 @@ const DBPage = observer(() => {
                 </Col>
                 <Col>
                     <ListGroup>
-                        {dbList.map(typeItem =>
-                            <ListGroup.Item key={typeItem.id} className='d-flex '>
-                                id: {typeItem.id}
-                                <br></br>
-                                type: {typeItem.type}
+                        { dbList.map(typeItem =>
+                            <ListGroup.Item key={ typeItem.id } className='d-flex flex-column'>
+                                <div>
+                                    id: { typeItem.id }
+                                </div>
+                                <div>
+                                    type: { typeItem.type }
+                                </div>
+                                <Button
+                                    variant={ "outline-danger" }
+                                    onClick={ () => removeType(typeItem.id) }
+                                >Удалить тип
+                                </Button>
                             </ListGroup.Item>
-                        )}
+                        ) }
                     </ListGroup>
                 </Col>
             </Row>

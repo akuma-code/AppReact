@@ -55,27 +55,27 @@ const CreateType = observer(({ show, onHide }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Container className='d-flex w-100 justify-content-between'>
-                        <Dropdown >
-                            <Dropdown.Toggle className='mt-2 mx-1'>Выбрать тип</Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                { ogo.types.map(item =>
-                                    <Dropdown.Item
-                                        key={ item.id }
-                                        onClick={ () => setCurrentType(item.type) }
-                                    >
-                                        { item.type }
-                                    </Dropdown.Item>
-                                ) }
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        <Form.Control
-                            className='mt-2 '
-                            placeholder="название типа"
-                            value={ currentType }
-                            onChange={ (e) => setCurrentType(e.target.value) }
-                        />
-                    </Container>
+                    {/* <Container className='d-flex w-100 justify-content-between'> */ }
+                    <Dropdown >
+                        <Dropdown.Toggle className='mt-2 mx-1'>Выбрать тип</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            { ogo.types.map(item =>
+                                <Dropdown.Item
+                                    key={ item.id }
+                                    onClick={ () => setCurrentType(item.type) }
+                                >
+                                    { item.type }
+                                </Dropdown.Item>
+                            ) }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Form.Control
+                        className='mt-2 '
+                        placeholder="название типа"
+                        value={ currentType }
+                        onChange={ (e) => setCurrentType(e.target.value) }
+                    />
+                    {/* </Container> */ }
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
