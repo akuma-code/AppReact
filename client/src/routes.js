@@ -9,6 +9,9 @@ import Types from "./pages/Types"
 import DBPage from "./pages/DBPage"
 
 export const authRoutes = [
+
+]
+export const publicRoutes = [
     {
         path: ADMIN_ROUTE,
         Component: Admin
@@ -21,8 +24,6 @@ export const authRoutes = [
         path: BASKET_ROUTE,
         Component: Basket
     },
-]
-export const publicRoutes = [
     {
         path: SHOP_ROUTE,
         Component: Shop

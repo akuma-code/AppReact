@@ -16,9 +16,14 @@ const App = express();
 App.use(cors());
 App.use(express.json());
 App.use(express.static(path.resolve(__dirname + '/static')));
+App.use(express.static(path.join(__dirname, 'build')));
 App.use(fileUpload({}))
 App.use('/api', router)
 
+// -app.get('/', function (req, res) {
+App.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 App.use(errHandler)
 
