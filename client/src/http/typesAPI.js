@@ -21,6 +21,6 @@ export const fetchOneType = async (id) => {
 }
 export const removeType = async (id) => {
     const { data } = await $host.delete('api/type/' + id)
-    console.log('deleted: ', data);
+
     return data
 }

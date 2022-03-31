@@ -20,7 +20,7 @@ const OkItem = observer(({ okitem }) => {
                 <Image fluid height={ 200 } src={ process.env.REACT_APP_API_URL + '/' + okitem.img } />
                 <div className="d-flex justify-content-between" >
                     <div>{ okitem.type }</div>
-                    <div>Price: { okitem.price } rub</div>
+                    <div>{ okitem.price } rub</div>
                 </div>
             </Card>
         </Col>

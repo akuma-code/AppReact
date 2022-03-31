@@ -2,20 +2,37 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/app.css'
-import { Button, ButtonGroup, Col, Container, ListGroup, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Col, Container, ListGroup, Row, ToggleButton } from 'react-bootstrap'
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
+import { OKNO_ROUTE } from "../utils/consts";
+import AkuToggleBtn from "../Components/buttons/Aku_ToggleBtn";
 
 const DBPage = observer(() => {
     const history = useHistory()
     const { ogo } = useContext(Context)
     const [dbList, setDbList] = useState([])
-    useEffect(() => {
-        fetchTypes().then(data => setDbList(data))
-    }, [])
+    const [checked, setChecked] = useState(false)
+    const [shop, setShop] = useState([])
 
+
+
+    useEffect(() => {
+        fetchTypes().then(data => ogo.setTypes(data))
+    }, [dbList])
+
+
+    const deleteHandler = (id) => {
+        removeType(id)
+        fetchTypes().then(data => setDbList(data))
+    }
+
+    const addToShop = (item) => {
+        ogo.setShop(item)
+
+
+    }
     const destruct = (item) => Object.entries(...item)
-    // console.log(destruct(dbList));
     return (
         <Container className='d-flex mt-2'>
             <Row>
@@ -30,7 +47,7 @@ const DBPage = observer(() => {
                 </Col>
                 <Col>
                     <ListGroup>
-                        { dbList.map(typeItem =>
+                        { ogo.types.map(typeItem =>
                             <ListGroup.Item key={ typeItem.id } className='d-flex flex-column'>
                                 <div>
                                     id: { typeItem.id }
@@ -38,9 +55,28 @@ const DBPage = observer(() => {
                                 <div>
                                     type: { typeItem.type }
                                 </div>
+                                <AkuToggleBtn
+                                    clickHandler={ () => addToShop(typeItem) }
+
+                                    btnName='Добавить на главную'
+                                    props={ {
+                                        id: typeItem.id,
+                                        checked: checked
+                                    } }
+                                >
+
+                                </AkuToggleBtn>
                                 <Button
+                                    size="sm"
+                                    className="mt-1"
+                                    variant={ "outline-secondary" }
+                                    onClick={ () => history.push(OKNO_ROUTE + '/' + typeItem.id) }
+                                >Открыть
+                                </Button>
+                                <Button
+                                    className="mt-1"
                                     variant={ "outline-danger" }
-                                    onClick={ () => removeType(typeItem.id) }
+                                    onClick={ () => deleteHandler(typeItem.id) }
                                 >Удалить тип
                                 </Button>
                             </ListGroup.Item>
@@ -50,7 +86,7 @@ const DBPage = observer(() => {
             </Row>
 
 
-        </Container>
+        </Container >
     );
 })
 

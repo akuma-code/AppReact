@@ -10,6 +10,7 @@ export default class OgoStore {
             { id: 3, type: "OK3", count: 5 },
 
         ]
+        this._shop = []
         this._type = {}
         this._selectedType = {}
         makeAutoObservable(this)
@@ -20,6 +21,9 @@ export default class OgoStore {
     }
     setType(type) {
         this._type = type
+    }
+    setShop(type) {
+        this._shop = type
     }
     setAmount(amount) {
         this._amount = amount
@@ -34,7 +38,9 @@ export default class OgoStore {
     get amount() {
         return this._amount
     }
-
+    get shop() {
+        return this._shop
+    }
 
     setSelectedType(type) {
         this._selectedType = type

@@ -61,9 +61,10 @@ class TypeController {
         const { id } = req.params
         try {
             const item = await OkType.findOne({ where: { id } })
-            console.log('Deleted: ', item);
+
             item.destroy()
         } catch (error) {
+            console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
         }
 

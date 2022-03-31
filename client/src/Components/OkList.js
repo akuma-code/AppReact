@@ -10,7 +10,7 @@ const OkList = observer(() => {
 
     return (
         <Row className="d-flex">
-            { ogo.types.map(item =>
+            { ogo.shop.map(item =>
                 <OkItem
                     key={ item.id }
                     okitem={ item }
