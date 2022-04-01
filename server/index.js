@@ -15,6 +15,7 @@ const App = express();
 
 App.use(cors());
 App.use(express.json());
+App.use(express.static(path.resolve(__dirname + '/build')));
 App.use(express.static(path.resolve(__dirname + '/static')));
 App.use(fileUpload({}))
 App.use('/api', router)
