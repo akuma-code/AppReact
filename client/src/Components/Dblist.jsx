@@ -9,7 +9,7 @@ import AkuToggleBtn from "./buttons/Aku_ToggleBtn";
 import Tabletype from "./tables/TableType";
 
 
-const Dblist = observer(({ dbitem }) => {
+const DbList = observer(({ dbitem }) => {
 
     const history = useHistory()
     const { ogo } = useContext(Context)
@@ -36,34 +36,41 @@ const Dblist = observer(({ dbitem }) => {
     }
     return (
         <ListGroup>
-            <ListGroup.Item className='d-flex flex-column'>
-                <h4>Type ID: {dbitem.id} </h4>
-                <AkuToggleBtn
-                    clickHandler={() => addToShop(dbitem)}
-                    btnName='Добавить на главную'
-                    props={{
-                        id: dbitem.id,
-                        checked: checked
-                    }}
-                />
-                <Button
-                    size="sm"
-                    className="mt-1"
-                    variant={"outline-secondary"}
-                    onClick={() => history.push(OKNO_ROUTE + '/' + dbitem.id)}
-                >Открыть
-                </Button>
-                <Button
-                    className="mt-1"
-                    variant={"outline-danger"}
-                    onClick={() => deleteHandler(dbitem.id)}
-                    size="sm"
-                >Удалить тип
-                </Button>
-            </ListGroup.Item>
+            <React.StrictMode>
 
+                <ListGroup.Item className='d-flex flex-column'>
+                    <ListGroup.displayName>
+                        Type ID: {dbitem.id}
+                    </ListGroup.displayName>
+
+
+                    <AkuToggleBtn
+                        clickHandler={() => addToShop(dbitem)}
+                        btnName='Добавить на главную'
+                        props={{
+                            id: dbitem.id,
+                            checked: checked
+                        }}
+                    >
+
+                    </AkuToggleBtn>
+                    <Button
+                        size="sm"
+                        className="mt-1"
+                        variant={"outline-secondary"}
+                        onClick={() => history.push(OKNO_ROUTE + '/' + dbitem.id)}
+                    >Открыть
+                    </Button>
+                    <Button
+                        className="mt-1"
+                        variant={"outline-danger"}
+                        onClick={() => deleteHandler(dbitem.id)}
+                    >Удалить тип
+                    </Button>
+                </ListGroup.Item>
+            </React.StrictMode>
         </ListGroup>
     );
 })
 
-export default Dblist;
+export default DbList;
