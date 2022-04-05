@@ -2,12 +2,13 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/app.css'
-import { Button, ButtonGroup, Card, Col, Container, ListGroup, Row, ToggleButton } from 'react-bootstrap'
+import { Badge, Button, ButtonGroup, Card, CardGroup, Col, Container, ListGroup, Row, ToggleButton } from 'react-bootstrap'
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
 import Dblist from "../Components/Dblist";
 import CreateType from "../Components/modals/CreateType";
+import Tabletype from '../Components/tables/TableType';
 
 
 const DBPage = observer(() => {
@@ -20,8 +21,11 @@ const DBPage = observer(() => {
 
 
     useEffect(() => {
-        fetchTypes().then(data => ogo.setTypes(data))
-    }, [types])
+        fetchTypes().then(data => {
+            ogo.setTypes(data)
+            setTypes(data)
+        })
+    }, [])
 
 
     const deleteHandler = (id) => {
@@ -32,53 +36,67 @@ const DBPage = observer(() => {
 
     const destruct = (item) => Object.entries(...item)
     return (
-        <Container className='d-flex mt-3'
+        <Container className='d-flex mt-3 flex-row'
             fluid
         >
-            <Row lg={ 2 }>
-                <Col md={ 4 }>
-                    <ButtonGroup
-                        vertical
-                    >
-                        <Button
-                            variant={ "outline-dark" }
-                            onClick={ () => fetchTypes().then(data => setTypes(data)) }
+
+
+            <Row
+                className="w-100"
+            >
+                <Container className='my-2'>
+                    <Col sm="4">
+                        <ButtonGroup
+                            horisontal
+
                         >
-                            Получить данные из БД
-                        </Button>
-                        <Button
-                            className="btn  mt-2"
-                            variant={ "outline-dark" }
-                            onClick={ () => setTypeVisible(true) }
-                        >
-                            Добавить новый тип окна
-                        </Button>
-                    </ButtonGroup>
-                </Col>
-                <Col md={ "auto" }
-                    lg={ 5 }
-                // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
+                            <Button
+                                variant={"outline-dark"}
+                                onClick={() => fetchTypes().then(data => setTypes(data))}
+                            >
+                                Получить данные из БД
+                            </Button>
+                            <Button
+                                className="btn"
+                                variant={"outline-dark"}
+                                onClick={() => setTypeVisible(true)}
+                            >
+                                Добавить новый тип окна
+                            </Button>
+                        </ButtonGroup>
+                    </Col>
+                </Container>
+                {/* 
+                <Container
                 >
+                    <CardGroup>
+                        {ogo.types.map(type =>
+                            <Card className="mt-1 d-flex"
+                                key={type.id}
+                                style={{ width: "10rem" }}
+                            >
+                                <Card.Header
+                                    style={{ background: "rgb(100, 100, 200)" }}>
+                                    <Card.Title> {type.type}  <Badge bg='info'>id:{type.id}</Badge></Card.Title>
+                                </Card.Header>
+                                <Dblist
+                                    dbitem={type}
 
-                    { ogo.types.map(type =>
-                        <Card className="mt-1"
-                            key={ type.id }
-                        >
-                            <Card.Header
-                                style={ { background: "rgb(100, 100, 200)" } }>
-                                { type.type }
-                            </Card.Header>
-                            <Dblist
-                                dbitem={ type }
+                                />
+                            </Card>
+                        )}
+                    </CardGroup>
+                </Container> */}
+                <Tabletype
+                    className="ml-2"
+                    dbobjects={types}
+                    header={types[0]}
 
-                            />
-                        </Card>
-                    ) }
-                </Col>
+                />
             </Row>
             <CreateType
-                show={ typeVisible }
-                onHide={ () => setTypeVisible(false) }
+                show={typeVisible}
+                onHide={() => setTypeVisible(false)}
             />
         </Container>
     );

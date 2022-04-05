@@ -3,9 +3,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ListGroup, Button, } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "..";
-import { fetchTypes } from "../http/typesAPI";
+import { fetchTypes, removeType } from "../http/typesAPI";
 import { OKNO_ROUTE } from "../utils/consts";
 import AkuToggleBtn from "./buttons/Aku_ToggleBtn";
+import Tabletype from "./tables/TableType";
+
 
 const Dblist = observer(({ dbitem }) => {
 
@@ -35,35 +37,31 @@ const Dblist = observer(({ dbitem }) => {
     return (
         <ListGroup>
             <ListGroup.Item className='d-flex flex-column'>
-                <ListGroup.displayName>
-                    Type ID: { dbitem.id }
-                </ListGroup.displayName>
-
-
+                <h4>Type ID: {dbitem.id} </h4>
                 <AkuToggleBtn
-                    clickHandler={ () => addToShop(dbitem) }
+                    clickHandler={() => addToShop(dbitem)}
                     btnName='Добавить на главную'
-                    props={ {
+                    props={{
                         id: dbitem.id,
                         checked: checked
-                    } }
-                >
-
-                </AkuToggleBtn>
+                    }}
+                />
                 <Button
                     size="sm"
                     className="mt-1"
-                    variant={ "outline-secondary" }
-                    onClick={ () => history.push(OKNO_ROUTE + '/' + dbitem.id) }
+                    variant={"outline-secondary"}
+                    onClick={() => history.push(OKNO_ROUTE + '/' + dbitem.id)}
                 >Открыть
                 </Button>
                 <Button
                     className="mt-1"
-                    variant={ "outline-danger" }
-                    onClick={ () => deleteHandler(dbitem.id) }
+                    variant={"outline-danger"}
+                    onClick={() => deleteHandler(dbitem.id)}
+                    size="sm"
                 >Удалить тип
                 </Button>
             </ListGroup.Item>
+
         </ListGroup>
     );
 })
