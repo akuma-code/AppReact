@@ -6,8 +6,9 @@ import { Button, ButtonGroup, Card, Col, Container, ListGroup, Row, ToggleButton
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
-import Dblist from "../Components/Dblist";
+import Dblist from "../Components/DbList";
 import CreateType from "../Components/modals/CreateType";
+import TypesTable from "../Components/modals/TypesTable";
 
 
 const DBPage = observer(() => {
@@ -17,11 +18,13 @@ const DBPage = observer(() => {
     const [checked, setChecked] = useState(false)
     const [shop, setShop] = useState([])
     const [typeVisible, setTypeVisible] = useState(false);
+    const [tabVisible, setTabVisible] = useState(false);
 
 
     useEffect(() => {
-        fetchTypes().then(data => ogo.setTypes(data))
-    }, [types])
+        fetchTypes().then(data => setTypes(data))
+
+    }, [])
 
 
     const deleteHandler = (id) => {
@@ -30,57 +33,59 @@ const DBPage = observer(() => {
     }
 
 
-    const destruct = (item) => Object.entries(...item)
     return (
-        <Container className='d-flex mt-3'
-            fluid
-        >
-            <Row lg={ 2 }>
-                <Col md={ 4 }>
-                    <ButtonGroup
-                        vertical
+        <React.StrictMode>
+            <Container className='d-flex mt-3'
+                fluid
+            >
+                <Row lg={ 2 }>
+                    <Col md={ 4 }>
+                        <ButtonGroup
+                            vertical
+                        >
+                            <Button
+                                variant={ "outline-dark" }
+                                onClick={ () => setTabVisible(true) }
+                            >
+                                Получить типы из БД
+                            </Button>
+                            <Button
+                                className="btn  mt-2"
+                                variant={ "outline-dark" }
+                                onClick={ () => setTypeVisible(true) }
+                            >
+                                Добавить новый тип
+                            </Button>
+                        </ButtonGroup>
+                    </Col>
+                    <Col md={ "auto" }
+                        lg={ 5 }
+                    // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
                     >
-                        <Button
-                            variant={ "outline-dark" }
-                            onClick={ () => fetchTypes().then(data => setTypes(data)) }
-                        >
-                            Получить данные из БД
-                        </Button>
-                        <Button
-                            className="btn  mt-2"
-                            variant={ "outline-dark" }
-                            onClick={ () => setTypeVisible(true) }
-                        >
-                            Добавить новый тип окна
-                        </Button>
-                    </ButtonGroup>
-                </Col>
-                <Col md={ "auto" }
-                    lg={ 5 }
-                // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
-                >
-
-                    { ogo.types.map(type =>
-                        <Card className="mt-1"
-                            key={ type.id }
-                        >
-                            <Card.Header
-                                style={ { background: "rgb(100, 100, 200)" } }>
-                                { type.type }
-                            </Card.Header>
-                            <Dblist
-                                dbitem={ type }
-
-                            />
-                        </Card>
-                    ) }
-                </Col>
-            </Row>
-            <CreateType
-                show={ typeVisible }
-                onHide={ () => setTypeVisible(false) }
-            />
-        </Container>
+                        {/* { types.map(type =>
+                            <Card className="mt-1"
+                                key={ type.id }
+                            >
+                                <Card.Header
+                                    style={ { background: "rgb(100, 100, 200)" } }>
+                                    { type.type }
+                                </Card.Header>
+                                <Dblist dbitem={ type }
+                                ></Dblist>
+                            </Card>
+                        ) } */}
+                    </Col>
+                </Row>
+                <CreateType
+                    show={ typeVisible }
+                    onHide={ () => setTypeVisible(false) }
+                />
+                <TypesTable
+                    show={ tabVisible }
+                    onHide={ () => setTabVisible(false) }
+                />
+            </Container>
+        </React.StrictMode>
     );
 
     {/* <ListGroup>
