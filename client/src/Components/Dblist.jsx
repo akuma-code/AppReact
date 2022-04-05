@@ -21,6 +21,7 @@ const DbList = observer(({ dbitem }) => {
 
     useEffect(() => {
         fetchTypes().then(data => ogo.setTypes(data))
+        setShop([...ogo.shop])
     }, [types])
 
 
@@ -31,8 +32,10 @@ const DbList = observer(({ dbitem }) => {
 
 
     const addToShop = (item) => {
-        setShop(item)
-        ogo.setShop(item)
+        console.log('item :>> ', item);
+        setShop([...shop, { item }]);
+        () => ogo.setShop([shop]);
+        console.log(ogo.shop);
     }
     return (
         <ListGroup>
@@ -51,9 +54,7 @@ const DbList = observer(({ dbitem }) => {
                             id: dbitem.id,
                             checked: checked
                         }}
-                    >
-
-                    </AkuToggleBtn>
+                    />
                     <Button
                         size="sm"
                         className="mt-1"

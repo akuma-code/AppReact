@@ -57,7 +57,7 @@ class TypeController {
 
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         const { id } = req.params
         try {
             const item = await OkType.findOne({ where: { id } })
@@ -67,9 +67,18 @@ class TypeController {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
         }
+    }
 
+    async edit(req, res, next) {
+        const { id } = req.body
+        try {
+            const item = await OkType.find({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
 
-
+            return res.json(item)
+        } catch (error) {
+            console.log('#######', error.message)
+            next(ApiError.badRequest(error.message))
+        }
     }
 }
 

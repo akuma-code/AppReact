@@ -24,7 +24,7 @@ const DBPage = observer(() => {
     useEffect(() => {
         fetchTypes().then(data => setTypes(data))
 
-    }, [])
+    }, [ogo.types])
 
 
     const deleteHandler = (id) => {
@@ -62,18 +62,18 @@ const DBPage = observer(() => {
                         lg={5}
                     // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
                     >
-                        {/* { types.map(type =>
+                        {types.map(type =>
                             <Card className="mt-1"
-                                key={ type.id }
+                                key={type.id}
                             >
                                 <Card.Header
-                                    style={ { background: "rgb(100, 100, 200)" } }>
-                                    { type.type }
+                                    style={{ background: "rgb(100, 100, 200)" }}>
+                                    {type.type}
                                 </Card.Header>
-                                <Dblist dbitem={ type }
+                                <Dblist dbitem={type}
                                 ></Dblist>
                             </Card>
-                        ) } */}
+                        )}
                     </Col>
                 </Row>
                 <CreateType

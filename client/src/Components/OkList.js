@@ -5,16 +5,14 @@ import { Container, ListGroup, Row } from "react-bootstrap";
 import { Context } from "..";
 import OkItem from "./OkItem";
 
-const OkList = observer(() => {
-    const { ogo } = useContext(Context);
-    const [shop, setShop] = useState([]);
+const OkList = observer(({ items }) => {
+
     return (
         <Row className="d-flex">
-            {ogo.types.map(item =>
+            {items.map(item =>
                 <OkItem
                     key={item.id}
                     okitem={item}
-
                 />
             )}
         </Row>

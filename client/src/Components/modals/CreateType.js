@@ -44,8 +44,8 @@ const CreateType = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
@@ -58,55 +58,55 @@ const CreateType = observer(({ show, onHide }) => {
                     <Form.Control
                         className='mt-2 '
                         placeholder="название типа"
-                        value={ currentType }
-                        onChange={ (e) => setCurrentType(e.target.value) }
+                        value={currentType}
+                        onChange={(e) => setCurrentType(e.target.value)}
                     />
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={ price }
-                        onChange={ (e) => setPrice(e.target.value) }
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
                     />
                     <Form.Control
                         className='mt-2 custom-file-input'
                         placeholder="изображение"
                         type='file'
-                        onChange={ (e) => selectFile(e) }
+                        onChange={(e) => selectFile(e)}
                     />
 
 
-                    { info.map(i =>
+                    {info.map(i =>
                         <Row className='mt-2'
-                            key={ i.number }>
-                            <Col md={ 4 }>
+                            key={i.number}>
+                            <Col md={3}>
                                 <Form.Control
                                     placeholder='название'
-                                    value={ i.title }
-                                    onChange={ (e) => changeInfo('title', e.target.value, i.number) }
+                                    value={i.title}
+                                    onChange={(e) => changeInfo('title', e.target.value, i.number)}
                                 />
                             </Col>
-                            <Col md={ 4 }>
+                            <Col md={3}>
                                 <Form.Control
                                     placeholder='описание'
-                                    value={ i.desc }
-                                    onChange={ (e) => changeInfo('desc', e.target.value, i.number) }
+                                    value={i.desc}
+                                    onChange={(e) => changeInfo('desc', e.target.value, i.number)}
                                 />
                             </Col>
-                            <Col md={ 4 }>
+                            <Col md={3}>
                                 <Button
-                                    variant={ 'outline-dark' }
+                                    variant={'outline-dark'}
                                     className='btn btn-danger'
-                                    onClick={ () => removeInfo(i.number) }
+                                    onClick={() => removeInfo(i.number)}
                                 >
                                     Удалить
                                 </Button>
                             </Col>
                         </Row>
-                    ) }
+                    )}
                     <Button
                         className="w-100 mt-2 btn-secondary"
-                        variant={ 'outline-dark' }
-                        onClick={ addInfo }
+                        variant={'outline-dark'}
+                        onClick={addInfo}
                     >
                         Добавить инфо
                     </Button>
@@ -115,10 +115,10 @@ const CreateType = observer(({ show, onHide }) => {
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addOkType }
+                    variant={'outline-dark'}
+                    onClick={addOkType}
                 >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );
