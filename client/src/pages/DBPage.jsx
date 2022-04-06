@@ -77,10 +77,12 @@ const DBPage = observer(() => {
                             >
                                 <Card.Header
                                     style={ { background: "rgb(100, 100, 200)" } }>
-                                    { type.type }
+                                    { type.name }
                                 </Card.Header>
-                                <Dblist dbitem={ type }
-                                ></Dblist>
+                                <Card.Body>
+                                    <Dblist dbitem={ type }
+                                    ></Dblist>
+                                </Card.Body>
                             </Card>
                         ) }
                     </Col>

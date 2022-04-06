@@ -1,4 +1,4 @@
-const { Shop } = require('../models/typeModels')
+const { Shop, OkType } = require('../models/typeModels')
 const ApiError = require('../Error/ApiError')
 
 class ShopController {
@@ -17,6 +17,34 @@ class ShopController {
     async getAll(req, res) {
         const okna = await Shop.findAndCountAll()
         return res.json(okna)
+    }
+
+    async getOne(req, res) {
+        try {
+            const { id } = req.params
+
+            const okno = await Shop.findOne({
+                where: { id },
+                include: [{ model: OkType }]
+            },
+            )
+            return res.json(okno)
+        } catch (error) {
+            console.log('#######', error.message)
+        }
+
+    }
+
+    async delete(req, res, next) {
+        const { id } = req.params
+        try {
+            const item = await Shop.findOne({ where: { id } })
+
+            item.destroy()
+        } catch (error) {
+            console.log('#######', error.message)
+            next(ApiError.badRequest(error.message))
+        }
     }
 }
 

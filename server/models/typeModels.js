@@ -67,7 +67,7 @@ OkTypeInfo.belongsTo(OkType)
 OkType.hasMany(BasketOkType)
 BasketOkType.belongsTo(OkType)
 
-OkType.hasMany(Shop)
+OkType.hasMany(Shop, { as: 'shop_type' })
 Shop.belongsTo(OkType)
 
 

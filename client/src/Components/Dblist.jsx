@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useEffect } from 'react';
-import { ListGroup, Button, } from "react-bootstrap";
+import { ListGroup, Button, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "..";
 import { fetchTypes, removeType } from "../http/typesAPI";
@@ -21,7 +21,6 @@ const DbList = observer(({ dbitem }) => {
 
     useEffect(() => {
         fetchTypes().then(data => ogo.setTypes(data))
-        setShop([...ogo.shop])
     }, [types])
 
 
@@ -31,37 +30,30 @@ const DbList = observer(({ dbitem }) => {
     }
 
 
-    const addToShop = (item) => {
-        console.log('item :>> ', item);
-        setShop([...shop, { item }]);
-        () => ogo.setShop([shop]);
-        console.log(ogo.shop);
-    }
+
     return (
-        <React.StrictMode>
-            <ListGroup>
 
-                <ListGroup.Item className='d-flex flex-column'>
-                    <ListGroup.displayName>
-                        Type ID: { dbitem.id }
-                    </ListGroup.displayName>
+        <ListGroup>
+            <ListGroup.Item className='d-flex flex-column'>
+                <ListGroup.displayName>
+                    Type ID: { dbitem.id }
+                </ListGroup.displayName>
+                <Button
+                    size="sm"
+                    className="mt-1"
+                    variant={ "outline-secondary" }
+                    onClick={ () => history.push(OKNO_ROUTE + '/' + dbitem.id) }
+                >Открыть
+                </Button>
+                <Button
+                    className="mt-1"
+                    variant={ "outline-danger" }
+                    onClick={ () => deleteHandler(dbitem.id) }
+                >Удалить тип
+                </Button>
+            </ListGroup.Item>
+        </ListGroup>
 
-                    <Button
-                        size="sm"
-                        className="mt-1"
-                        variant={ "outline-secondary" }
-                        onClick={ () => history.push(OKNO_ROUTE + '/' + dbitem.id) }
-                    >Открыть
-                    </Button>
-                    <Button
-                        className="mt-1"
-                        variant={ "outline-danger" }
-                        onClick={ () => deleteHandler(dbitem.id) }
-                    >Удалить тип
-                    </Button>
-                </ListGroup.Item>
-            </ListGroup>
-        </React.StrictMode>
     );
 })
 

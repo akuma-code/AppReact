@@ -12,3 +12,9 @@ export const fetchPositions = async () => {
     console.log('data[fetchPositions]', data)
     return data.rows
 }
+
+export const fetchOnePosition = async (id) => {
+    const { data } = await $host.get('api/shop/' + id)
+    console.log('data[OnePosition]', data)
+    return data
+}
