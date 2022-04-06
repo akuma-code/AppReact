@@ -4,6 +4,7 @@ import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { Context } from '..'
 import OkList from "../Components/OkList"
 import TypeBar from "../Components/TypeBar"
+import { fetchPositions } from "../http/shopAPI"
 import { fetchTypes } from '../http/typesAPI'
 
 const Shop = observer(() => {
@@ -13,19 +14,22 @@ const Shop = observer(() => {
 
 
     useEffect(() => {
-        fetchTypes().then(data => ogo.setTypes(data))
+        fetchPositions().then(data => {
+
+            ogo.setShop(data)
+        })
     }, [])
 
     return (
         <Container>
             <Row>
-                <Col md={3}>
+                <Col md={ 3 }>
                     <TypeBar />
                 </Col>
                 <Col
-                    md={2}
+                    md={ 2 }
                 >
-                    <OkList items={ogo.shop} />
+                    <OkList items={ ogo.shop } />
                 </Col>
             </Row>
         </Container>

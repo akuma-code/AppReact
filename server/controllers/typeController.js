@@ -6,13 +6,13 @@ const ApiError = require('../Error/ApiError')
 class TypeController {
     async create(req, res, next) {
         try {
-            let { type, price, info } = req.body;
+            let { name, price, info } = req.body;
             const { img } = req.files;
             let filename = v4() + ".jpg";
 
             img.mv(path.resolve(__dirname, '..', 'static', filename));
 
-            const okno = await OkType.create({ type, price, img: filename });
+            const okno = await OkType.create({ name, img: filename });
 
             if (info) {
                 console.log(info);
@@ -43,7 +43,7 @@ class TypeController {
     async getOne(req, res) {
         try {
             const { id } = req.params
-            const typeid = id
+
             const okno = await OkType.findOne({
                 where: { id },
                 include: [{ model: OkTypeInfo, as: 'info' }]
@@ -71,6 +71,7 @@ class TypeController {
 
     async edit(req, res, next) {
         const { id } = req.body
+        const { newItem } = req.body
         try {
             const item = await OkType.find({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
 

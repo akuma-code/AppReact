@@ -18,8 +18,7 @@ const BasketOkType = sequelize.define('basket_oktype', {
 
 const OkType = sequelize.define('type', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    type: { type: DataTypes.STRING, unique: true, allowNull: false },
-    price: { type: DataTypes.INTEGER, allowNull: false },
+    name: { type: DataTypes.STRING, unique: true, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: true, defaultValue: "No Image" },
 })
 
@@ -52,8 +51,8 @@ const Amount = sequelize.define('amount', {
 
 const Shop = sequelize.define('shop', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    okna: { type: DataTypes.STRING, allowNull: true },
-
+    title: { type: DataTypes.STRING, allowNull: true },
+    price: { type: DataTypes.INTEGER, allowNull: true },
 })
 
 User.hasOne(Basket)
@@ -68,8 +67,8 @@ OkTypeInfo.belongsTo(OkType)
 OkType.hasMany(BasketOkType)
 BasketOkType.belongsTo(OkType)
 
-Shop.hasMany(OkType)
-OkType.belongsTo(Shop)
+OkType.hasMany(Shop)
+Shop.belongsTo(OkType)
 
 
 // SKLAD.hasOne(Amount)
@@ -87,5 +86,5 @@ OkType.belongsTo(Shop)
 
 
 module.exports = {
-    User, Basket, OkType, OkTypeInfo, SKLAD, Production_db, BasketOkType, Amount
+    User, Basket, OkType, OkTypeInfo, SKLAD, Production_db, BasketOkType, Amount, Shop
 }

@@ -9,6 +9,7 @@ import { OKNO_ROUTE } from "../utils/consts";
 import Dblist from "../Components/DbList";
 import CreateType from "../Components/modals/CreateType";
 import TypesTable from "../Components/modals/TypesTable";
+import CreateShopPosition from "../Components/modals/CreateShopPosition";
 
 
 const DBPage = observer(() => {
@@ -19,6 +20,7 @@ const DBPage = observer(() => {
     const [shop, setShop] = useState([])
     const [typeVisible, setTypeVisible] = useState(false);
     const [tabVisible, setTabVisible] = useState(false);
+    const [shopVisible, setShopVisible] = useState(false);
 
 
     useEffect(() => {
@@ -38,51 +40,62 @@ const DBPage = observer(() => {
             <Container className='d-flex mt-3'
                 fluid
             >
-                <Row lg={2}>
-                    <Col md={4}>
+                <Row lg={ 2 }>
+                    <Col md={ 4 }>
                         <ButtonGroup
                             vertical
                         >
                             <Button
-                                variant={"outline-dark"}
-                                onClick={() => setTabVisible(true)}
+                                variant={ "outline-dark" }
+                                onClick={ () => setTabVisible(true) }
                             >
                                 Получить типы из БД
                             </Button>
                             <Button
                                 className="btn  mt-2"
-                                variant={"outline-dark"}
-                                onClick={() => setTypeVisible(true)}
+                                variant={ "outline-dark" }
+                                onClick={ () => setTypeVisible(true) }
                             >
                                 Добавить новый тип
                             </Button>
+                            <Button
+                                className="btn  mt-2"
+                                variant={ "outline-dark" }
+                                onClick={ () => setShopVisible(true) }
+                            >
+                                Добавить новую позицию
+                            </Button>
                         </ButtonGroup>
                     </Col>
-                    <Col md={"auto"}
-                        lg={5}
+                    <Col md={ "auto" }
+                        lg={ 5 }
                     // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
                     >
-                        {types.map(type =>
+                        { types.map(type =>
                             <Card className="mt-1"
-                                key={type.id}
+                                key={ type.id }
                             >
                                 <Card.Header
-                                    style={{ background: "rgb(100, 100, 200)" }}>
-                                    {type.type}
+                                    style={ { background: "rgb(100, 100, 200)" } }>
+                                    { type.type }
                                 </Card.Header>
-                                <Dblist dbitem={type}
+                                <Dblist dbitem={ type }
                                 ></Dblist>
                             </Card>
-                        )}
+                        ) }
                     </Col>
                 </Row>
                 <CreateType
-                    show={typeVisible}
-                    onHide={() => setTypeVisible(false)}
+                    show={ typeVisible }
+                    onHide={ () => setTypeVisible(false) }
                 />
                 <TypesTable
-                    show={tabVisible}
-                    onHide={() => setTabVisible(false)}
+                    show={ tabVisible }
+                    onHide={ () => setTabVisible(false) }
+                />
+                <CreateShopPosition
+                    show={ shopVisible }
+                    onHide={ () => setShopVisible(false) }
                 />
             </Container>
         </React.StrictMode>

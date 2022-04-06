@@ -30,7 +30,7 @@ class AmountController {
         const { id } = req.params
         const { amount } = req.body
         const item = await Amount.findOne({ where: { id } })
-        item.update(amount, { where: { count: amount } })
+        item.update(amount, { where: { count: { amount } } })
         return res.json(item)
     }
 
