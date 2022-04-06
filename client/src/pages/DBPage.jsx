@@ -6,7 +6,7 @@ import { Badge, Button, ButtonGroup, Card, CardGroup, Col, Container, ListGroup,
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
-import Dblist from "../Components/DbList";
+import Dblist from "../Components/Dblist";
 import CreateType from "../Components/modals/CreateType";
 import TypesTable from "../Components/modals/TypesTable";
 import CreateShopPosition from "../Components/modals/CreateShopPosition";
@@ -40,64 +40,51 @@ const DBPage = observer(() => {
             <Container className='d-flex mt-3'
                 fluid
             >
-                <Row lg={ 2 }>
-                    <Col md={ 4 }>
-                        <ButtonGroup
-                            vertical
-                        >
-                            <Button
-                                variant={ "outline-dark" }
-                                onClick={ () => setTabVisible(true) }
-                            >
-                                Получить типы из БД
-                            </Button>
-                            <Button
-                                className="btn  mt-2"
-                                variant={ "outline-dark" }
-                                onClick={ () => setTypeVisible(true) }
-                            >
-                                Добавить новый тип
-                            </Button>
-                            <Button
-                                className="btn  mt-2"
-                                variant={ "outline-dark" }
-                                onClick={ () => setShopVisible(true) }
-                            >
-                                Добавить новую позицию
-                            </Button>
-                        </ButtonGroup>
-                    </Col>
-                    <Col md={ "auto" }
-                        lg={ 5 }
-                    // style={ { width: 400, height: 400, overflowY: "auto", flexWrap: "wrap" } }
+                <Row lg={1} className="border d-flex w-100 flex-wrap align-content-center"
+                >
+                    <ButtonGroup
+                        horizontal="true"
+                        className="mb-2"
                     >
-                        { types.map(type =>
-                            <Card className="mt-1"
-                                key={ type.id }
-                            >
-                                <Card.Header
-                                    style={ { background: "rgb(100, 100, 200)" } }>
-                                    { type.name }
-                                </Card.Header>
-                                <Card.Body>
-                                    <Dblist dbitem={ type }
-                                    ></Dblist>
-                                </Card.Body>
-                            </Card>
-                        ) }
-                    </Col>
+                        <Button
+                            className="btn  mt-2"
+                            variant={"outline-dark"}
+                            onClick={() => setTabVisible(true)}
+                        >
+                            Таблица типов
+                        </Button>
+                        <Button
+                            className="btn  mt-2"
+                            variant={"outline-dark"}
+                            onClick={() => setTypeVisible(true)}
+                        >
+                            Добавить новый тип
+                        </Button>
+                        <Button
+                            className="btn  mt-2"
+                            variant={"outline-dark"}
+                            onClick={() => setShopVisible(true)}
+                        >
+                            Добавить новую позицию
+                        </Button>
+                    </ButtonGroup>
+                </Row>
+                <Row md={4}
+                    className="d-flex justify-content-center">
+
+
                 </Row>
                 <CreateType
-                    show={ typeVisible }
-                    onHide={ () => setTypeVisible(false) }
+                    show={typeVisible}
+                    onHide={() => setTypeVisible(false)}
                 />
                 <TypesTable
-                    show={ tabVisible }
-                    onHide={ () => setTabVisible(false) }
+                    show={tabVisible}
+                    onHide={() => setTabVisible(false)}
                 />
                 <CreateShopPosition
-                    show={ shopVisible }
-                    onHide={ () => setShopVisible(false) }
+                    show={shopVisible}
+                    onHide={() => setShopVisible(false)}
                 />
             </Container>
         </React.StrictMode>

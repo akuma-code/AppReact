@@ -3,7 +3,7 @@ const ApiError = require('../Error/ApiError')
 
 class ShopController {
     async create(req, res, next) {
-        let { title, price, typeId } = req.body;
+        let { price, typeId, title } = req.body;
         try {
 
             const okno = await Shop.create({ title, price, typeId: typeId });
@@ -38,7 +38,10 @@ class ShopController {
     async delete(req, res, next) {
         const { id } = req.params
         try {
-            const item = await Shop.findOne({ where: { id } })
+            const item = await Shop.findOne({
+                where: { id },
+                include: [{ model: OkType }]
+            })
 
             item.destroy()
         } catch (error) {

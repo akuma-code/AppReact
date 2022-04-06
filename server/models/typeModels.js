@@ -51,8 +51,8 @@ const Amount = sequelize.define('amount', {
 
 const Shop = sequelize.define('shop', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    title: { type: DataTypes.STRING, allowNull: true },
     price: { type: DataTypes.INTEGER, allowNull: true },
+    title: { type: DataTypes.STRING, allowNull: true },
 })
 
 User.hasOne(Basket)

@@ -19,24 +19,24 @@ const OknoPage = observer(() => {
 
         })
     }, [])
-
+    const imgSrc = `${item.type && process.env.REACT_APP_API_URL + '/' + item.type.img}`
     return (
         <Container
             className="d-flex flex-column mt-2"
         >
-            <Col md={ 4 }>
-                <Image width={ 400 } src={ process.env.REACT_APP_API_URL + '/' + item.type.img } className="ml-0 mt-2" />
+            <Col md={4}>
+                <Image width={400} src={imgSrc} className="ml-0 mt-2" />
             </Col>
             <Row
                 className="d-flex justify-content-between mt-1 mx-1 w-700"
             >
-                <Col md={ 5 } className="border border-primary">
+                <Col md={5} className="border border-primary">
                     <div className="d-flex flex-row  justify-content-between border mt-3">
-                        <h2 className="border">{ item.title }</h2>
-                        <h2 className="border">{ item.price } руб.</h2>
+                        <h2 className="border">{item.type.name}</h2>
+                        <h2 className="border">{item.price} руб.</h2>
                     </div>
                 </Col>
-                <Col md={ 7 } className="border">
+                <Col md={7} className="border">
                     <div className="border border-dark p-1">
                         <div className="border border-warning"><h4>Осталось на складе: ===</h4> </div>
                         <div className="border border-warning"><h4>В производстве: ===</h4></div>
