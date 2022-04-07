@@ -7,8 +7,8 @@ export const createPosition = async (pos) => {
     return data
 }
 
-export const fetchPositions = async () => {
-    const { data } = await $host.get('api/shop')
+export const fetchPositions = async (typeId) => {
+    const { data } = await $host.get('api/shop', { params: { typeId } })
     console.log('data[fetchPositions]', data)
     return data.rows
 }
@@ -16,5 +16,12 @@ export const fetchPositions = async () => {
 export const fetchOnePosition = async (id) => {
     const { data } = await $host.get('api/shop/' + id)
     console.log('data[OnePosition]', data)
+    if (!data) return {}
+    return data
+}
+
+export const removeShopPosition = async (id) => {
+    const { data } = await $authHost.delete('api/shop/' + id)
+
     return data
 }

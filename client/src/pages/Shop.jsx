@@ -12,23 +12,25 @@ const Shop = observer(() => {
 
     const { ogo } = useContext(Context)
 
-
+    /** */
     useEffect(() => {
         fetchPositions().then(data => {
-
             ogo.setShop(data)
         })
     }, [])
+    useEffect(() => {
+        fetchPositions(ogo.selectedType.id).then(data => {
+            ogo.setShop(data)
+        })
+    }, [ogo.selectedType])
 
     return (
         <Container>
             <Row>
-                <Col md={ 3 }>
+                <Col md={ 2 }>
                     <TypeBar />
                 </Col>
-                <Col
-                    md={ 2 }
-                >
+                <Col md={ 7 } >
                     <OkList items={ ogo.shop } />
                 </Col>
             </Row>

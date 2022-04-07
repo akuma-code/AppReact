@@ -1,5 +1,5 @@
 const { v4 } = require('uuid')
-const { OkType, OkTypeInfo } = require('../models/typeModels')
+const { OkType, OkTypeInfo, Shop } = require('../models/typeModels')
 const path = require('path')
 const ApiError = require('../Error/ApiError')
 
@@ -60,9 +60,14 @@ class TypeController {
     async delete(req, res, next) {
         const { id } = req.params
         try {
-            const item = await OkType.findOne({ where: { id } })
-
+            const item = await OkType.findOne({
+                where: { id },
+            })
+            const shopItem = await Shop.findOne({
+                where: { id }
+            })
             item.destroy()
+            shopItem.destroy()
         } catch (error) {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))

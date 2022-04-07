@@ -1,29 +1,45 @@
 import { observer } from "mobx-react-lite"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useContext } from "react";
-import { Container, ListGroup } from "react-bootstrap";
+import { Container, ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import { Context } from "..";
+import { fetchTypes } from "../http/typesAPI";
 
 const TypeBar = observer(() => {
     const { ogo } = useContext(Context);
+    useEffect(() => {
+        fetchTypes().then(data => ogo.setTypes(data))
 
+    }, []);
     return (
         <Container
-            className="mt-4"
+            className="my-4"
         >
-            <ListGroup>
-                {ogo.types.map(item =>
-                    <ListGroup.Item
+            <ListGroup style={ { textAlign: "center" } }>
+                <ListGroup.displayName>
+                    <h4>Типы изделий</h4>
+                </ListGroup.displayName>
+                { ogo.types.map(item =>
+                    <ListGroupItem
                         className="mt-2"
-                        style={{ cursor: "pointer" }}
-                        key={item.id}
-                        active={item.id === ogo.selectedType.id}
-                        onClick={() => ogo.setSelectedType(item)}
+                        style={ { cursor: "pointer", textAlign: "center" } }
+                        key={ item.id }
+                        active={ item.id === ogo.selectedType.id }
+                        onClick={ () => ogo.setSelectedType(item) }
                     >
-                        {item.type} - {item.price} руб.
-                    </ListGroup.Item>
-                )}
+                        { item.name }
+                    </ListGroupItem>
+                ) }
             </ListGroup>
+            { ogo.types ? <Button
+                className="mt-2 btn-secondary"
+                size={ "sm" }
+                style={ { cursor: "pointer", textAlign: "center" } }
+                onClick={ () => ogo.setSelectedType({}) }>
+                убрать сортировку
+            </Button>
+                :
+                "" }
         </Container>
     )
 })

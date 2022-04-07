@@ -10,11 +10,11 @@ const TypesTable = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context);
     useEffect(() => {
         fetchTypes().then(data => {
-            // if (!data) return
-            data && setKeys(Object.keys(data[0]))
+            data[0] && setKeys(Object.keys(data[0]))
             ogo.setTypes(data)
             setTypes(data)
-        })
+        },
+            (error) => console.log(error.message))
     }, [])
     useEffect(() => {
         ogo.setTypes(types)
@@ -29,8 +29,8 @@ const TypesTable = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
+            show={ show }
+            onHide={ onHide }
             size="xl"
             centered
         >
@@ -38,26 +38,26 @@ const TypesTable = observer(({ show, onHide }) => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        {keys.map((key, ind) => <th key={ind}>{key}</th>)}
+                        { keys && keys.map((key, ind) => <th key={ ind }>{ key }</th>) }
                     </tr>
                 </thead>
                 <tbody>
-                    {types.map((type, ind) =>
-                        <tr key={ind}>
-                            <td>{ind + 1}</td>
-                            <td>{type.id}</td>
-                            <td>{type.name}</td>
-                            <td><Image height={50} src={process.env.REACT_APP_API_URL + '/' + type.img} /></td>
-                            <td>{type.createdAt}</td>
-                            <td>{type.updatedAt}</td>
+                    { types.map((type, ind) =>
+                        <tr key={ ind }>
+                            <td>{ ind + 1 }</td>
+                            <td>{ type.id }</td>
+                            <td>{ type.name }</td>
+                            <td><Image height={ 50 } src={ process.env.REACT_APP_API_URL + '/' + type.img } /></td>
+                            <td>{ type.createdAt }</td>
+                            <td>{ type.updatedAt }</td>
                             <td>
                                 <Button
-                                    onClick={() => del(type.id)}
-                                    variant={"outline-danger"}
+                                    onClick={ () => del(type.id) }
+                                    variant={ "outline-danger" }
                                 >Удалить</Button>
                             </td>
                         </tr>
-                    )}
+                    ) }
                 </tbody>
             </Table>
         </Modal>

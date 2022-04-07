@@ -9,12 +9,12 @@ const OkList = observer(({ items }) => {
 
     return (
         <Row className="d-flex">
-            {items.map(item =>
+            { items && items.map(item =>
                 <OkItem
-                    key={item.id}
-                    okitem={item}
+                    key={ item.id }
+                    okitem={ item }
                 />
-            )}
+            ) }
         </Row>
     )
 })
