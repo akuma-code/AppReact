@@ -16,14 +16,15 @@ const OknoPage = observer(() => {
         removeShopPosition(id)
     }
     useEffect(() => {
-        fetchOneType(id).then(type => {
-
-            ogo.setSelectedType(type)
-        })
-
         fetchOnePosition(id).then(data => {
             setShopItem(data)
-        })
+        }).finally(ogo.setSelectedType(shopItem.type))
+        // fetchOneType(shopItem.typeId).then(type => {
+
+        //     ogo.setSelectedType(type)
+        // })
+
+
 
     }, [])
     const imgSrc = shopItem.type ? `${process.env.REACT_APP_API_URL}/${shopItem.type.img}` : ""

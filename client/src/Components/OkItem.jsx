@@ -11,22 +11,22 @@ const OkItem = observer(({ okitem }) => {
     const history = useHistory()
     const { id, title, price, type } = okitem
     return (
-        <Col className="mt-4"
+        <Col className="mt-2"
             onClick={() => history.push(OKNO_ROUTE + '/' + id)}
         >
             <Card
                 style={{ width: 200, cursor: "pointer", textAlign: "center" }}
-                border={"warning"}
+                border={"danger"}
                 className="d-flex  m-1"
             >
                 <Card.Header>
-                    <h4>{price}</h4>
+                    <h4>{title}</h4>
                 </Card.Header>
                 <Card.Body>
                     <Imgtype imgName={type && type.img} />
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-center text-uppercase" >
-                    <h4 >{title}</h4>
+                    <h4>{price} руб.</h4>
                 </Card.Footer>
             </Card>
         </Col>

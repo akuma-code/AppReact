@@ -30,7 +30,7 @@ const Shop = observer(() => {
                 <Col md={2}>
                     <TypeBar />
                 </Col>
-                <Col md={7} >
+                <Col md={10} >
                     <OkList items={ogo.shop} />
                 </Col>
             </Row>
