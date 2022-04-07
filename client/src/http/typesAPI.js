@@ -14,7 +14,7 @@ export const fetchTypes = async () => {
 }
 
 export const fetchOneType = async (id) => {
-    const { data } = await $host.get('api/type/' + id)
+    const { data } = await $host.get(`api/type/${id}`)
     console.log('oneType', data);
     return data
 }

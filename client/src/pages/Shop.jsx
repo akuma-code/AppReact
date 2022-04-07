@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { Context } from '..'
-import OkList from "../Components/OkList"
+import OkList from "../Components/OkList.jsx"
 import TypeBar from "../Components/TypeBar"
 import { fetchPositions } from "../http/shopAPI"
 import { fetchTypes } from '../http/typesAPI'
@@ -19,19 +19,19 @@ const Shop = observer(() => {
         })
     }, [])
     useEffect(() => {
-        fetchPositions(ogo.selectedType.id).then(data => {
+        fetchPositions(ogo.sortType.id).then(data => {
             ogo.setShop(data)
         })
-    }, [ogo.selectedType])
+    }, [ogo.sortType])
 
     return (
         <Container>
             <Row>
-                <Col md={ 2 }>
+                <Col md={2}>
                     <TypeBar />
                 </Col>
-                <Col md={ 7 } >
-                    <OkList items={ ogo.shop } />
+                <Col md={7} >
+                    <OkList items={ogo.shop} />
                 </Col>
             </Row>
         </Container>

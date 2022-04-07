@@ -23,7 +23,7 @@ const CreateShopPosition = observer(({ show, onHide }) => {
             setTypeId(oktype.id)
             // setPosName(ogo.selectedType.name)
         })
-    }, [posName])
+    }, [typeId])
 
     const click = (type) => {
         ogo.setSelectedType(type)
@@ -40,8 +40,8 @@ const CreateShopPosition = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
@@ -51,51 +51,40 @@ const CreateShopPosition = observer(({ show, onHide }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    {/* <Form.Select
-                        className='mt-2 '
-                        placeholder="название типа"
-                        value={typeId }
-                        onChange={(e) => setTypeId(e.target.value)}
-                    >
-                        <option>Выберите тип окна</option>
-                        {ogo.types && ogo.types.map((type, ind) =>
-                            <option key={ind} value={type.id}
-                                onClick={() => ogo.setSelectedType(type)}
-                            >{type.name}</option>)}
-                    </Form.Select> */}
+
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ ogo.selectedType.name ? ogo.selectedType.name : "укажите тип" }
-                            value={ ogo.selectedType.name }
+                            title={ogo.selectedType.name ? ogo.selectedType.name : "укажите тип"}
+                            value={ogo.selectedType.name}
                             id="input-group-dropdown-1"
-                        >{ ogo.types && ogo.types.map(type =>
-                            <Dropdown.Item key={ type.id }
-                                onClick={ () => click(type) }
-                            >{ type.name }
+                        >{ogo.types && ogo.types.map(type =>
+                            <Dropdown.Item key={type.id}
+                                onClick={() => click(type)}
+                            >{type.name}
                             </Dropdown.Item>
-                        ) }
+                        )}
                         </DropdownButton>
                         <FormControl placeholder="название окна"
-                            value={ posName }
-                            onChange={ (e) => setPosName(e.target.value) } />
+                            value={posName}
+                            onChange={(e) => setPosName(e.target.value)} />
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={ price }
+                        value={price}
                         type="number"
-                        onChange={ (e) => setPrice(e.target.value) }
+                        onChange={(e) => setPrice(e.target.value)}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addNewPos }
+                    variant={'outline-dark'}
+                    onClick={addNewPos}
                 >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

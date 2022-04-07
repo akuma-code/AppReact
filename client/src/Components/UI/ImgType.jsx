@@ -5,7 +5,7 @@ const Imgtype = ({ imgName }) => {
     return (
         <Image
             fluid
-            src={ process.env.REACT_APP_API_URL + '/' + imgName }
+            src={`${process.env.REACT_APP_API_URL}/${imgName}`}
         />
     );
 }

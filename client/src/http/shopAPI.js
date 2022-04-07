@@ -16,7 +16,6 @@ export const fetchPositions = async (typeId) => {
 export const fetchOnePosition = async (id) => {
     const { data } = await $host.get('api/shop/' + id)
     console.log('data[OnePosition]', data)
-    if (!data) return {}
     return data
 }
 

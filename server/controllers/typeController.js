@@ -49,7 +49,6 @@ class TypeController {
                 include: [{ model: OkTypeInfo, as: 'info' }]
             },
             )
-            // console.log('okno', okno)
             return res.json(okno)
         } catch (error) {
             console.log('#######', error.message)

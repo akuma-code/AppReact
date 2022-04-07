@@ -9,37 +9,36 @@ const TypeBar = observer(() => {
     const { ogo } = useContext(Context);
     useEffect(() => {
         fetchTypes().then(data => ogo.setTypes(data))
-
     }, []);
     return (
         <Container
             className="my-4"
         >
-            <ListGroup style={ { textAlign: "center" } }>
+            <ListGroup style={{ textAlign: "center" }}>
                 <ListGroup.displayName>
                     <h4>Типы изделий</h4>
                 </ListGroup.displayName>
-                { ogo.types.map(item =>
+                {ogo.types.map(oktype =>
                     <ListGroupItem
                         className="mt-2"
-                        style={ { cursor: "pointer", textAlign: "center" } }
-                        key={ item.id }
-                        active={ item.id === ogo.selectedType.id }
-                        onClick={ () => ogo.setSelectedType(item) }
+                        style={{ cursor: "pointer", textAlign: "center" }}
+                        key={oktype.id}
+                        active={oktype.id === ogo.sortType.id}
+                        onClick={() => ogo.setSortType(oktype)}
                     >
-                        { item.name }
+                        {oktype.name}
                     </ListGroupItem>
-                ) }
+                )}
             </ListGroup>
-            { ogo.types ? <Button
+            {ogo.types ? <Button
                 className="mt-2 btn-secondary"
-                size={ "sm" }
-                style={ { cursor: "pointer", textAlign: "center" } }
-                onClick={ () => ogo.setSelectedType({}) }>
+                size={"sm"}
+                style={{ cursor: "pointer", textAlign: "center" }}
+                onClick={() => ogo.setSortType({})}>
                 убрать сортировку
             </Button>
                 :
-                "" }
+                ""}
         </Container>
     )
 })

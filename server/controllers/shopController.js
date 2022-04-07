@@ -1,4 +1,4 @@
-const { Shop, OkType } = require('../models/typeModels')
+const { Shop, OkType, OkTypeInfo } = require('../models/typeModels')
 const ApiError = require('../Error/ApiError')
 
 class ShopController {
@@ -31,7 +31,7 @@ class ShopController {
 
             const okno = await Shop.findOne({
                 where: { id },
-                include: [{ model: OkType }]
+                include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }]
             },
             )
             return res.json(okno)

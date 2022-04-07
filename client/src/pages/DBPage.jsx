@@ -6,33 +6,21 @@ import { Badge, Button, ButtonGroup, Card, CardGroup, Col, Container, ListGroup,
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
-import Dblist from "../Components/Dblist";
 import CreateType from "../Components/modals/CreateType";
 import TypesTable from "../Components/modals/TypesTable";
 import CreateShopPosition from "../Components/modals/CreateShopPosition";
 
 
 const DBPage = observer(() => {
-    const history = useHistory()
-    const { ogo } = useContext(Context)
-    const [types, setTypes] = useState([])
-    const [checked, setChecked] = useState(false)
-    const [shop, setShop] = useState([])
+    // const history = useHistory()
+    // const { ogo } = useContext(Context)
+    // const [types, setTypes] = useState([])
+    // const [checked, setChecked] = useState(false)
+    // const [shop, setShop] = useState([])
     const [typeVisible, setTypeVisible] = useState(false);
     const [tabVisible, setTabVisible] = useState(false);
     const [shopVisible, setShopVisible] = useState(false);
 
-
-    useEffect(() => {
-        fetchTypes().then(data => setTypes(data))
-
-    }, [ogo.types])
-
-
-    const deleteHandler = (id) => {
-        removeType(id)
-        fetchTypes().then(data => setTypes(data))
-    }
 
 
     return (

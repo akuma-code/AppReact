@@ -21,19 +21,19 @@ const Dblist = observer(({ dbitem }) => {
 
     useEffect(() => {
         fetchTypes().then(data => ogo.setTypes(data))
-    }, [types])
+    }, [])
 
 
     const deleteHandler = (id) => {
         removeType(id)
-        fetchTypes().then(data => setTypes(data))
+        fetchTypes().then(data => ogo.setTypes(data))
     }
 
 
 
     return (
-
-        <ListGroup>
+        // <ListGroup>
+        <React.StrictMode>
             <ListGroup.Item className='d-flex flex-column'>
                 <ListGroup.displayName>
                     Type ID: {dbitem.id}
@@ -52,8 +52,8 @@ const Dblist = observer(({ dbitem }) => {
                 >Удалить тип
                 </Button>
             </ListGroup.Item>
-        </ListGroup>
-
+        </React.StrictMode>
+        // </ListGroup>
     );
 })
 
