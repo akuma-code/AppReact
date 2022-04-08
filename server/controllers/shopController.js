@@ -17,10 +17,10 @@ class ShopController {
     async getAll(req, res) {
         let { typeId } = req.query
         let okna;
-        if (!typeId) okna = await Shop.findAndCountAll({ include: [{ model: OkType }] })
+        if (!typeId) okna = await Shop.findAndCountAll({ include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }] })
         else okna = await Shop.findAndCountAll({
             where: { typeId },
-            include: [{ model: OkType }]
+            include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }]
         })
         return res.json(okna)
     }
