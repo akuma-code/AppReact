@@ -27,11 +27,11 @@ const Shop = observer(() => {
     return (
         <Container>
             <Row>
-                <Col md={2}>
+                <Col md={ 2 }>
                     <TypeBar />
                 </Col>
-                <Col md={10} >
-                    <OkList items={ogo.shop} />
+                <Col md={ 10 } >
+                    <OkList items={ ogo.shop } />
                 </Col>
             </Row>
         </Container>

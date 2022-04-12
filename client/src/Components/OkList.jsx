@@ -4,21 +4,21 @@ import { useContext, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Context } from "..";
 import OkItem from "./OkItem.jsx";
-import ShopItem from "./UI/card/ShopItem";
+import ShopCard from "./UI/card/ShopItem";
 
 
-const OkList = ({ items }) => {
+const OkList = observer(({ items }) => {
 
     return (
         <Container className="d-flex flex-wrap border">
             { items && items.map(item =>
-                <ShopItem
+                <ShopCard
                     key={ item.id }
                     shopItem={ item }
                 />
             ) }
         </Container>
     )
-}
+})
 
 export default OkList
