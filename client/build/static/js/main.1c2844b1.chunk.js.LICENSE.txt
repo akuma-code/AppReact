@@ -1,1 +1,0 @@
-//! {okitem}={id, title, price, type}
