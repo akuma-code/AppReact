@@ -7,7 +7,7 @@ export const createPosition = async (pos) => {
     return data
 }
 
-export const fetchPositions = async (typeId) => {
+export const fetchPositions = async (typeId = null) => {
     const { data } = await $host.get('api/shop', { params: { typeId } })
     console.log('data[fetchPositions]', data)
     return data.rows
