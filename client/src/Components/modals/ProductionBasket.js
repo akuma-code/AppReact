@@ -2,15 +2,17 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useState, useEffect } from 'react'
 import { Form, Modal, Button, Dropdown, div, Container, Row, Col, FormControl } from 'react-bootstrap'
 import { Context } from '../..'
+import { startProdQuery } from "../../http/prodQueryAPI"
 import { fetchPositions } from "../../http/shopAPI"
 import { _makeProductionForm } from "../../utils/formService"
+
 
 const ProductionBasket = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context);
     const [shopItems, setShopItems] = useState([]);
     const [positions, setPositions] = useState([])
     const [count, setCount] = useState(1);
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState("2022-04-17"); //! убрать заглушку
 
 
 
@@ -20,13 +22,15 @@ const ProductionBasket = observer(({ show, onHide }) => {
     }, [ogo.shop])
 
     const addPos = () => {
-        setDate(new Date(Date.now()))
+        setDate("2022-04-17")  //! убрать заглушку
+        setCount(1)  //! убрать заглушку
         setPositions([...positions, { title: '', count: '', date: date, number: Date.now() }])
 
     }
 
     const changePos = (key, value, number) => {
         setPositions(positions.map(pos => pos.number === number ? { ...pos, [key]: value } : pos))
+
     }
 
     const removePos = (number) => {
@@ -36,7 +40,8 @@ const ProductionBasket = observer(({ show, onHide }) => {
     const ADD = () => {
         const result = [];
         positions.forEach(pos => _makeProductionForm(pos, result))
-        console.log('result:', result);
+
+        startProdQuery(result)
     }
 
     return (
@@ -44,6 +49,7 @@ const ProductionBasket = observer(({ show, onHide }) => {
             show={show}
             onHide={onHide}
             centered
+            size="lg"
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -54,9 +60,11 @@ const ProductionBasket = observer(({ show, onHide }) => {
                 <Form>
 
                     {positions.map(pos =>
+
+
                         <Row key={pos.number}
-                            className="mt-1"
-                            md={12}
+                            className="mt-1 "
+                            md={5}
                         >
                             <Col
                                 md={4}>
@@ -70,7 +78,7 @@ const ProductionBasket = observer(({ show, onHide }) => {
                                 </Form.Select>
                             </Col>
                             <Col
-                                md={2}>
+                                md={3}>
                                 <Form.Control
                                     placeholder="количество"
                                     type="number"
@@ -89,8 +97,9 @@ const ProductionBasket = observer(({ show, onHide }) => {
 
                                 </FormControl>
                             </Col>
-                            <Col md={3}>
+                            <Col md={1}>
                                 <Button
+                                    // style={{ width: "86px" }}
                                     variant={'outline-dark'}
                                     className='btn btn-danger'
                                     onClick={() => removePos(pos.number)}
@@ -98,6 +107,8 @@ const ProductionBasket = observer(({ show, onHide }) => {
                                     Удалить
                                 </Button>
                             </Col>
+
+
                         </Row>
                     )}
 
