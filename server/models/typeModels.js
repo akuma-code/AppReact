@@ -1,5 +1,6 @@
 const sequelize = require('../db')
 const { DataTypes } = require('sequelize')
+const { SKLAD } = require('./ProdModel')
 
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -28,27 +29,6 @@ const OkTypeInfo = sequelize.define('oktype_info', {
     desc: { type: DataTypes.STRING, allowNull: false, defaultValue: "No Description" },
 })
 
-
-const Production_db = sequelize.define('production', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    count: { type: DataTypes.INTEGER },
-    dateStart: { type: DataTypes.DATE, allowNull: true },
-    dateReady: { type: DataTypes.DATE, allowNull: true },
-})
-
-const SKLAD = sequelize.define('SKLAD', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    type: { type: DataTypes.STRING, allowNull: false },
-})
-
-
-const Amount = sequelize.define('amount', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    type: { type: DataTypes.STRING, allowNull: false },
-    count: { type: DataTypes.INTEGER, defaultValue: 5 },
-})
-
 const Shop = sequelize.define('shop', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     price: { type: DataTypes.INTEGER, allowNull: true },
@@ -70,21 +50,17 @@ BasketOkType.belongsTo(OkType)
 OkType.hasMany(Shop, { as: 'shop_type' })
 Shop.belongsTo(OkType)
 
+Shop.hasOne(SKLAD)
+SKLAD.belongsTo(Shop, { as: 'sklad_pos' })
 
-// SKLAD.hasOne(Amount)
-// Amount.belongsTo(SKLAD)
 
-// SKLAD.hasOne(Production_db)
-// Production_db.belongsTo(SKLAD)
 
-// SKLAD.hasMany(OkType)
-// OkType.belongsTo(SKLAD)
 
-// Production_db.hasMany(OkType)
-// OkType.belongsTo(Production_db)
+
+
 
 
 
 module.exports = {
-    User, Basket, OkType, OkTypeInfo, SKLAD, Production_db, BasketOkType, Amount, Shop
+    User, Basket, OkType, OkTypeInfo, BasketOkType, Shop, SKLAD
 }

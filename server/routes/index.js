@@ -11,7 +11,7 @@ const pQueryRouter = require('./pQueryRouter')
 router.use('/user', userRouter)
 router.use('/shop', shopRouter)
 router.use('/type', typeRouter)
-router.use('/ogo', skladRouter)
+router.use('/sklad', skladRouter)
 router.use('/am', amountRouter)
 router.use('/prod', pQueryRouter)
 // router.use('/', (req, res) => {

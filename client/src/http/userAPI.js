@@ -21,11 +21,12 @@ export const login = async (email, password) => {
 
 export const check = async () => {
     try {
-        console.log('check');
+
         const { data } = await $authHost.get('api/user/auth')
         localStorage.setItem('token', data.token)
         return jwt_decode(data.token)
     } catch (error) {
+        console.clear()
         console.log('######', error.message);
     }
 

@@ -3,10 +3,10 @@ const ApiError = require('../Error/ApiError')
 
 class ShopController {
     async create(req, res, next) {
-        let { price, typeId, title } = req.body;
+        let { price, skladId, title, typeId } = req.body;
         try {
 
-            const okno = await Shop.create({ title, price, typeId: typeId });
+            const okno = await Shop.create({ title, price, skladId, typeId });
             return res.json(okno)
         }
         catch (error) {

@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = new Router();
-const skladController = require("../controllers/skladController");
+const skladController = require("../controllers/ProdControl/skladController");
 
 
 router.post('/', skladController.create)

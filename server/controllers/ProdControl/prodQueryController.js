@@ -1,6 +1,6 @@
-const ApiError = require("../Error/ApiError")
+const ApiError = require("../../Error/ApiError")
 
-class ProductionQueryController {
+class ProdQueryController {
     async start(req, res, next) {
         try {
             const query = req.body
@@ -16,4 +16,4 @@ class ProductionQueryController {
 
 }
 
-module.exports = new ProductionQueryController()
+module.exports = new ProdQueryController()

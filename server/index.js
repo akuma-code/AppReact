@@ -4,6 +4,7 @@ const path = require('path');
 const sequelize = require('./db')
 // const models = require('./models/models')
 const typeModels = require('./models/typeModels')
+const prodModels = require('./models/ProdModel')
 const cors = require('cors');
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
@@ -32,6 +33,7 @@ async function start() {
         await sequelize.sync()
 
         App.listen(PORT, () => {
+            console.clear()
             console.log("<<< SERVER STARTED on PORT:", PORT, ">>>");
 
         })

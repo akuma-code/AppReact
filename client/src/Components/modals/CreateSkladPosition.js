@@ -1,38 +1,47 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap";
+import { fetchSklad } from "../../http/prodQueryAPI";
 import { createPosition } from "../../http/shopAPI";
 import { fetchTypes, fetchOneType } from "../../http/typesAPI";
 import { Context } from '../../index'
 
-const CreateShopPosition = observer(({ show, onHide }) => {
+const CreateSkladPosition = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context)
+    const { sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
     const [price, setPrice] = useState("")
     const [posName, setPosName] = useState("");
+    const [skladId, setSkladId] = useState("");
+    const [skladItems, setSkladItems] = useState([]);
 
     useEffect(() => {
-        fetchTypes().then(data => {
-            ogo.setTypes(data)
+        fetchSklad().then(data => {
+            setSkladItems(data)
+            console.log('>>>>fetchSklad :>> ', data);
         })
     }, [])
 
-    useEffect(() => {
-        fetchOneType(typeId).then(oktype => {
-            ogo.setSelectedType(oktype)
-            setTypeId(oktype.id)
-            // setPosName(ogo.selectedType.name)
-        })
-    }, [typeId])
+    // useEffect(() => {
+    //     fetchOneType(typeId).then(oktype => {
+    //         // ogo.setSelectedType(oktype)
+    //         // setTypeId(oktype.id)
+    //         // setPosName(ogo.selectedType.name)
+    //     })
+    // }, [typeId])
 
-    const click = (type) => {
-        ogo.setSelectedType(type)
-        setTypeId(type.id)
-        setPosName(type.name)
+    const click = (item) => {
+        console.log(item);
+        sklad.setSelectedItem(item)
+
+        setPosName(item.title)
+        setSkladId(item.id)
     }
     const addNewPos = () => {
         const form = new FormData();
-        form.append('typeId', typeId)
+
+        // form.append('skladId', skladId)
+        // form.append('typeId', typeId)
         form.append('price', price)
         form.append('title', posName)
         createPosition(form).then(data => onHide())
@@ -55,13 +64,13 @@ const CreateShopPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ogo.selectedType.name ? ogo.selectedType.name : "укажите тип"}
-                            value={ogo.selectedType.name}
+                            title={posName ? posName : "укажите позицию"}
+                            value={posName}
                             id="input-group-dropdown-1"
-                        >{ogo.types && ogo.types.map(type =>
-                            <Dropdown.Item key={type.id}
-                                onClick={() => click(type)}
-                            >{type.name}
+                        >{skladItems.map((item, idx) =>
+                            <Dropdown.Item key={idx}
+                                onClick={() => click(item)}
+                            >
                             </Dropdown.Item>
                         )}
                         </DropdownButton>
@@ -90,4 +99,4 @@ const CreateShopPosition = observer(({ show, onHide }) => {
     );
 })
 
-export default CreateShopPosition;
+export default CreateSkladPosition;

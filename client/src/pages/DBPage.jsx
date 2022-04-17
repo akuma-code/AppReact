@@ -8,7 +8,7 @@ import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
 import CreateType from "../Components/modals/CreateType";
 import TypesTable from "../Components/modals/TypesTable";
-import CreateShopPosition from "../Components/modals/CreateShopPosition";
+import CreateShopPosition from "../Components/modals/CreateSkladItem"; import CreateSkladItem from "../Components/modals/CreateSkladItem";
 
 
 const DBPage = observer(() => {
@@ -20,6 +20,7 @@ const DBPage = observer(() => {
     const [typeVisible, setTypeVisible] = useState(false);
     const [tabVisible, setTabVisible] = useState(false);
     const [shopVisible, setShopVisible] = useState(false);
+    const [skladVisible, setSkladVisible] = useState(false);
 
 
 
@@ -53,7 +54,14 @@ const DBPage = observer(() => {
                             variant={"outline-dark"}
                             onClick={() => setShopVisible(true)}
                         >
-                            Добавить новую позицию
+                            Добавить новую позицию (SHOP)
+                        </Button>
+                        <Button
+                            className="btn  mt-2"
+                            variant={"outline-dark"}
+                            onClick={() => setSkladVisible(true)}
+                        >
+                            Добавить новую позицию (SKLAD)
                         </Button>
                     </ButtonGroup>
                 </Row>
@@ -73,6 +81,10 @@ const DBPage = observer(() => {
                 <CreateShopPosition
                     show={shopVisible}
                     onHide={() => setShopVisible(false)}
+                />
+                <CreateSkladItem
+                    show={skladVisible}
+                    onHide={() => setSkladVisible(false)}
                 />
             </Container>
         </React.StrictMode>
