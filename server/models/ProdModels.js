@@ -62,8 +62,8 @@ SkladMain.hasMany(OkType, { as: 'type' })
 OkType.belongsTo(SkladMain)
 // Shop.belongsTo(OkType)
 
-Shop.hasOne(SkladMain)
-SkladMain.belongsTo(Shop)
+SkladMain.hasOne(Shop)
+Shop.belongsTo(SkladMain)
 
 
 OkType.hasMany(OkTypeInfo, { as: 'info' })

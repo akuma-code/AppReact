@@ -8,7 +8,7 @@ class skladController {
 
             const { typeID, quant } = req.body
 
-            const sItem = await SkladMain.create({ typeId: typeID, quant })
+            const sItem = await SkladMain.create({ typeID, quant })
 
             return res.json(sItem)
 
