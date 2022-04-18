@@ -1,21 +1,21 @@
 const sequelize = require('../db')
 const { DataTypes } = require('sequelize')
 
-const SkladMain = sequelize.define('SKLAD', {
+const SkladMain = sequelize.define('sklad', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     quant: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 5 },
 },
     { timestamps: false, freezeTableName: true }
 )
 
-const Production = sequelize.define('PROD', {
+const Production = sequelize.define('prod', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     dateReady: { type: DataTypes.STRING, allowNull: false },
     isReady: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }
 }, { freezeTableName: true })
 
-const User = sequelize.define('USER', {
+const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, },
     password: { type: DataTypes.STRING },
@@ -25,14 +25,14 @@ const User = sequelize.define('USER', {
 )
 
 
-const OkType = sequelize.define('TYPE', {
+const OkType = sequelize.define('type', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: false, defaultValue: "noimage" },
 },
     { timestamps: false })
 
-const Shop = sequelize.define('SHOP', {
+const Shop = sequelize.define('shop', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     price: { type: DataTypes.INTEGER, allowNull: true },
     title: { type: DataTypes.STRING, allowNull: true },
@@ -57,12 +57,13 @@ const Basket = sequelize.define('basket', {
 })
 
 
-OkType.hasMany(SkladMain, { as: 'type' })
-Shop.belongsTo(OkType)
+SkladMain.hasMany(OkType, { as: 'type' })
+// OkType.belongsTo(Shop)
+OkType.belongsTo(SkladMain)
+// Shop.belongsTo(OkType)
 
 Shop.hasOne(SkladMain)
 SkladMain.belongsTo(Shop)
-// SkladMain.belongsTo(OkType)
 
 
 OkType.hasMany(OkTypeInfo, { as: 'info' })

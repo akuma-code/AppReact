@@ -1,4 +1,4 @@
-const { Shop, OkType, OkTypeInfo } = require('../models/prodModels')
+const { Shop, OkType, OkTypeInfo, SkladMain } = require('../models/prodModels')
 const ApiError = require('../Error/ApiError')
 
 class ShopController {
@@ -7,6 +7,7 @@ class ShopController {
 
         try {
             const okno = await Shop.create({ title, price, skladId });
+            await SkladMain.update({ skladId: skladId }, [{ where: { skladId: okno.id } }])
             return res.json(okno)
         }
         catch (error) {
@@ -22,9 +23,9 @@ class ShopController {
     }
 
     async getSorted(req, res) {
-        let { typeId } = req.query
+        let { TYPEId } = req.query
         const okna = await Shop.findAndCountAll({
-            where: { typeId },
+            where: { TYPEId },
             include: [{ model: OkType, as: 'type', include: [{ model: OkTypeInfo, as: 'info' }] }]
         })
         return res.json(okna)

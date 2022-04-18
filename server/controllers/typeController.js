@@ -21,7 +21,7 @@ class TypeController {
                     info.forEach(i =>
                         OkTypeInfo.create({
                             desc: i.desc,
-                            TYPEId: newType.id
+                            typeId: newType.id
                         }))
                 } catch (error) {
                     console.log("#####", error.message)

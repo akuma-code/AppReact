@@ -5,17 +5,20 @@ const { SkladMain } = require('../../models/ProdModels')
 class skladController {
     async create(req, res, next) {
         try {
-            const { type, quant } = req.body
-            const sItem = await SkladMain.create({ typeId: type, quant })
+
+            const { typeID, quant } = req.body
+
+            const sItem = await SkladMain.create({ typeId: typeID, quant })
 
             return res.json(sItem)
+
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
     }
 
     async getAll(req, res) {
-        const items = await SkladMain.findAndCountAll()
+        const items = await SkladMain.findAndCountAll({ include: [{ all: true }] })
         return res.json(items)
     }
 
@@ -24,7 +27,7 @@ class skladController {
         const items = await SkladMain.findAll({ where: { id } })
         return res.json(items)
     }
-    async delete(req, res) {
+    async delete(req, res, next) {
         const { id } = req.params
         try {
             const item = await SkladMain.findOne({ where: { id } })
@@ -35,8 +38,14 @@ class skladController {
         }
     }
 
-    async clearALL() {
-        return await SkladMain.destroy({ truncate: true })
+    async clearALL(req, res, next) {
+        try {
+            await SkladMain.destroy({ truncate: true, cascade: true });
+
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
     }
 }
 
