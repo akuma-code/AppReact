@@ -15,7 +15,7 @@ const Shop = observer(() => {
     const [addProdVisible, setAddProdVisible] = useState(false);
     const { ogo } = useContext(Context)
 
-    /** */
+
     useEffect(() => {
         fetchPositions().then(data => {
             ogo.setShop(data)

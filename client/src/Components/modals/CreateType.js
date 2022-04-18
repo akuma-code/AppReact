@@ -18,7 +18,7 @@ const CreateType = observer(({ show, onHide }) => {
 
 
     const addInfo = () => {
-        setInfo([...info, { title: '', desc: '', number: Date.now() }])
+        setInfo([...info, { desc: '', number: Date.now() }])
     }
 
     const removeInfo = (number) => {
@@ -35,7 +35,7 @@ const CreateType = observer(({ show, onHide }) => {
     }
     const addOkType = () => {
         const form = new FormData();
-        form.append('name', typeName)
+        form.append('name', typeName.toLocaleLowerCase())
         form.append('img', file)
         form.append('info', JSON.stringify(info))
 
@@ -60,6 +60,7 @@ const CreateType = observer(({ show, onHide }) => {
                         placeholder="название типа"
                         value={ typeName }
                         onChange={ (e) => setTypeName(e.target.value) }
+                        autoComplete={ "true" }
                     />
 
                     <Form.Control
@@ -73,21 +74,15 @@ const CreateType = observer(({ show, onHide }) => {
                     { info.map(i =>
                         <Row className='mt-2'
                             key={ i.number }>
-                            <Col md={ 3 }>
-                                <Form.Control
-                                    placeholder='название'
-                                    value={ i.title }
-                                    onChange={ (e) => changeInfo('title', e.target.value, i.number) }
-                                />
-                            </Col>
-                            <Col md={ 3 }>
+
+                            <Col md={ 9 }>
                                 <Form.Control
                                     placeholder='описание'
                                     value={ i.desc }
                                     onChange={ (e) => changeInfo('desc', e.target.value, i.number) }
                                 />
                             </Col>
-                            <Col md={ 3 }>
+                            <Col md={ 2 }>
                                 <Button
                                     variant={ 'outline-dark' }
                                     className='btn btn-danger'

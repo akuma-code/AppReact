@@ -6,6 +6,7 @@ const checkRoleMiddleWare = require('../middleware/checkRoleMiddleWare')
 
 router.post('/', TypeController.create)
 router.get('/', TypeController.getAll)
+router.get('/info', TypeController.getAllInfo)
 router.get('/:id', TypeController.getOne)
 router.delete('/:id', TypeController.delete)
 

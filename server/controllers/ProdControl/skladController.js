@@ -1,49 +1,42 @@
 const ApiError = require("../../Error/ApiError")
-const { SKLAD } = require('../../models/ProdModel')
+const { SkladMain } = require('../../models/ProdModels')
 
 
 class skladController {
     async create(req, res, next) {
         try {
-
-            console.log(`req.body :>> 
-            `, req.body);
-
-
-            const { type, current, total } = req.body
-            const sItem = await SKLAD.create({ typeId: type, current, total })
+            const { type, quant } = req.body
+            const sItem = await SkladMain.create({ typeId: type, quant })
 
             return res.json(sItem)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
-
     }
 
     async getAll(req, res) {
-        const items = await SKLAD.findAndCountAll()
+        const items = await SkladMain.findAndCountAll()
         return res.json(items)
     }
 
     async getOne(req, res) {
         const { id } = req.params
-        const items = await SKLAD.findAll({ where: { id } })
+        const items = await SkladMain.findAll({ where: { id } })
         return res.json(items)
     }
-
-
-
-
     async delete(req, res) {
         const { id } = req.params
         try {
-            const item = await SKLAD.findOne({ where: { id } })
+            const item = await SkladMain.findOne({ where: { id } })
             console.log('Deleted: ', item);
             item.destroy()
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
+    }
 
+    async clearALL() {
+        return await SkladMain.destroy({ truncate: true })
     }
 }
 

@@ -1,12 +1,12 @@
-const { Shop, OkType, OkTypeInfo } = require('../models/typeModels')
+const { Shop, OkType, OkTypeInfo } = require('../models/prodModels')
 const ApiError = require('../Error/ApiError')
 
 class ShopController {
     async create(req, res, next) {
-        let { price, skladId, title, typeId } = req.body;
-        try {
+        let { price, skladId, title } = req.body;
 
-            const okno = await Shop.create({ title, price, skladId, typeId });
+        try {
+            const okno = await Shop.create({ title, price, skladId });
             return res.json(okno)
         }
         catch (error) {
@@ -15,12 +15,17 @@ class ShopController {
     }
 
     async getAll(req, res) {
+
+        const okna = await Shop.findAndCountAll({ include: [{ all: true }] })
+        // const okna = await Shop.findAndCountAll({ include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }] })
+        return res.json(okna)
+    }
+
+    async getSorted(req, res) {
         let { typeId } = req.query
-        let okna;
-        if (!typeId) okna = await Shop.findAndCountAll({ include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }] })
-        else okna = await Shop.findAndCountAll({
+        const okna = await Shop.findAndCountAll({
             where: { typeId },
-            include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }]
+            include: [{ model: OkType, as: 'type', include: [{ model: OkTypeInfo, as: 'info' }] }]
         })
         return res.json(okna)
     }

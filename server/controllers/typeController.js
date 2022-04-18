@@ -1,28 +1,27 @@
 const { v4 } = require('uuid')
-const { OkType, OkTypeInfo, Shop } = require('../models/typeModels')
+const { OkType, OkTypeInfo, Shop } = require('../models/prodModels')
 const path = require('path')
 const ApiError = require('../Error/ApiError')
 
 class TypeController {
     async create(req, res, next) {
         try {
-            let { name, price, info } = req.body;
+            let { name, info } = req.body;
             const { img } = req.files;
             let filename = v4() + ".jpg";
 
             img.mv(path.resolve(__dirname, '..', 'static', filename));
 
-            const okno = await OkType.create({ name, img: filename });
+            const newType = await OkType.create({ name, img: filename });
 
             if (info) {
-                console.log(info);
+
                 try {
                     info = JSON.parse(info)
                     info.forEach(i =>
                         OkTypeInfo.create({
-                            title: i.title,
                             desc: i.desc,
-                            typeId: okno.id
+                            TYPEId: newType.id
                         }))
                 } catch (error) {
                     console.log("#####", error.message)
@@ -30,26 +29,31 @@ class TypeController {
 
             }
 
-            return res.json(okno)
+            return res.json(newType)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
 
     }
     async getAll(req, res) {
-        const okna = await OkType.findAndCountAll()
-        return res.json(okna)
+        const types = await OkType.findAndCountAll({ include: [{ all: true }] })
+        return res.json(types)
     }
+    async getAllInfo(req, res) {
+        const info = await OkTypeInfo.findAll({ include: [{ all: true }] })
+        return res.json(info)
+    }
+
+
     async getOne(req, res) {
         try {
             const { id } = req.params
-
-            const okno = await OkType.findOne({
+            const type = await OkType.findOne({
                 where: { id },
-                include: [{ model: OkTypeInfo, as: 'info' }]
-            },
-            )
-            return res.json(okno)
+                include: [{ all: true }]
+            })
+
+            return res.json(type)
         } catch (error) {
             console.log('#######', error.message)
         }
@@ -59,13 +63,13 @@ class TypeController {
     async delete(req, res, next) {
         const { id } = req.params
         try {
-            const item = await OkType.findOne({
+            const type = await OkType.findOne({
                 where: { id },
             })
-            const shopItem = await Shop.findOne({
-                where: { id }
+            const shopItem = await Shop.findAll({
+                where: { id: type.id }
             })
-            item.destroy()
+            type.destroy()
             shopItem.destroy()
         } catch (error) {
             console.log('#######', error.message)
@@ -74,8 +78,7 @@ class TypeController {
     }
 
     async edit(req, res, next) {
-        const { id } = req.body
-        const { newItem } = req.body
+        const { id, newItem } = req.body
         try {
             const item = await OkType.find({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
 

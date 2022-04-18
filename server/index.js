@@ -3,14 +3,14 @@ const express = require("express");
 const path = require('path');
 const sequelize = require('./db')
 // const models = require('./models/models')
-const typeModels = require('./models/typeModels')
-const prodModels = require('./models/ProdModel')
+// const typeModels = require('./models/typeModels')
+const prodModels = require('./models/ProdModels')
 const cors = require('cors');
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 const errHandler = require('./middleware/ErrorHandlingMW')
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 
 const App = express();
 
@@ -30,15 +30,15 @@ App.use(errHandler)
 async function start() {
     try {
         await sequelize.authenticate()
-        await sequelize.sync()
+        await sequelize.sync({ alter: true })
 
+        console.clear()
         App.listen(PORT, () => {
-            console.clear()
             console.log("<<< SERVER STARTED on PORT:", PORT, ">>>");
 
         })
     } catch (e) {
-
+        console.log(e);
     }
 
 }
