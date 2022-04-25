@@ -14,6 +14,6 @@ export const startProdQuery = async (productionQueryForm = []) => {
 
 export const fetchSklad = async () => {
     const { data } = await $host.get('api/sklad')
-    console.log('>>><<<skladIts', data.rows);
+    console.log('>>><<<skladItems', data.rows);
     return data.rows
 }
