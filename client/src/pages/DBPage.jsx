@@ -8,7 +8,8 @@ import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
 import CreateType from "../Components/modals/CreateType";
 import TypesTable from "../Components/modals/TypesTable";
-import CreateShopPosition from "../Components/modals/CreateSkladItem"; import CreateSkladItem from "../Components/modals/CreateSkladItem";
+import CreateShopItem from "../Components/modals/CreateShopItem"; import CreateSkladItem from "../Components/modals/CreateShopItem";
+import CreateSkladPosition from '../Components/modals/CreateSkladPosition';
 
 
 const DBPage = observer(() => {
@@ -78,11 +79,11 @@ const DBPage = observer(() => {
                     show={tabVisible}
                     onHide={() => setTabVisible(false)}
                 />
-                <CreateShopPosition
+                <CreateShopItem
                     show={shopVisible}
                     onHide={() => setShopVisible(false)}
                 />
-                <CreateSkladItem
+                <CreateSkladPosition
                     show={skladVisible}
                     onHide={() => setSkladVisible(false)}
                 />
@@ -90,42 +91,6 @@ const DBPage = observer(() => {
         </React.StrictMode>
     );
 
-    {/* <ListGroup>
-                        { ogo.types.map(typeItem =>
-                            <ListGroup.Item key={ typeItem.id } className='d-flex flex-column'>
-                                <div>
-                                    id: { typeItem.id }
-                                </div>
-                                <div>
-                                    type: { typeItem.type }
-                                </div>
-                                <AkuToggleBtn
-                                    clickHandler={ () => addToShop(typeItem) }
-
-                                    btnName='Добавить на главную'
-                                    props={ {
-                                        id: typeItem.id,
-                                        checked: checked
-                                    } }
-                                >
-
-                                </AkuToggleBtn>
-                                <Button
-                                    size="sm"
-                                    className="mt-1"
-                                    variant={ "outline-secondary" }
-                                    onClick={ () => history.push(OKNO_ROUTE + '/' + typeItem.id) }
-                                >Открыть
-                                </Button>
-                                <Button
-                                    className="mt-1"
-                                    variant={ "outline-danger" }
-                                    onClick={ () => deleteHandler(typeItem.id) }
-                                >Удалить тип
-                                </Button>
-                            </ListGroup.Item>
-                        ) }
-                    </ListGroup> */}
 
 })
 

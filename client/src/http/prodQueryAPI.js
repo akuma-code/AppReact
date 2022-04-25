@@ -8,7 +8,7 @@ export const startProdQuery = async (productionQueryForm = []) => {
         postitem = await $authHost.post('api/prod', form)
         // data[form.title] = form.count
     })
-    console.log('productionQueryForm :>> ', productionQueryForm);
+    console.log('productionQueryForm :>> ', postitem);
     return data
 }
 

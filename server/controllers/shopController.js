@@ -26,10 +26,10 @@ class ShopController {
     }
 
     async getSorted(req, res) {
-        let { TYPEId } = req.query
+        let { typeId } = req.query
         const okna = await Shop.findAndCountAll({
-            where: { TYPEId },
-            include: [{ model: OkType, as: 'type', include: [{ model: OkTypeInfo, as: 'info' }] }]
+            where: { typeId },
+            include: [{ all: true }]
         })
         return res.json(okna)
     }
@@ -40,7 +40,7 @@ class ShopController {
 
             const okno = await Shop.findOne({
                 where: { id },
-                include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }]
+                include: [{ all: true }]
             },
             )
             return res.json(okno)
@@ -55,7 +55,7 @@ class ShopController {
         try {
             const item = await Shop.findOne({
                 where: { id },
-                include: [{ model: OkType }]
+                // include: [{ model: OkType }]
             })
 
             item.destroy()

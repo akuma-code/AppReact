@@ -6,7 +6,7 @@ import { createPosition } from "../../http/shopAPI";
 import { fetchTypes, fetchOneType } from "../../http/typesAPI";
 import { Context } from '../../index'
 
-const CreateShopPosition = observer(({ show, onHide }) => {
+const CreateShopItem = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context)
     const { sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
@@ -34,7 +34,7 @@ const CreateShopPosition = observer(({ show, onHide }) => {
         console.log(item);
         sklad.setSelectedItem(item)
 
-        setPosName(item.title)
+        setPosName(item.id)
         setSkladId(item.id)
     }
     const addNewPos = () => {
@@ -70,7 +70,7 @@ const CreateShopPosition = observer(({ show, onHide }) => {
                         >{skladItems.map((item, idx) =>
                             <Dropdown.Item key={idx}
                                 onClick={() => click(item)}
-                            >
+                            >{item.id}
                             </Dropdown.Item>
                         )}
                         </DropdownButton>
@@ -99,4 +99,4 @@ const CreateShopPosition = observer(({ show, onHide }) => {
     );
 })
 
-export default CreateShopPosition;
+export default CreateShopItem;
