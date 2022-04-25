@@ -24,3 +24,8 @@ export const removeShopPosition = async (id) => {
 
     return data
 }
+export const removeSkladPosition = async (id) => {
+    const { data } = await $authHost.delete('api/sklad/' + id)
+
+    return data
+}

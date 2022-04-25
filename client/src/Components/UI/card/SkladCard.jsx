@@ -2,13 +2,12 @@ import { observer } from "mobx-react-lite";
 import React from 'react';
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { removeShopPosition } from '../../../http/shopAPI';
+import { removeSkladPosition } from '../../../http/shopAPI';
 import { OKNO_ROUTE } from "../../../utils/consts";
 
-const ShopItem = observer(({ shopItem }) => {
+const SkladCard = observer(({ skladItem }) => {
     const history = useHistory()
-    const { id, shop, type } = shopItem;
-
+    const { id, type, quant } = skladItem;
 
 
 
@@ -17,17 +16,18 @@ const ShopItem = observer(({ shopItem }) => {
             <Card.Body
                 className='d-flex flex-column justify-content-between'
             >
-                <Card.Title as="h4">{shop?.title || type.name}</Card.Title>
-                {/* <Card.Img
+                <Card.Title as="h4">{type.name}</Card.Title>
+                <Card.Img
                     variant="top"
-                    src={type && `${process.env.REACT_APP_API_URL}/${type.img}`}
-                    alt="No Image"
+                    src={`${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg'}
+                    alt='NO PICTURE'
 
-                /> */}
+                />
 
                 <ListGroup >
                     <ListGroup.Item className='bg-warning'>
-                        <div> Цена: {shop?.price} руб.</div>
+                        <div> type_ID: {type.id}</div>
+                        <div> total: {quant}</div>
                     </ListGroup.Item>
 
                     {type.info && type.info.map((i, idx) => (
@@ -54,13 +54,13 @@ const ShopItem = observer(({ shopItem }) => {
                 <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => history.push(OKNO_ROUTE + '/' + id)}
+                    onClick={() => { }}
                 >
-                    Открыть
+                    Edit
                 </Button>
                 <Button variant="danger"
                     size="sm"
-                    onClick={() => removeShopPosition(id)}
+                    onClick={() => removeSkladPosition(id)}
                 >
                     Удалить
                 </Button>
@@ -69,4 +69,4 @@ const ShopItem = observer(({ shopItem }) => {
     );
 })
 
-export default ShopItem;
+export default SkladCard;

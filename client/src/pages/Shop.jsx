@@ -35,22 +35,23 @@ const Shop = observer(() => {
         <Container>
             <Row>
 
-                <Col md={ 2 }>
+                <Col md={2}>
                     <TypeBar />
                     <Button
-                        onClick={ () => setAddProdVisible(true) }
+                        onClick={() => setAddProdVisible(true)}
                     >
                         ProdService
                     </Button>
                 </Col>
-                <Col md={ 10 } >
-                    <h3>SKLAD</h3>
-                    <OkList items={ sklad.skladItems } />
+                <Col md={10} >
+                    <h3>Главная страница</h3>
+                    <OkList items={sklad.skladItems} />
                 </Col>
+
             </Row>
             <ProductionBasket
-                show={ addProdVisible }
-                onHide={ () => setAddProdVisible(false) }
+                show={addProdVisible}
+                onHide={() => setAddProdVisible(false)}
             />
         </Container>
     )
