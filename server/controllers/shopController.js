@@ -21,15 +21,14 @@ class ShopController {
     async getAll(req, res) {
 
         const okna = await Shop.findAndCountAll({ include: [{ all: true }] })
-        // const okna = await Shop.findAndCountAll({ include: [{ model: OkType, include: [{ model: OkTypeInfo, as: 'info' }] }] })
         return res.json(okna)
     }
 
     async getSorted(req, res) {
-        let { TYPEId } = req.query
+        let { typeId } = req.query
         const okna = await Shop.findAndCountAll({
-            where: { TYPEId },
-            include: [{ model: OkType, as: 'type', include: [{ model: OkTypeInfo, as: 'info' }] }]
+            where: { typeId },
+            include: [{ all: true }]
         })
         return res.json(okna)
     }
@@ -55,10 +54,10 @@ class ShopController {
         try {
             const item = await Shop.findOne({
                 where: { id },
-                include: [{ model: OkType }]
+                // include: [{ model: OkType }]
             })
-
             item.destroy()
+            return res.json(item)
         } catch (error) {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
@@ -68,7 +67,8 @@ class ShopController {
     async deleteAll(req, res, next) {
         try {
             await Shop.destroy({ truncate: true, cascade: true });
-
+            console.log("SHOP CLEARED");
+            return res.status(200).send("SHOP CLEARED")
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }

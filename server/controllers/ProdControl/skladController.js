@@ -6,9 +6,9 @@ class skladController {
     async create(req, res, next) {
         try {
 
-            const { typeID, quant } = req.body
+            const { typeId, quant } = req.body
 
-            const sItem = await SkladMain.create({ typeID, quant })
+            const sItem = await SkladMain.create({ typeId, quant })
 
             return res.json(sItem)
 
@@ -31,7 +31,7 @@ class skladController {
         const { id } = req.params
         try {
             const item = await SkladMain.findOne({ where: { id } })
-            console.log('Deleted: ', item);
+            console.log('Deleted: ', item.dataValues);
             item.destroy()
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -41,7 +41,7 @@ class skladController {
     async clearALL(req, res, next) {
         try {
             await SkladMain.destroy({ truncate: true, cascade: true });
-
+            return res.json("SKLAD CLEARED")
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }

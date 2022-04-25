@@ -66,11 +66,11 @@ class TypeController {
             const type = await OkType.findOne({
                 where: { id },
             })
-            const shopItem = await Shop.findAll({
-                where: { id: type.id }
-            })
+            // const shopItem = await Shop.findAll({
+            //     where: { id: type.id }
+            // })
             type.destroy()
-            shopItem.destroy()
+            // shopItem.destroy()
         } catch (error) {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))

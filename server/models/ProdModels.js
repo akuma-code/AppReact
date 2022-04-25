@@ -57,9 +57,9 @@ const Basket = sequelize.define('basket', {
 })
 
 
-SkladMain.hasMany(OkType, { as: 'type' })
+OkType.hasOne(SkladMain)
+SkladMain.belongsTo(OkType)
 // OkType.belongsTo(Shop)
-OkType.belongsTo(SkladMain)
 // Shop.belongsTo(OkType)
 
 SkladMain.hasOne(Shop)

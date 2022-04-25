@@ -7,6 +7,7 @@ import TypeBar from "../Components/TypeBar"
 import { fetchPositions } from "../http/shopAPI"
 import { fetchTypes } from '../http/typesAPI'
 import ProductionBasket from '../Components/modals/ProductionBasket.js'
+import { fetchSklad } from "../http/prodQueryAPI"
 
 
 
@@ -14,9 +15,12 @@ const Shop = observer(() => {
 
     const [addProdVisible, setAddProdVisible] = useState(false);
     const { ogo } = useContext(Context)
-
+    const { sklad } = useContext(Context)
 
     useEffect(() => {
+        fetchSklad().then(data => {
+            sklad.setSkladItems(data)
+        })
         fetchPositions().then(data => {
             ogo.setShop(data)
         })
@@ -30,6 +34,7 @@ const Shop = observer(() => {
     return (
         <Container>
             <Row>
+
                 <Col md={ 2 }>
                     <TypeBar />
                     <Button
@@ -39,7 +44,8 @@ const Shop = observer(() => {
                     </Button>
                 </Col>
                 <Col md={ 10 } >
-                    <OkList items={ ogo.shop } />
+                    <h3>SKLAD</h3>
+                    <OkList items={ sklad.skladItems } />
                 </Col>
             </Row>
             <ProductionBasket
