@@ -26,8 +26,8 @@ const Shop = observer(() => {
         })
     }, [])
     useEffect(() => {
-        fetchPositions(ogo.sortType.id).then(data => {
-            ogo.setShop(data)
+        fetchSklad(ogo.sortType.id).then(data => {
+            sklad.setSkladItems(data)
         })
     }, [ogo.sortType])
 
