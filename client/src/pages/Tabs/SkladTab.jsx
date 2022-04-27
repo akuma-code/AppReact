@@ -21,33 +21,38 @@ const SkladTab = observer(({ skladItems }) => {
 
 
     return (
-        <Container className="d-flex flex-row flex-nowrap" >
-            <Col md={ "auto" }
-                style={ { background: "lightgray" } }>
+        <Container fluid >
+            <Row>
+                <Col md={1}
+                    className='d-flex justify-content-center py-2'
+                    style={{ background: "lightgray", height: "200px", minWidth: "150px" }}
+                >
+                    <CtrlBtns_Sklad
+                        style={{ minWidth: "100px" }}
+                        handlers={{ createHandler, getAll, getOne, clearAll }} />
 
-                <CtrlBtns_Sklad handlers={ { createHandler, getAll, getOne, clearAll } } />
-            </Col>
-            <Col md={ "auto" }
-                className="d-flex flex-wrap"
-                style={ { background: "darkgray" } }
-            >
-                <CardGroup>
-                    { skladItems.map(item =>
-                        <SkladCard
-                            key={ item.id }
-                            skladItem={ item }
+                </Col>
+                <Col sm={{ offset: 0 }}
+                    style={{ background: "darkgray" }}
+                    className="mx-1"
+                >
+                    <Row>
+                        {skladItems.map(item =>
+                            <SkladCard
+                                key={item.id}
+                                skladItem={item}
 
-                        />
-                    ) }
-                </CardGroup>
+                            />
+                        )}
+                    </Row>
 
-            </Col>
-
-            <CreateSkladPosition
-                show={ skladVisible }
-                onHide={ () => setSkladVisible(false) }
-            />
-        </Container>
+                </Col>
+                <CreateSkladPosition
+                    show={skladVisible}
+                    onHide={() => setSkladVisible(false)}
+                />
+            </Row>
+        </Container >
     );
 })
 
