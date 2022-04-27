@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { NavLink } from "react-router-dom"
-import { ADMIN_ROUTE, AUTH_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from "../../utils/consts"
+import { ADMIN_ROUTE, AUTH_ROUTE, HOMEPAGE_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from "../../utils/consts"
 import { Navbar, Nav, Button, Container, Row } from 'react-bootstrap'
 import { Context } from '../../index.js'
 import { observer } from 'mobx-react-lite'
@@ -19,29 +19,29 @@ const NavbarBT = observer(() => {
         <Navbar bg="dark" variant="dark"  >
             <Container>
 
-                <NavLink className="ml-0 container" style={ { color: 'white', paddingLeft: 45, fontSize: '1.4em' } } to={ SHOP_ROUTE }
+                <NavLink className="ml-0 container" style={{ color: 'white', paddingLeft: 45, fontSize: '1.4em' }} to={HOMEPAGE_ROUTE}
                 >
-                    СКЛАДСКИЕ ОСТАТКИ
+                    HOMEPAGE
                 </NavLink>
 
-                { user.isAuth ?
+                {user.isAuth ?
                     <Container className="mr-auto">
                         <Nav >
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(ADMIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(ADMIN_ROUTE)}
                                 className="mr-0"
                             >Админка
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(LOGIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(LOGIN_ROUTE)}
                                 className="mr-5"
                             >Регистрация
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ logout }
+                                variant={"outline-light"}
+                                onClick={logout}
                                 className="mr-5"
                             >Выход
                             </Button>
@@ -50,21 +50,21 @@ const NavbarBT = observer(() => {
                     : <Container className="mr-auto">
                         <Nav >
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(ADMIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(ADMIN_ROUTE)}
                                 className="mr-0"
                                 disabled
                             >Админка
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ () => history.push(LOGIN_ROUTE) }
+                                variant={"outline-light"}
+                                onClick={() => history.push(LOGIN_ROUTE)}
                                 className="mr-5"
                             >Авторизация
                             </Button>
                             <Button
-                                variant={ "outline-light" }
-                                onClick={ logout }
+                                variant={"outline-light"}
+                                onClick={logout}
                                 className="mr-5"
                             >Выход
                             </Button>

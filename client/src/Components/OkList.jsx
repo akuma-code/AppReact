@@ -17,14 +17,7 @@ const OkList = observer(({ items }) => {
                     skladItem={item}
                 />
             )}
-            <div><h4 className="mt-2">SKLAD</h4></div>
-            {items && items.map(item =>
-                <ShopCard
-                    key={item.id}
-                    shopItem={item}
-                />
-            )}
-            <h4 className="mt-2">SHOP</h4>
+
 
         </Container>
     )
