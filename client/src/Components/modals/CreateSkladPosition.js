@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap";
-import { fetchSklad } from "../../http/prodQueryAPI";
-import { createPosition } from "../../http/shopAPI";
-import { fetchTypes, fetchOneType } from "../../http/typesAPI";
+
+import { createSkladPosition, fetchSklad } from "../../http/SkladAPI";
+import { fetchTypes } from "../../http/typesAPI";
 import { Context } from '../../index'
 
 const CreateSkladPosition = observer(({ show, onHide }) => {
@@ -18,7 +18,6 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
     useEffect(() => {
         fetchTypes().then(data => {
             setTypes(data)
-            console.log('>>>>fetched Types :>> ', data);
         })
     }, [])
 
@@ -31,7 +30,7 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
     // }, [typeId])
 
     const clickType = (type) => {
-        console.log("type:", type);
+
         ogo.setSelectedType(type)
         setTypeName(type.name)
         setTypeId(type.id)
@@ -43,13 +42,13 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
         // form.append('typeId', typeId)
         form.append('quant', quant)
         form.append('typeId', typeId)
-        // createPosition(form).then(data => onHide())
+        createSkladPosition(form).then(data => onHide()).finally(fetchSklad().then(data => sklad.setSkladItems(data)))
     }
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
+            show={ show }
+            onHide={ onHide }
             centered
         >
             <Modal.Header closeButton>
@@ -63,15 +62,15 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={typeName ? typeName : "укажите тип"}
-                            value={typeName}
+                            title={ typeName ? typeName : "укажите тип" }
+                            value={ typeName }
                             id="input-group-dropdown-1"
-                        >{types.map((type, idx) =>
-                            <Dropdown.Item key={idx}
-                                onClick={() => clickType(type)}
-                            >{type.name}
+                        >{ types.map((type, idx) =>
+                            <Dropdown.Item key={ idx }
+                                onClick={ () => clickType(type) }
+                            >{ type.name }
                             </Dropdown.Item>
-                        )}
+                        ) }
                         </DropdownButton>
                         {/* <FormControl placeholder="название окна"
                             value={typeName}
@@ -80,19 +79,19 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={quant}
+                        value={ quant }
                         type="number"
-                        onChange={(e) => setQuant(e.target.value)}
+                        onChange={ (e) => setQuant(e.target.value) }
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={'outline-dark'}
-                    onClick={addNewPos}
+                    variant={ 'outline-dark' }
+                    onClick={ addNewPos }
                 >Добавить</Button>
-                <Button onClick={onHide}>Отмена</Button>
+                <Button onClick={ onHide }>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );
