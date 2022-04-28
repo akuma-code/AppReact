@@ -8,5 +8,6 @@ router.get('/', skladController.getAll)
 router.get('/:id', skladController.getOne)
 router.delete('/:id', skladController.delete)
 router.delete('/', skladController.clearALL)
+router.put('/:id', skladController.update)
 
 module.exports = router

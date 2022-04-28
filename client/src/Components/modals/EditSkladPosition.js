@@ -1,27 +1,32 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import { useConsole } from "../../hooks/useConsole";
 
-import { createSkladPosition, fetchSklad } from "../../http/SkladAPI";
+import { createSkladPosition, fetchSklad, updateSkladItem } from "../../http/SkladAPI";
 import { fetchTypes } from "../../http/typesAPI";
 import { Context } from '../../index'
 
-const CreateSkladPosition = observer(({ show, onHide }) => {
-    const { ogo } = useContext(Context)
-    const { sklad } = useContext(Context)
+const EditSkladPosition = observer(({ show, onHide }) => {
+    const { ogo, sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
-    const [quant, setQuant] = useState(0)
+    const [quant, setQuant] = useState("")
     const [typeName, setTypeName] = useState("");
     const [skladId, setSkladId] = useState("");
     const [types, setTypes] = useState([]);
 
+
     useEffect(() => {
-        fetchTypes().then(data => {
-            setTypes(data)
-        })
+        fetchTypes().then(data => setTypes(data))
+
+        // setQuant(sklad.selectedItem.quant)
     }, [])
 
+    useEffect(() => {
+        sklad.selectedItem.type && setTypeName(sklad.selectedItem.type.name)
 
+    }, [sklad.selectedItem.id]);
 
     const clickType = (type) => {
 
@@ -29,14 +34,15 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
         setTypeName(type.name)
         setTypeId(type.id)
     }
-    const addNewPos = () => {
+    const updatePos = () => {
         const form = new FormData();
-
-        // form.append('skladId', skladId)
-        // form.append('typeId', typeId)
-        form.append('quant', quant)
-        form.append('typeId', typeId)
-        createSkladPosition(form).then(data => onHide()).finally(fetchSklad().then(data => sklad.setSkladItems(data)))
+        form.append('quant', quant || sklad.selectedItem.quant)
+        form.append('typeId', typeId || sklad.selectedItem.typeId)
+        form.append('id', sklad.selectedItem.id)
+        updateSkladItem(form).then(data => {
+            onHide()
+            useConsole(data)
+        })
     }
 
     return (
@@ -47,7 +53,7 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Создать окно
+                    Редактировать окно, (ID склада: { sklad.selectedItem.id })
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -56,24 +62,22 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ typeName ? typeName : "укажите тип" }
-                            value={ typeName }
+                            title={ typeName ? typeName : "изменить тип окна" }
+                            value={ typeId }
                             id="input-group-dropdown-1"
                         >{ types.map((type, idx) =>
-                            <Dropdown.Item key={ idx }
+                            <DropdownItem key={ idx }
                                 onClick={ () => clickType(type) }
                             >{ type.name }
-                            </Dropdown.Item>
+                            </DropdownItem>
                         ) }
                         </DropdownButton>
-                        {/* <FormControl placeholder="название окна"
-                            value={typeName}
-                            onChange={(e) => setTypeName(e.target.value)} /> */}
+
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
-                        placeholder="цена"
-                        value={ quant }
+                        placeholder="Количество"
+                        value={ quant || sklad.selectedItem.quant }
                         type="number"
                         onChange={ (e) => setQuant(e.target.value) }
                     />
@@ -83,12 +87,12 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                 <Button
                     className='btn btn-success'
                     variant={ 'outline-dark' }
-                    onClick={ addNewPos }
-                >Добавить</Button>
+                    onClick={ updatePos }
+                >Обновить позицию</Button>
                 <Button onClick={ onHide }>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );
 })
 
-export default CreateSkladPosition;
+export default EditSkladPosition;

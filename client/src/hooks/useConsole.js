@@ -1,0 +1,1 @@
+export const useConsole = (data) => console.log("logged data:", JSON.stringify(data, null, 2))

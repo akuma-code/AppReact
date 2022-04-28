@@ -24,7 +24,7 @@ class skladController {
 
     async getOne(req, res) {
         const { id } = req.params
-        const items = await SkladMain.findAll({ where: { id } })
+        const items = await SkladMain.findAll({ where: { id }, include: [{ all: true }] })
         return res.json(items)
     }
     async delete(req, res, next) {
@@ -46,6 +46,18 @@ class skladController {
             next(ApiError.badRequest(error.message))
         }
 
+    }
+
+    async update(req, res, next) {
+
+        const { id, typeId, quant } = req.body
+        try {
+            const item = await SkladMain.findOne({ where: { id }, include: [{ all: true }] })
+            item.update({ typeId: typeId, quant: quant }, { where: { id, typeId } })
+            res.json(item)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
     }
 }
 

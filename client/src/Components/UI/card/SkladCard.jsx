@@ -1,9 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from 'react';
-import { Button, Card, ListGroup } from "react-bootstrap";
+import React, { useContext, useState } from 'react';
+import { Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../..";
+import { useConsole } from "../../../hooks/useConsole";
 import { removeSkladPosition } from '../../../http/SkladAPI';
+import EditSkladPosition from "../../modals/EditSkladPosition";
 
 
 
@@ -11,8 +13,10 @@ const SkladCard = observer(({ skladItem }) => {
     const history = useHistory()
     const { id, type, quant } = skladItem;
     const { sklad } = useContext(Context)
-
-
+    const [updateSkladVisible, setUpdateSkladVisible] = useState(false);
+    const openModalUpdate = () => {
+        setUpdateSkladVisible(true)
+    }
     return (
         <Card style={ { width: '13rem', cursor: "pointer" } } className="mt-2 mx-1"
             onClick={ () => sklad.setSelectedItem(skladItem) }
@@ -29,15 +33,14 @@ const SkladCard = observer(({ skladItem }) => {
                     alt='NO PICTURE'
 
                 />
-
                 <ListGroup >
-                    <ListGroup.Item className='bg-warning'>
-                        <div> type_ID: { type.id }</div>
+                    <ListGroupItem className='bg-warning'>
+                        {/* <div> ID типа: { type.id }</div> */ }
                         <div> Осталось: { quant }</div>
-                    </ListGroup.Item>
+                    </ListGroupItem>
 
                     { type.info && type.info.map((i, idx) => (
-                        <ListGroup.Item
+                        <ListGroupItem
                             key={ idx }
                             style={ {
                                 backgroundColor: (idx % 2 === 0) ? "lightgray" : "darkgray",
@@ -48,7 +51,7 @@ const SkladCard = observer(({ skladItem }) => {
                             } }
                         >
                             <p>{ i.desc }</p>
-                        </ListGroup.Item>))
+                        </ListGroupItem>))
                     }
 
                 </ListGroup>
@@ -59,7 +62,11 @@ const SkladCard = observer(({ skladItem }) => {
                 <Button
                     variant="secondary"
                     size="sm"
-                    onClick={ () => { } }
+                    onContextMenu={ (e) => {
+                        e.preventDefault()
+                        sklad.setSelectedItem({})
+                    } }
+                    onClick={ () => openModalUpdate() }
                 >
                     Edit
                 </Button>
@@ -70,6 +77,11 @@ const SkladCard = observer(({ skladItem }) => {
                     Удалить
                 </Button>
             </Card.Footer>
+            <EditSkladPosition
+                show={ updateSkladVisible }
+                onHide={ () => setUpdateSkladVisible(false) }
+                skladItem={ skladItem }
+            />
         </Card>
     );
 })

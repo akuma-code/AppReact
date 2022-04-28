@@ -22,3 +22,8 @@ export const removeSkladPosition = async (id = null) => {
 
     return data
 }
+
+export const updateSkladItem = async (item) => {
+    const skladItem = await $authHost.put('api/sklad/' + item.id, item)
+    return skladItem.data
+}
