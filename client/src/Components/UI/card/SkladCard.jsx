@@ -14,73 +14,81 @@ const SkladCard = observer(({ skladItem }) => {
     const { id, type, quant } = skladItem;
     const { sklad } = useContext(Context)
     const [updateSkladVisible, setUpdateSkladVisible] = useState(false);
+    const [isActive, setIsActive] = useState(false)
+
+
     const openModalUpdate = () => {
         setUpdateSkladVisible(true)
     }
+
+    function toggleSelect() {
+        !isActive ? sklad.setSelectedItem(skladItem) : sklad.setSelectedItem({})
+
+        setIsActive(!isActive)
+
+    }
     return (
-        <Card style={ { width: '13rem', cursor: "pointer" } } className="mt-2 mx-1"
-            onClick={ () => sklad.setSelectedItem(skladItem) }
-            bg={ skladItem.id === sklad.selectedItem.id ? "info" : "light" }
+        <Card style={{ width: '13rem', cursor: "pointer", border: "2px solid black", height: "22rem" }} className="mt-2 mb-1 mx-2"
+            onClick={toggleSelect}
+            bg={skladItem.id === sklad.selectedItem.id ? "info" : "light"}
         >
             <Card.Body
                 className='d-flex flex-column justify-content-between'
 
             >
-                <Card.Title as="h4">{ type.name }</Card.Title>
+                <Card.Title as="h4">{type.name}</Card.Title>
                 <Card.Img
                     variant="top"
-                    src={ `${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg' }
+                    src={`${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg'}
                     alt='NO PICTURE'
 
                 />
                 <ListGroup >
-                    <ListGroupItem className='bg-warning'>
-                        {/* <div> ID типа: { type.id }</div> */ }
-                        <div> Осталось: { quant }</div>
+                    <ListGroupItem className='bg-light'>
+                        {/* <div> ID типа: { type.id }</div> */}
+                        <div> Осталось: {quant}</div>
                     </ListGroupItem>
 
-                    { type.info && type.info.map((i, idx) => (
+                    {type.info && type.info.map((i, idx) => (
                         <ListGroupItem
-                            key={ idx }
-                            style={ {
+                            key={idx}
+                            style={{
                                 backgroundColor: (idx % 2 === 0) ? "lightgray" : "darkgray",
                                 fontSize: 10,
                                 margin: 0,
                                 padding: 0,
                                 textAlign: "center"
-                            } }
+                            }}
                         >
-                            <p>{ i.desc }</p>
+                            <p>{i.desc}</p>
                         </ListGroupItem>))
                     }
 
                 </ListGroup>
 
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-between"
+            <Card.Footer className="d-flex justify-content-between "
             >
                 <Button
+                    className="mx-1"
                     variant="secondary"
                     size="sm"
-                    onContextMenu={ (e) => {
-                        e.preventDefault()
-                        sklad.setSelectedItem({})
-                    } }
-                    onClick={ () => openModalUpdate() }
+                    onClick={() => openModalUpdate()}
                 >
-                    Edit
+                    Изменить
                 </Button>
-                <Button variant="danger"
+                <Button variant="outline-danger"
                     size="sm"
-                    onClick={ () => removeSkladPosition(id) }
+                    onClick={() => removeSkladPosition(id)}
+                    className="mx-1"
                 >
                     Удалить
                 </Button>
             </Card.Footer>
             <EditSkladPosition
-                show={ updateSkladVisible }
-                onHide={ () => setUpdateSkladVisible(false) }
-                skladItem={ skladItem }
+                show={updateSkladVisible}
+                onHide={() => setUpdateSkladVisible(false)}
+                skladItem={skladItem}
             />
         </Card>
     );

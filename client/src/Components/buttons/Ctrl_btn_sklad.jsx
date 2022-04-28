@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Col } from "react-bootstrap";
 import { Context } from "../..";
 
 
 const CtrlBtns_Sklad = observer(({ handlers }) => {
     const { sklad } = useContext(Context)
-    const { createHandler, getAll, getOne, clearAll, activeItem } = handlers
+    const { onHide, getAll, getOne, clearAll, activeItem } = handlers
     const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
@@ -16,17 +16,26 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
 
 
     return (
-        <ButtonGroup vertical
+        <Col md={true} bg='dark'>
+            <ButtonGroup vertical
+                className="w-100 mb-1">
+                <Button variant="success" onClick={onHide}>Добавить окно</Button>
+                <Button onClick={() => getAll()}>Обновить список</Button>
 
-        >
+            </ButtonGroup>
 
-            <Button onClick={ createHandler }>Create New</Button>
-            <Button onClick={ () => getAll() }>get All</Button>
-            <Button onClick={ () => getOne(activeItem.id) } disabled={ isDisabled }>get One</Button>
-            <Button variant="danger" onClick={ () => clearAll(activeItem.id) } disabled={ isDisabled }>delete One</Button>
-            <Button variant="danger" onClick={ () => clearAll() }>Clear ALL</Button>
-
-        </ButtonGroup>
+            <ButtonGroup vertical
+                className="w-100 my-1">
+                <Button variant="outline-danger" onClick={() => clearAll(activeItem.id)} disabled={true}>Удалить выбранный</Button>
+                <Button variant="outline-danger" onClick={() => clearAll()}>Удалить ВСЕ!</Button>
+            </ButtonGroup>
+            <ButtonGroup vertical
+                className="w-100 my-1">
+                <Button onClick={() => getOne(activeItem.id)} disabled={isDisabled}
+                    variant={isDisabled ? "primary" : "danger"}
+                >ИНФО</Button>
+            </ButtonGroup>
+        </Col>
     );
 })
 
