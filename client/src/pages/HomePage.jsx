@@ -6,6 +6,7 @@ import OkList from '../Components/OkList';
 import { fetchOneSklad, fetchSklad, removeSkladPosition } from "../http/SkladAPI";
 import { fetchTypes } from '../http/typesAPI';
 import SkladTab from "./Tabs/SkladTab";
+import TypesTab from "./Tabs/TypesTab";
 
 
 const Homepage = observer(() => {
@@ -20,11 +21,13 @@ const Homepage = observer(() => {
         <Tabs
             defaultActiveKey="sklad"
             transition={ true }
-            id="noanim-tab-example"
+            // id="noanim-tab-example"
             className="mb-3 mx-5"
         >
+
             <Tab eventKey="type" title="Типы" className="mx-5">
-                { ogo.types.map(type => <li key={ type.id }>{ type.name }</li>) }
+                {/* { ogo.types.map(type => <li key={ type.id }>{ type.name }</li>) } */ }
+                <TypesTab typeItems={ ogo.types } />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
                 <SkladTab skladItems={ sklad.skladItems } />
