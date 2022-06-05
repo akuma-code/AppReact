@@ -4,7 +4,7 @@ import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, M
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import { useConsole } from "../../hooks/useConsole";
 
-import { createSkladPosition, fetchSklad, updateSkladItem } from "../../http/SkladAPI";
+import { addToShop, createSkladPosition, fetchSklad, updateSkladItem } from "../../http/SkladAPI";
 import { fetchTypes } from "../../http/typesAPI";
 import { Context } from '../../index'
 
@@ -47,13 +47,13 @@ const EditSkladPosition = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Редактировать окно, (ID склада: { sklad.selectedItem.id })
+                    Редактировать окно, (ID склада: {sklad.selectedItem.id})
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -62,34 +62,39 @@ const EditSkladPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ typeName ? typeName : "изменить тип окна" }
-                            value={ typeId }
+                            title={typeName ? typeName : "изменить тип окна"}
+                            value={typeId}
                             id="input-group-dropdown-1"
-                        >{ types.map((type, idx) =>
-                            <DropdownItem key={ idx }
-                                onClick={ () => clickType(type) }
-                            >{ type.name }
+                        >{types.map((type, idx) =>
+                            <DropdownItem key={idx}
+                                onClick={() => clickType(type)}
+                            >{type.name}
                             </DropdownItem>
-                        ) }
+                        )}
                         </DropdownButton>
 
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
                         placeholder="Количество"
-                        value={ quant || sklad.selectedItem.quant }
+                        value={quant || sklad.selectedItem.quant}
                         type="number"
-                        onChange={ (e) => setQuant(e.target.value) }
+                        onChange={(e) => setQuant(e.target.value)}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ updatePos }
+                    variant={'outline-dark'}
+                    onClick={updatePos}
                 >Обновить позицию</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button
+                    className='btn btn-success'
+                    variant={'outline-dark'}
+                    onClick={() => { }}
+                >добавить на витрину</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

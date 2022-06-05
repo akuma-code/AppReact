@@ -59,6 +59,17 @@ class skladController {
             next(ApiError.badRequest(error.message))
         }
     }
+
+    async addToShop(req, res, next) {
+        const { id, typeId, shopId } = req.body
+        try {
+            const item = await SkladMain.findOne({ where: { id }, include: [{ all: true }] })
+            item.update({ shopId: shopId, quant: quant }, { where: { id, typeId } })
+            res.json(item)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+    }
 }
 
 module.exports = new skladController()

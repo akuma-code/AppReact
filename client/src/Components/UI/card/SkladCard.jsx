@@ -4,7 +4,7 @@ import { Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../..";
 import { useConsole } from "../../../hooks/useConsole";
-import { removeSkladPosition } from '../../../http/SkladAPI';
+import { removeSkladPosition, updateSkladItem } from '../../../http/SkladAPI';
 import EditSkladPosition from "../../modals/EditSkladPosition";
 
 
@@ -23,12 +23,21 @@ const SkladCard = observer(({ skladItem }) => {
 
     function toggleSelect() {
         !isActive ? sklad.setSelectedItem(skladItem) : sklad.setSelectedItem({})
-
         setIsActive(!isActive)
+    }
 
+    const addShop = () => {
+        const form = new FormData();
+
+        form.append('typeId', typeId || sklad.selectedItem.typeId)
+        form.append('id', sklad.selectedItem.id)
+        updateSkladItem(form).then(data => {
+            onHide()
+            useConsole(data)
+        })
     }
     return (
-        <Card style={{ width: '13rem', cursor: "pointer", border: "2px solid black", height: "22rem" }} className="mt-2 mb-1 mx-2"
+        <Card style={{ width: '14rem', cursor: "pointer", border: "2px solid black", height: "25rem" }} className="mt-2 mb-1 mx-2"
             onClick={toggleSelect}
             bg={skladItem.id === sklad.selectedItem.id ? "info" : "light"}
         >
@@ -41,6 +50,7 @@ const SkladCard = observer(({ skladItem }) => {
                     variant="top"
                     src={`${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg'}
                     alt='NO PICTURE'
+                    width={"80"}
 
                 />
                 <ListGroup >
@@ -79,10 +89,11 @@ const SkladCard = observer(({ skladItem }) => {
                 </Button>
                 <Button variant="outline-danger"
                     size="sm"
-                    onClick={() => removeSkladPosition(id)}
-                    className="mx-1"
+                    onClick={() => { }}
+                    className="mx-1 w-100"
+                    style={{ fontSize: "10px" }}
                 >
-                    Удалить
+                    Добавить на витрину
                 </Button>
             </Card.Footer>
             <EditSkladPosition
@@ -90,7 +101,7 @@ const SkladCard = observer(({ skladItem }) => {
                 onHide={() => setUpdateSkladVisible(false)}
                 skladItem={skladItem}
             />
-        </Card>
+        </Card >
     );
 })
 

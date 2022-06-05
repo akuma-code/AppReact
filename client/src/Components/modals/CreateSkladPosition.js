@@ -10,7 +10,7 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context)
     const { sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
-    const [quant, setQuant] = useState(0)
+    const [quant, setQuant] = useState("")
     const [typeName, setTypeName] = useState("");
     const [skladId, setSkladId] = useState("");
     const [types, setTypes] = useState([]);
@@ -41,13 +41,13 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Создать окно
+                    Добавить новое окно на склад
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -56,15 +56,15 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ typeName ? typeName : "укажите тип" }
-                            value={ typeName }
+                            title={typeName ? typeName : "укажите тип"}
+                            value={typeName}
                             id="input-group-dropdown-1"
-                        >{ types.map((type, idx) =>
-                            <Dropdown.Item key={ idx }
-                                onClick={ () => clickType(type) }
-                            >{ type.name }
+                        >{types.map((type, idx) =>
+                            <Dropdown.Item key={idx}
+                                onClick={() => clickType(type)}
+                            >{type.name}
                             </Dropdown.Item>
-                        ) }
+                        )}
                         </DropdownButton>
                         {/* <FormControl placeholder="название окна"
                             value={typeName}
@@ -72,20 +72,20 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
-                        placeholder="цена"
-                        value={ quant }
+                        placeholder="количество"
+                        value={quant}
                         type="number"
-                        onChange={ (e) => setQuant(e.target.value) }
+                        onChange={(e) => setQuant(e.target.value)}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addNewPos }
+                    variant={'outline-dark'}
+                    onClick={addNewPos}
                 >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

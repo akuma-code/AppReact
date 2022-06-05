@@ -24,3 +24,9 @@ export const removeShopPosition = async (id) => {
 
     return data
 }
+
+export const updateShop = async (skladItem) => {
+    const { data } = await $authHost.put('api/shop/' + skladItem.id, skladItem)
+
+    return data
+}

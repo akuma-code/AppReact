@@ -17,7 +17,19 @@ class ShopController {
             next(ApiError.badRequest(error.message))
         }
     }
+    async update(req, res, next) {
+        const { skladId, shopId } = req.body;
 
+        try {
+            const okno = await Shop.findOne({ where: { id: skladId } })
+            const skPos = await SkladMain.findOne({ where: { id: skladId } })
+            skPos.update({ shopId: okno.id }, { where: { id: skladId } })
+            return res.json(okno)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
+    }
     async getAll(req, res) {
 
         const okna = await Shop.findAndCountAll({ include: [{ all: true }] })

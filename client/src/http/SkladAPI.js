@@ -27,3 +27,8 @@ export const updateSkladItem = async (item) => {
     const skladItem = await $authHost.put('api/sklad/' + item.id, item)
     return skladItem.data
 }
+
+export const addToShop = async (item) => {
+    const skladItem = await $authHost.put('api/sklad/' + item.id, item)
+    return skladItem.data
+}

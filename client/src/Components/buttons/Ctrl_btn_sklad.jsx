@@ -26,7 +26,8 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
 
             <ButtonGroup vertical
                 className="w-100 my-1">
-                <Button variant="outline-danger" onClick={() => clearAll(activeItem.id)} disabled={true}>Удалить выбранный</Button>
+                <Button variant="outline-warning" disabled={isDisabled}>{activeItem.shopId ? activeItem.shopId : "Выставить на витрину"}</Button>
+                <Button variant="outline-danger" onClick={() => clearAll(activeItem.id)} disabled={isDisabled}>Удалить выбранный</Button>
                 <Button variant="outline-danger" onClick={() => clearAll()}>Удалить ВСЕ!</Button>
             </ButtonGroup>
             <ButtonGroup vertical

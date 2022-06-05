@@ -5,12 +5,13 @@ import { Context } from '..';
 import OkList from '../Components/OkList';
 import { fetchOneSklad, fetchSklad, removeSkladPosition } from "../http/SkladAPI";
 import { fetchTypes } from '../http/typesAPI';
+import ShopTab from './Tabs/ShopTab';
 import SkladTab from "./Tabs/SkladTab";
 import TypesTab from "./Tabs/TypesTab";
 
 
 const Homepage = observer(() => {
-    const { sklad, ogo } = useContext(Context)
+    const { sklad, ogo, shop } = useContext(Context)
 
 
     useEffect(() => {
@@ -20,21 +21,23 @@ const Homepage = observer(() => {
     return (
         <Tabs
             defaultActiveKey="sklad"
-            transition={ true }
+            transition={true}
             // id="noanim-tab-example"
             className="mb-3 mx-5"
         >
 
             <Tab eventKey="type" title="Типы" className="mx-5">
-                {/* { ogo.types.map(type => <li key={ type.id }>{ type.name }</li>) } */ }
-                <TypesTab typeItems={ ogo.types } />
+                {/* { ogo.types.map(type => <li key={ type.id }>{ type.name }</li>) } */}
+                <TypesTab typeItems={ogo.types} />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
-                <SkladTab skladItems={ sklad.skladItems } />
+                <SkladTab skladItems={sklad.skladItems} />
 
             </Tab>
             <Tab eventKey="shop" title="Витрина">
-
+                <ShopTab
+                    shopItmes={{}}
+                />
             </Tab>
         </Tabs>
     );
