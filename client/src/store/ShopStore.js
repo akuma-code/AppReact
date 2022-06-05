@@ -5,13 +5,13 @@ export default class ShopStore {
     constructor () {
 
         this._quant = []
-        this._shop = []
+        this._shopItems = []
         makeAutoObservable(this)
     }
 
 
-    setShop(type) {
-        this._shop = type
+    setShopItems(items) {
+        this._shopItems = items
     }
     setQuant(quant) {
         this._quant = quant
@@ -21,8 +21,8 @@ export default class ShopStore {
     get quant() {
         return this._quant
     }
-    get shop() {
-        return this._shop
+    get shopItems() {
+        return this._shopItems
     }
 
 }

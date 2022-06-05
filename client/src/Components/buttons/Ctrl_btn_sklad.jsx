@@ -6,7 +6,7 @@ import { Context } from "../..";
 
 const CtrlBtns_Sklad = observer(({ handlers }) => {
     const { sklad } = useContext(Context)
-    const { onHide, getAll, getOne, clearAll, activeItem } = handlers
+    const { onHide, getAll, getOne, clearAll, createShop, activeItem } = handlers
     const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
 
             <ButtonGroup vertical
                 className="w-100 my-1">
-                <Button variant="outline-warning" disabled={isDisabled}>{activeItem.shopId ? activeItem.shopId : "Выставить на витрину"}</Button>
+                <Button variant="warning" onClick={() => createShop(activeItem.id)} >{activeItem.shopId ? activeItem.shopId : "Выставить на витрину"}</Button>
                 <Button variant="outline-danger" onClick={() => clearAll(activeItem.id)} disabled={isDisabled}>Удалить выбранный</Button>
                 <Button variant="outline-danger" onClick={() => clearAll()}>Удалить ВСЕ!</Button>
             </ButtonGroup>

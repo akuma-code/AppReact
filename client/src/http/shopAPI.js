@@ -9,13 +9,13 @@ export const createPosition = async (pos) => {
 
 export const fetchPositions = async (typeId = null) => {
     const { data } = await $host.get('api/shop', { params: { typeId } })
-    console.log('data[fetchPositions]', data)
+    // console.log('data[fetchPositions]', data)
     return data.rows
 }
 
 export const fetchOnePosition = async (id) => {
     const { data } = await $host.get('api/shop/' + id)
-    console.log('data[OnePosition]', data)
+    // console.log('data[OnePosition]', data)
     return data
 }
 

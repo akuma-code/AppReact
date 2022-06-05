@@ -29,7 +29,7 @@ const SkladCard = observer(({ skladItem }) => {
     const addShop = () => {
         const form = new FormData();
 
-        form.append('typeId', typeId || sklad.selectedItem.typeId)
+        form.append('typeId', sklad.selectedItem.typeId)
         form.append('id', sklad.selectedItem.id)
         updateSkladItem(form).then(data => {
             onHide()
@@ -80,21 +80,21 @@ const SkladCard = observer(({ skladItem }) => {
             <Card.Footer className="d-flex justify-content-between "
             >
                 <Button
-                    className="mx-1"
+                    className="mx-auto"
                     variant="secondary"
-                    size="sm"
+                    size=""
                     onClick={() => openModalUpdate()}
                 >
                     Изменить
                 </Button>
-                <Button variant="outline-danger"
+                {/* <Button variant="outline-danger"
                     size="sm"
                     onClick={() => { }}
                     className="mx-1 w-100"
                     style={{ fontSize: "10px" }}
                 >
                     Добавить на витрину
-                </Button>
+                </Button> */}
             </Card.Footer>
             <EditSkladPosition
                 show={updateSkladVisible}

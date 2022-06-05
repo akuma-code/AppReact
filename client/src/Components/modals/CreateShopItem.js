@@ -12,13 +12,14 @@ const CreateShopItem = observer(({ show, onHide }) => {
     const [typeId, setTypeId] = useState("")
     const [price, setPrice] = useState("")
     const [posName, setPosName] = useState("");
+    const [shopName, setShopName] = useState("");
     const [skladId, setSkladId] = useState("");
     const [skladItems, setSkladItems] = useState([]);
+
 
     useEffect(() => {
         fetchSklad().then(data => {
             setSkladItems(data)
-            console.log('>>>>fetchSklad :>> ', data);
         })
     }, [])
 
@@ -34,16 +35,17 @@ const CreateShopItem = observer(({ show, onHide }) => {
         console.log(item);
         sklad.setSelectedItem(item)
 
-        setPosName(item.id)
+        setPosName(item.type.name)
+        setShopName(item?.shop.title)
         setSkladId(item.id)
     }
     const addNewPos = () => {
         const form = new FormData();
 
-        // form.append('skladId', skladId)
+        form.append('skladId', skladId)
         // form.append('typeId', typeId)
         form.append('price', price)
-        form.append('title', posName)
+        form.append('title', shopName)
         createPosition(form).then(data => onHide())
     }
 
@@ -55,7 +57,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новое окно
+                    Добавить позицию на витрину
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -64,19 +66,19 @@ const CreateShopItem = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={posName ? posName : "укажите позицию"}
+                            title={posName ? skladId : "укажите позицию"}
                             value={posName}
                             id="input-group-dropdown-1"
                         >{skladItems.map((item, idx) =>
                             <Dropdown.Item key={idx}
                                 onClick={() => click(item)}
-                            >{item.id}
+                            >skladID:{item.id}
                             </Dropdown.Item>
                         )}
                         </DropdownButton>
                         <FormControl placeholder="название окна"
-                            value={posName}
-                            onChange={(e) => setPosName(e.target.value)} />
+                            value={shopName}
+                            onChange={(e) => setShopName(e.target.value)} />
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '

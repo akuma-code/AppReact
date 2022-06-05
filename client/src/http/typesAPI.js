@@ -9,13 +9,13 @@ export const createType = async (type) => {
 
 export const fetchTypes = async () => {
     const { data } = await $host.get('api/type')
-    console.log('data[fetchTypes]', data)
+    // console.log('data[fetchTypes]', data)
     return data.rows
 }
 
 export const fetchOneType = async (id) => {
     const { data } = await $host.get(`api/type/${id}`)
-    console.log('oneType', data);
+    // console.log('oneType', data);
     return data
 }
 export const removeType = async (id) => {
