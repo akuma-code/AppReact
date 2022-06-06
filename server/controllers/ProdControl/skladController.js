@@ -41,7 +41,7 @@ class skladController {
     async clearALL(req, res, next) {
         try {
             await SkladMain.destroy({ truncate: true, cascade: true });
-            return res.json("SKLAD CLEARED")
+            res.json("SKLAD CLEARED")
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }

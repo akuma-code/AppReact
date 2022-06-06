@@ -26,7 +26,7 @@ const EditSkladPosition = observer(({ show, onHide }) => {
     useEffect(() => {
         sklad.selectedItem.type && setTypeName(sklad.selectedItem.type.name)
 
-    }, [sklad.selectedItem.id]);
+    }, [sklad.selectedItem.type]);
 
     const clickType = (type) => {
 
@@ -89,11 +89,11 @@ const EditSkladPosition = observer(({ show, onHide }) => {
                     variant={'outline-dark'}
                     onClick={updatePos}
                 >Обновить позицию</Button>
-                <Button
+                {/* <Button
                     className='btn btn-success'
                     variant={'outline-dark'}
                     onClick={() => { }}
-                >добавить на витрину</Button>
+                >добавить на витрину</Button> */}
                 <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>

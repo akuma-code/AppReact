@@ -23,17 +23,11 @@ const CreateShopItem = observer(({ show, onHide }) => {
         )
     }, [])
 
-    // useEffect(() => {
-    //     fetchOneType(typeId).then(oktype => {
-    //         // ogo.setSelectedType(oktype)
-    //         // setTypeId(oktype.id)
-    //         // setPosName(ogo.selectedType.name)
-    //     })
-    // }, [typeId])
+
 
     const click = (item) => {
         console.log(item);
-        sklad.setSelectedItem(item)
+        // sklad.setSelectedItem(item)
 
         setPosName(item.type.name)
         item.shop && setShopName(item.shop.title)
@@ -43,7 +37,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
         const form = new FormData();
 
         form.append('skladId', skladId)
-        // form.append('typeId', typeId)
+        form.append('typeId', typeId)
         form.append('price', price)
         form.append('title', shopName)
         createPosition(form).then(data => onHide())
@@ -51,8 +45,8 @@ const CreateShopItem = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
@@ -66,36 +60,38 @@ const CreateShopItem = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={ posName ? posName : "укажите позицию" }
-                            value={ posName }
+                            title={posName ? posName : "укажите позицию"}
+                            value={posName}
                             id="input-group-dropdown-1"
-                        >{ skladItems.map((item, idx) =>
-                            <Dropdown.Item key={ idx }
-                                onClick={ () => click(item) }
-                            >skladID:{ item.id }
-                            </Dropdown.Item>
-                        ) }
+                        >
+                            {skladItems.map((item, idx) =>
+                                <Dropdown.Item key={idx}
+                                    onClick={() => click(item)}
+                                >
+                                    {item.type.name || ""}
+                                </Dropdown.Item>
+                            )}
                         </DropdownButton>
                         <FormControl placeholder="название окна"
-                            value={ shopName }
-                            onChange={ (e) => setShopName(e.target.value) } />
+                            value={shopName}
+                            onChange={(e) => setShopName(e.target.value)} />
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={ price }
+                        value={price}
                         type="number"
-                        onChange={ (e) => setPrice(e.target.value) }
+                        onChange={(e) => setPrice(e.target.value)}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addNewPos }
+                    variant={'outline-dark'}
+                    onClick={addNewPos}
                 >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

@@ -15,14 +15,18 @@ export const createSkladPosition = async (item) => {
     return data
 }
 
-export const removeSkladPosition = async (id = null) => {
-    let data;
-    if (!id) data = await $authHost.delete('api/sklad/')
-    else data = await $authHost.delete('api/sklad/' + id)
+export const removeSkladPosition = async (id) => {
+
+    const data = await $authHost.delete('api/sklad/' + id)
 
     return data
 }
 
+export const skladClear = async () => {
+    const data = await $authHost.delete('api/sklad/')
+
+    return data
+}
 export const updateSkladItem = async (item) => {
     const skladItem = await $authHost.put('api/sklad/' + item.id, item)
     return skladItem.data
