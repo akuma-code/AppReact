@@ -19,6 +19,7 @@ const SkladCard = observer(({ skladItem }) => {
 
     const openModalUpdate = () => {
         setUpdateSkladVisible(true)
+        sklad.setSelectedItem(skladItem)
     }
 
     function toggleSelect() {
@@ -30,47 +31,47 @@ const SkladCard = observer(({ skladItem }) => {
         const form = new FormData();
 
         form.append('typeId', sklad.selectedItem.typeId)
-        form.append('id', sklad.selectedItem.id)
+        form.append('id', id)
         updateSkladItem(form).then(data => {
             onHide()
             useConsole(data)
         })
     }
     return (
-        <Card style={{ width: '14rem', cursor: "pointer", border: "2px solid black", height: "25rem" }} className="mt-2 mb-1 mx-2"
-            onClick={toggleSelect}
-            bg={skladItem.id === sklad.selectedItem.id ? "info" : "light"}
+        <Card style={ { width: '14rem', cursor: "pointer", border: "2px solid black", height: "25rem" } } className="mt-2 mb-1 mx-2"
+
+            bg={ skladItem.id === sklad.selectedItem.id ? "info" : "light" }
         >
             <Card.Body
                 className='d-flex flex-column justify-content-between'
-
+                onClick={ toggleSelect }
             >
-                <Card.Title as="h4">{type.name}</Card.Title>
+                <Card.Title as="h4">{ type.name }</Card.Title>
                 <Card.Img
                     variant="top"
-                    src={`${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg'}
+                    src={ `${process.env.REACT_APP_API_URL}/${type?.img}` || 'http://localhost:5000/noimage.jpg' }
                     alt='NO PICTURE'
-                    width={"80"}
+                    width={ "20" }
 
                 />
                 <ListGroup >
                     <ListGroupItem className='bg-light'>
-                        {/* <div> ID типа: { type.id }</div> */}
-                        <div> Осталось: {quant}</div>
+                        {/* <div> ID типа: { type.id }</div> */ }
+                        <div> Осталось: { quant }</div>
                     </ListGroupItem>
 
-                    {type.info && type.info.map((i, idx) => (
+                    { type.info && type.info.map((i, idx) => (
                         <ListGroupItem
-                            key={idx}
-                            style={{
+                            key={ idx }
+                            style={ {
                                 backgroundColor: (idx % 2 === 0) ? "lightgray" : "darkgray",
                                 fontSize: 10,
                                 margin: 0,
                                 padding: 0,
                                 textAlign: "center"
-                            }}
+                            } }
                         >
-                            <p>{i.desc}</p>
+                            <p>{ i.desc }</p>
                         </ListGroupItem>))
                     }
 
@@ -83,7 +84,7 @@ const SkladCard = observer(({ skladItem }) => {
                     className="mx-auto"
                     variant="secondary"
                     size=""
-                    onClick={() => openModalUpdate()}
+                    onClick={ () => openModalUpdate() }
                 >
                     Изменить
                 </Button>
@@ -97,9 +98,9 @@ const SkladCard = observer(({ skladItem }) => {
                 </Button> */}
             </Card.Footer>
             <EditSkladPosition
-                show={updateSkladVisible}
-                onHide={() => setUpdateSkladVisible(false)}
-                skladItem={skladItem}
+                show={ updateSkladVisible }
+                onHide={ () => setUpdateSkladVisible(false) }
+                skladItem={ skladItem }
             />
         </Card >
     );

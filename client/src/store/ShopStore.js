@@ -4,22 +4,22 @@ import { makeAutoObservable } from 'mobx'
 export default class ShopStore {
     constructor () {
 
-        this._quant = []
+        this._activeItem = {}
         this._shopItems = []
         makeAutoObservable(this)
     }
 
 
     setShopItems(items) {
-        this._shopItems = items
+        return this._shopItems = items
     }
-    setQuant(quant) {
-        this._quant = quant
+    setActiveItem(item) {
+        return this._activeItem = item
     }
 
 
-    get quant() {
-        return this._quant
+    get activeItem() {
+        return this._activeItem
     }
     get shopItems() {
         return this._shopItems

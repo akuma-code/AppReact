@@ -9,11 +9,15 @@ import { observer } from "mobx-react-lite";
 import EditSkladPosition from "../../Components/modals/EditSkladPosition";
 import { useCallCount, useConsole } from "../../hooks/useConsole";
 import CreateShopItem from '../../Components/modals/CreateShopItem';
+import { fetchPositions } from "../../http/shopAPI";
 
 
 const SkladTab = observer(() => {
-    const { sklad } = useContext(Context)
-    const getAll = () => fetchSklad().then(data => sklad.setSkladItems(data))
+    const { sklad, shop } = useContext(Context)
+    const getAll = async () => {
+        fetchSklad().then(data => setSkladPos(data));
+
+    }
     const getOne = (id) => fetchOneSklad(id).then(data => useConsole(data))
     const clearAll = (id) => removeSkladPosition(id).then(data => useConsole(data)).finally(sklad.setSelectedItem(null))
     const onHide = () => setSkladVisible(true)
@@ -24,57 +28,57 @@ const SkladTab = observer(() => {
     const [skladPos, setSkladPos] = useState([])
 
     useEffect(() => {
-        getAll().then(() => setSkladPos(sklad.skladItems))
-        // setSkladPos(sklad.skladItems)
-        useCallCount("SkladTAB")("useEffect[]")
+        fetchSklad().then(data => setSkladPos(data));
 
     }, []);
 
 
     useEffect(() => {
-        getAll()
-        setActiveItem(sklad.selectedItem);
-        useCallCount("SkladTAB")("useEffect[sklad.selItem]")
-        setSkladPos(sklad.skladItems)
-        return () => fetchSklad().then(data => sklad.setSkladItems(data))
-    }, [sklad]);
+
+
+        fetchSklad().then(data => {
+            setActiveItem(sklad.selectedItem);
+            setSkladPos(data)
+        });
+        return () => useCallCount("SkladTAB")("useEffect[sklad.selItem]")
+    }, [sklad.selectedItem]);
 
 
     return (
         <Container fluid >
             <Row >
-                <Col md={1}
+                <Col md={ 1 }
                     className='d-flex justify-content-center py-2'
-                    style={{ background: "transparent", minWidth: "150px" }}
+                    style={ { background: "transparent", minWidth: "150px" } }
 
                 >
                     <CtrlBtns_Sklad
-                        style={{ minWidth: "100px" }}
-                        handlers={{ onHide, getAll, getOne, clearAll, activeItem, createShop }} />
+                        style={ { minWidth: "100px" } }
+                        handlers={ { onHide, getAll, getOne, clearAll, activeItem, createShop } } />
 
                 </Col>
-                <Col sm={{ offset: 0 }}
-                    style={{ background: "darkgray" }}
+                <Col sm={ { offset: 0 } }
+                    style={ { background: "darkgray" } }
                     className="mx-1"
                 >
                     <Row>
-                        {skladPos?.map(item =>
+                        { skladPos?.map(item =>
                             <SkladCard
-                                key={item.id}
-                                skladItem={item}
-                                openModal={() => setUpdateSkladVisible(true)}
+                                key={ item.id }
+                                skladItem={ item }
+                                openModal={ () => setUpdateSkladVisible(true) }
                             />
-                        )}
+                        ) }
                     </Row>
 
                 </Col>
                 <CreateSkladPosition
-                    show={skladVisible}
-                    onHide={() => setSkladVisible(false)}
+                    show={ skladVisible }
+                    onHide={ () => setSkladVisible(false) }
                 />
                 <CreateShopItem
-                    show={shopVisible}
-                    onHide={() => setShopVisible(false)}
+                    show={ shopVisible }
+                    onHide={ () => setShopVisible(false) }
                 />
             </Row>
         </Container>
