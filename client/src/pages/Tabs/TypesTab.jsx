@@ -7,8 +7,10 @@ const TypesTab = observer(({ typesItems }) => {
     const [types, setTypes] = useState([]);
     const [keys, setKeys] = useState([])
     const { ogo } = useContext(Context);
-    useEffect(() => {
 
+
+    useEffect(() => {
+        setTypes(typesItems)
     }, []);
 
     return (

@@ -16,7 +16,7 @@ const SkladTab = observer(() => {
     const isConfirmed = (text) => confirm(text)
 
     const getAll = () => fetchSklad().then(data => setSkladPos(data))
-    const getOne = (id) => fetchOneSklad(id).then(data => { useConsole(data, alert) })
+    const getOne = (id) => fetchOneSklad(id).then(data => { useConsole(data[0], alert) })
 
     const updatePOS = () => {
         fetchSklad().then(data => sklad.setSkladItems(data))

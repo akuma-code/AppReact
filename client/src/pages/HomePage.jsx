@@ -28,12 +28,10 @@ const Homepage = observer(() => {
         <Tabs
             defaultActiveKey="sklad"
             transition={ true }
-            // id="noanim-tab-example"
             className="mb-3 mx-5"
         >
 
             <Tab eventKey="type" title="Типы" className="mx-5">
-                {/* { ogo.types.map(type => <li key={ type.id }>{ type.name }</li>) } */ }
                 <TypesTab typeItems={ ogo.types } />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
