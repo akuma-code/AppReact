@@ -9,13 +9,20 @@ const ShopCard = observer(({ shopItem }) => {
 
 
     return (
-        <Card style={ { width: '13rem' } } className="mt-2 mx-1">
+        <Card style={{ width: '13rem' }} className="mt-2 mx-1">
             <Card.Body
                 className='d-flex flex-column justify-content-between'
             >
-                <Card.Title as="h4">{ title }</Card.Title>
-                <p>
-                    { title }: { price } руб.
+                <Card.Title as="h5"
+                    style={{ fontSize: 19 }}
+                > {title}
+                    <hr />
+                </Card.Title>
+                <p className='d-flex flex-column'
+                    style={{ fontSize: 16 }}>
+                    <span>Price: {price} руб.</span>
+                    <span>Id: {id}</span>
+                    <span>SkladId:{skladId}</span>
                 </p>
             </Card.Body>
             <Card.Footer className="d-flex justify-content-between"

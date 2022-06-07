@@ -21,9 +21,13 @@ const CreateShopItem = observer(({ show, onHide }) => {
         fetchSklad().then(data =>
             setSkladItems(data)
         )
+
     }, [])
 
-
+    useEffect(() => {
+        fetchSklad().then(data =>
+            setSkladItems(data))
+    }, [sklad.skladItems])
 
     const click = (item) => {
         console.log(item);
@@ -56,7 +60,6 @@ const CreateShopItem = observer(({ show, onHide }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"

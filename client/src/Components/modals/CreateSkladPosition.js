@@ -8,7 +8,7 @@ import { Context } from '../../index'
 
 const CreateSkladPosition = observer(({ show, onHide }) => {
     const { ogo } = useContext(Context)
-    const { sklad } = useContext(Context)
+    const { sklad, shop } = useContext(Context)
     const [typeId, setTypeId] = useState("")
     const [quant, setQuant] = useState("")
     const [typeName, setTypeName] = useState("");

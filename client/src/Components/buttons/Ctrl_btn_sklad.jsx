@@ -4,7 +4,6 @@ import { Button, ButtonGroup, Col } from "react-bootstrap";
 import { Context } from "../..";
 import { fetchPositions } from "../../http/shopAPI";
 import { fetchSklad } from "../../http/SkladAPI";
-import ConfirmDelete from "../modals/Confirm";
 
 
 const CtrlBtns_Sklad = observer(({ handlers }) => {
@@ -16,6 +15,7 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
     const updatePOS = () => {
         fetchSklad().then(data => sklad.setSkladItems(data))
         fetchPositions().then(data => shop.setShopItems(data))
+
     }
     useEffect(() => {
         setSkItem(activeItem)
@@ -26,28 +26,28 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
 
 
     return (
-        <Col md={ true } bg='dark'>
+        <Col md={true} bg='dark'>
             <ButtonGroup vertical
                 className="w-100 mb-1">
-                <Button variant="success" onClick={ onHide }>Добавить окно</Button>
-                <Button variant="warning" onClick={ () => createShopModal() } > Выставить на витрину </Button>
-                <Button onClick={ updatePOS }>Обновить список</Button>
+                <Button variant="success" onClick={onHide}>Добавить окно</Button>
+                <Button variant="warning" onClick={() => createShopModal()} > Выставить на витрину </Button>
+                <Button onClick={updatePOS}>Обновить список</Button>
 
             </ButtonGroup>
 
             <ButtonGroup vertical
                 className="w-100 my-1 mt-2">
-                <Button variant={ isDisabled ? "outline-danger" : "danger" }
-                    onClick={ () => deleteItem(skItem.id) }
-                    disabled={ isDisabled }
+                <Button variant={isDisabled ? "outline-danger" : "danger"}
+                    onClick={() => deleteItem(skItem.id)}
+                    disabled={isDisabled}
                 >Удалить выбранный
                 </Button>
 
             </ButtonGroup>
             <ButtonGroup vertical
                 className="w-100 my-1">
-                <Button onClick={ () => getOne(skItem.id) } disabled={ isDisabled }
-                    variant={ isDisabled ? "outline-info" : "info" }
+                <Button onClick={() => getOne(skItem.id)} disabled={isDisabled}
+                    variant={isDisabled ? "outline-info" : "info"}
                 >ИНФО
                 </Button>
             </ButtonGroup>
@@ -55,7 +55,7 @@ const CtrlBtns_Sklad = observer(({ handlers }) => {
                 size="lg"
                 vertical
                 className="mt-5">
-                <Button variant="danger" onClick={ () => clearAll() }>Очистить склад</Button>
+                <Button variant="danger" onClick={() => clearAll()}>Очистить склад</Button>
             </ButtonGroup>
 
         </Col>
