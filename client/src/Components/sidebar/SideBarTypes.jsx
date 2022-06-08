@@ -1,22 +1,18 @@
 import React from 'react';
 import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
 
-const SideBarShop = () => {
+const SideBarTypes = () => {
     return (
         <Row>
             <ButtonGroup vertical
                 className="w-100 mb-1">
-                <Button variant="success" >Добавить окно</Button>
-                <Button variant="warning" > Выставить на витрину </Button>
-                <Button >Обновить список</Button>
-
+                <Button variant="success" >Добавить новый тип</Button>
+                <Button variant="warning" > Редактировать выбранный </Button>
             </ButtonGroup>
 
             <ButtonGroup vertical
                 className="w-100 my-1 mt-2">
                 <Button variant={ "danger" }
-
-
                 >Удалить выбранный
                 </Button>
 
@@ -31,10 +27,10 @@ const SideBarShop = () => {
                 size="lg"
                 vertical
                 className="mt-5">
-                <Button variant="danger" >Очистить склад</Button>
+                <Button variant="danger" >Удалить все!</Button>
             </ButtonGroup>
         </Row>
     );
 }
 
-export default SideBarShop;
+export default SideBarTypes;

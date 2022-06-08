@@ -1,43 +1,42 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useState, useEffect } from 'react';
-import { Button, Image, Table } from "react-bootstrap";
+import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
+import { Button, Col, Container, Image, Row, Table } from "react-bootstrap";
 import { fetchTypes } from "../../http/typesAPI";
 import { Context } from "../..";
-const TypesTab = observer(({ typesItems }) => {
+import SideBarTypes from "../../Components/sidebar/SideBarTypes";
+
+
+const TypesTab = observer(({ typeItems }) => {
     const [types, setTypes] = useState([]);
     const [keys, setKeys] = useState([])
     const { ogo } = useContext(Context);
 
+    useLayoutEffect(() => {
+        fetchTypes().then(data => setTypes(data))
 
-    useEffect(() => {
-        setTypes(typesItems)
-    }, []);
+    }, [])
+
 
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    {/* { keys && keys.map((key, ind) => <th key={ ind }>{ key }</th>) } */ }
-                </tr>
-            </thead>
-            <tbody>
-                { types?.map((type, ind) =>
-                    <tr key={ ind }>
-                        <td>{ ind + 1 }</td>
-                        <td>{ type.id }</td>
-                        <td>{ type.name }</td>
-                        <td><Image height={ 50 } src={ process.env.REACT_APP_API_URL + '/' + type.img } /></td>
-                        <td>
-                            <Button
-                                onClick={ () => del(type.id) }
-                                variant={ "outline-danger" }
-                            >Удалить</Button>
-                        </td>
-                    </tr>
-                ) }
-            </tbody>
-        </Table>
+        <Container fluid>
+            <Row>
+                <Col md={ 1 } bg='dark'>
+                    <SideBarTypes />
+                </Col>
+                <Col md={ { offset: 0 } }>
+                    <Row>
+                        { types?.map(type =>
+                            <div key={ type.id }>
+                                <div>ID:  { type.id }</div>
+                                <div>Type: { type.name }</div>
+                                <hr />
+                            </div>
+                        ) }
+                    </Row>
+
+                </Col>
+            </Row>
+        </Container>
     );
 })
 

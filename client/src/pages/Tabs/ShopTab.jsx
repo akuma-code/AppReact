@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { Col, Container, Row } from "react-bootstrap";
 import { Context } from "../..";
+import SideBarShop from "../../Components/sidebar/SideBarShop";
 import ShopCard from "../../Components/UI/card/ShopCard";
 import { useStoreRefresh } from '../../hooks/useStoreRefresh';
 import { fetchPositions } from "../../http/shopAPI";
@@ -24,13 +25,13 @@ const ShopTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col md={1}>
-
+                <Col md={ 1 } bg='dark'>
+                    <SideBarShop></SideBarShop>
                 </Col>
-                <Col md={{ offset: 0 }}>
+                <Col md={ { offset: 0 } }>
                     <Row>
-                        {shopItems && shopItems.map((item, id) =>
-                            <ShopCard shopItem={item} key={id} />)}
+                        { shopItems && shopItems.map((item, id) =>
+                            <ShopCard shopItem={ item } key={ id } />) }
                     </Row>
 
                 </Col>
