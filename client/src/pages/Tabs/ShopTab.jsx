@@ -6,15 +6,15 @@ import SideBarShop from "../../Components/sidebar/SideBarShop";
 import ShopCard from "../../Components/UI/card/ShopCard";
 import { useStoreRefresh } from '../../hooks/useStoreRefresh';
 import { fetchPositions } from "../../http/shopAPI";
-
+import { clearShop } from "../../http/shopAPI"
 
 
 const ShopTab = observer(() => {
     const { shop } = useContext(Context);
     const [shopItems, setShopItems] = useState([])
     const [update, isLoading, error] = useStoreRefresh(fetchPositions, setShopItems)
-
-
+    const isConfirmed = (text) => confirm(text)
+    const clearAll = () => isConfirmed("Убрать все с витрины") ? clearShop().then(data => setShopItems([])) : null
 
     useLayoutEffect(() => {
         fetchPositions().then(data => setShopItems(data))

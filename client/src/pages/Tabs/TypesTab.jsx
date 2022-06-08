@@ -6,7 +6,7 @@ import { Context } from "../..";
 import SideBarTypes from "../../Components/sidebar/SideBarTypes";
 
 
-const TypesTab = observer(({ typeItems }) => {
+const TypesTab = observer(() => {
     const [types, setTypes] = useState([]);
     const [keys, setKeys] = useState([])
     const { ogo } = useContext(Context);

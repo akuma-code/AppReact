@@ -32,7 +32,7 @@ const Homepage = observer(() => {
         >
 
             <Tab eventKey="type" title="Типы" className="mx-5">
-                <TypesTab typeItems={ ogo.types } />
+                <TypesTab />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
                 <SkladTab skladItems={ sklad.skladItems } />
