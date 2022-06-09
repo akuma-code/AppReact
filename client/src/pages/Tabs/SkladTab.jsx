@@ -24,7 +24,9 @@ const SkladTab = observer(() => {
     }
 
     const deleteItem = (id) => {
-        if (isConfirmed("Удалить позицию со склада?")) removeSkladPosition(id).then(data => sklad.setSelectedItem(null)).finally(updatePOS())
+        if (isConfirmed("Удалить позицию со склада?")) removeSkladPosition(id)
+            .then(data => sklad.setSelectedItem(null))
+            .finally(updatePOS())
     }
     const clearAll = () => isConfirmed("Очистить склад полностью?") ? skladClear().then(data => updatePOS()) : null
 

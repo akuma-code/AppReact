@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/app.css'
-import { Badge, Button, ButtonGroup, Card, CardGroup, Col, Container, ListGroup, Row, ToggleButton } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, Row } from 'react-bootstrap'
 import { Context } from '..';
 import { fetchTypes, removeType } from '../http/typesAPI';
 import { OKNO_ROUTE } from "../utils/consts";
@@ -13,11 +13,7 @@ import CreateSkladPosition from '../Components/modals/CreateSkladPosition';
 
 
 const DBPage = observer(() => {
-    // const history = useHistory()
-    // const { ogo } = useContext(Context)
-    // const [types, setTypes] = useState([])
-    // const [checked, setChecked] = useState(false)
-    // const [shop, setShop] = useState([])
+
     const [typeVisible, setTypeVisible] = useState(false);
     const [tabVisible, setTabVisible] = useState(false);
     const [shopVisible, setShopVisible] = useState(false);
@@ -30,7 +26,7 @@ const DBPage = observer(() => {
             <Container className='d-flex mt-3'
                 fluid
             >
-                <Row lg={1} className="border d-flex w-100 flex-wrap align-content-center"
+                <Row lg={ 1 } className="border d-flex w-100 flex-wrap align-content-center"
                 >
                     <ButtonGroup
                         horizontal="true"
@@ -38,54 +34,54 @@ const DBPage = observer(() => {
                     >
                         <Button
                             className="btn  mt-2"
-                            variant={"outline-dark"}
-                            onClick={() => setTabVisible(true)}
+                            variant={ "outline-dark" }
+                            onClick={ () => setTabVisible(true) }
                         >
                             Таблица типов
                         </Button>
                         <Button
                             className="btn  mt-2"
-                            variant={"outline-dark"}
-                            onClick={() => setTypeVisible(true)}
+                            variant={ "outline-dark" }
+                            onClick={ () => setTypeVisible(true) }
                         >
                             Добавить новый тип
                         </Button>
                         <Button
                             className="btn  mt-2"
-                            variant={"outline-dark"}
-                            onClick={() => setShopVisible(true)}
+                            variant={ "outline-dark" }
+                            onClick={ () => setShopVisible(true) }
                         >
                             Добавить новую позицию (SHOP)
                         </Button>
                         <Button
                             className="btn  mt-2"
-                            variant={"outline-dark"}
-                            onClick={() => setSkladVisible(true)}
+                            variant={ "outline-dark" }
+                            onClick={ () => setSkladVisible(true) }
                         >
                             Добавить новую позицию (SKLAD)
                         </Button>
                     </ButtonGroup>
                 </Row>
-                <Row md={4}
+                <Row md={ 4 }
                     className="d-flex justify-content-center">
 
 
                 </Row>
                 <CreateType
-                    show={typeVisible}
-                    onHide={() => setTypeVisible(false)}
+                    show={ typeVisible }
+                    onHide={ () => setTypeVisible(false) }
                 />
                 <TypesTable
-                    show={tabVisible}
-                    onHide={() => setTabVisible(false)}
+                    show={ tabVisible }
+                    onHide={ () => setTabVisible(false) }
                 />
                 <CreateShopItem
-                    show={shopVisible}
-                    onHide={() => setShopVisible(false)}
+                    show={ shopVisible }
+                    onHide={ () => setShopVisible(false) }
                 />
                 <CreateSkladPosition
-                    show={skladVisible}
-                    onHide={() => setSkladVisible(false)}
+                    show={ skladVisible }
+                    onHide={ () => setSkladVisible(false) }
                 />
             </Container>
         </React.StrictMode>

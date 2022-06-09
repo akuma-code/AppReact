@@ -9,5 +9,6 @@ router.get('/', TypeController.getAll)
 router.get('/info', TypeController.getAllInfo)
 router.get('/:id', TypeController.getOne)
 router.delete('/:id', TypeController.delete)
+router.delete('/', TypeController.deleteAll)
 
 module.exports = router

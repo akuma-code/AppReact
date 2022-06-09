@@ -23,3 +23,8 @@ export const removeType = async (id) => {
 
     return data
 }
+export const clearTypes = async () => {
+    const { data } = await $host.delete('api/type/')
+
+    return data
+}

@@ -77,12 +77,29 @@ class TypeController {
         }
     }
 
-    async edit(req, res, next) {
-        const { id, newItem } = req.body
-        try {
-            const item = await OkType.find({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
+    async deleteAll(req, res, next) {
 
-            return res.json(item)
+        try {
+            await OkType.destroy({ truncate: true, cascade: true })
+            console.log("Types destroyed!");
+        } catch (error) {
+            console.log('#######', error.message)
+            next(ApiError.badRequest(error.message))
+        }
+    }
+
+    async edit(req, res, next) {
+        const { typeId, name, info } = req.body
+        const { img } = req.files;
+        let filename = v4() + ".jpg";
+
+        img.mv(path.resolve(__dirname, '..', 'static', filename));
+
+
+        try {
+            const type = await OkType.findOne({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
+            type.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
+            return res.json(type)
         } catch (error) {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
