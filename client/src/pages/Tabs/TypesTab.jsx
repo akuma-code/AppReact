@@ -62,9 +62,10 @@ const TypesTab = observer(() => {
                 <Col>
                     <Row>
                         <div>
-                            <h3>{ previewType?.name }</h3>
+                            <h3>{ previewType.name }</h3>
                             <Image src={ `${process.env.REACT_APP_API_URL}/${previewType?.img || "noimage.jpg"}` }
                                 height="200px"
+
                             />
                         </div>
 
