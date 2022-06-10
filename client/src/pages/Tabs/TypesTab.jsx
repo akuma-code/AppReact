@@ -11,11 +11,19 @@ const TypesTab = observer(() => {
     const [types, setTypes] = useState([]);
     const [keys, setKeys] = useState([])
     const { ogo } = useContext(Context);
+    const [previewType, setPreviewType] = useState({})
 
     const toggleSelect = (type) => {
         if (type.id === ogo.selectedType.id) ogo.setSelectedType({})
         else ogo.setSelectedType(type)
     }
+    useEffect(() => {
+        setPreviewType(ogo.selectedType)
+        return () => {
+            fetchTypes().then(data => setTypes(data))
+        };
+    }, [ogo.selectedType]);
+
 
     useLayoutEffect(() => {
         fetchTypes().then(data => setTypes(data))
@@ -34,15 +42,13 @@ const TypesTab = observer(() => {
                 </Col>
                 <Col sm={ { offset: 0 } }>
                     <Row>
-
-
                         { types?.map(type =>
                             <div key={ type.id }
                                 onClick={ () => toggleSelect(type) }
                                 className={ type.id === ogo.selectedType.id ? "bg-info " : "bg-light " }
                                 style={ { cursor: "pointer", border: "1px solid black", } }>
                                 <div>ID:  { type.id }</div>
-                                <div>Name: { type.name }</div>
+                                <div>Тип: { type.name }</div>
                                 { type?.info.map((i, idx) =>
                                     <div key={ idx }>{ idx + 1 }. { i.desc }</div>
 
@@ -52,6 +58,17 @@ const TypesTab = observer(() => {
                         ) }
                     </Row>
 
+                </Col>
+                <Col>
+                    <Row>
+                        <div>
+                            <h3>{ previewType?.name }</h3>
+                            <Image src={ `${process.env.REACT_APP_API_URL}/${previewType?.img || "noimage.jpg"}` }
+                                height="200px"
+                            />
+                        </div>
+
+                    </Row>
                 </Col>
             </Row>
 
