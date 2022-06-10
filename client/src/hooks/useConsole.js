@@ -17,3 +17,4 @@ export const useConsole = (data, cb = null) => {
 }
 
 export const useCallCount = (module) => { return (execPlace) => console.count(`${module} called from ${execPlace}`) }
+

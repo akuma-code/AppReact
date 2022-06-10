@@ -71,7 +71,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
                                 <Dropdown.Item key={idx}
                                     onClick={() => click(item)}
                                 >
-                                    {item.type.name || ""}
+                                    {item.type?.name}
                                 </Dropdown.Item>
                             )}
                         </DropdownButton>

@@ -59,38 +59,38 @@ const SkladTab = observer(() => {
     return (
         <Container fluid >
             <Row>
-                <Col md={ 1 }
+                <Col md={1}
                     className='d-flex justify-content-center py-2'
-                    style={ { background: "transparent", minWidth: "150px" } }
+                    style={{ background: "transparent", minWidth: "150px" }}
 
                 >
                     <CtrlBtns_Sklad
-                        style={ { minWidth: "130px" } }
-                        handlers={ { onHide: createSkladModal, getAll, getOne, clearAll, deleteItem, activeItem, createShopModal } } />
+                        style={{ minWidth: "130px" }}
+                        handlers={{ onHide: createSkladModal, getAll, getOne, clearAll, deleteItem, activeItem, createShopModal }} />
 
                 </Col>
-                <Col sm={ { offset: 0 } }
-                    style={ { background: "darkgray" } }
+                <Col sm={{ offset: 0 }}
+                    style={{ background: "darkgray" }}
                     className="mx-1"
                 >
                     <Row>
-                        { skladPos?.map(item =>
+                        {skladPos?.map(item =>
                             <SkladCard
-                                key={ item.id }
-                                skladItem={ item }
-                                openModal={ () => setUpdateSkladVisible(true) }
+                                key={item.id}
+                                skladItem={item}
+                                openModal={() => setUpdateSkladVisible(true)}
                             />
-                        ) }
+                        )}
                     </Row>
 
                 </Col>
                 <CreateSkladPosition
-                    show={ skladVisible }
-                    onHide={ () => setSkladVisible(false) }
+                    show={skladVisible}
+                    onHide={() => setSkladVisible(false)}
                 />
                 <CreateShopItem
-                    show={ shopVisible }
-                    onHide={ () => setShopVisible(false) }
+                    show={shopVisible}
+                    onHide={() => setShopVisible(false)}
                 />
             </Row>
         </Container>
