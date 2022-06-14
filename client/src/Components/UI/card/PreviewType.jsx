@@ -12,6 +12,8 @@ const PreviewType = observer(({ type }) => {
             <Row>
                 <Col>
                     <Image
+
+                        style={{ maxHeight: "350px", maxWidth: "300px" }}
                         src={`${process.env.REACT_APP_API_URL}/${img || "noimage.jpg"}`}
                     />
                 </Col>

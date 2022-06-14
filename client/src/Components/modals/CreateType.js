@@ -35,7 +35,7 @@ const CreateType = observer(({ show, onHide }) => {
     }
     const addOkType = () => {
         const form = new FormData();
-        form.append('name', typeName.toLocaleLowerCase())
+        form.append('name', typeName.toUpperCase())
         form.append('img', file)
         form.append('info', JSON.stringify(info))
 

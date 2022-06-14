@@ -52,11 +52,9 @@ const TypesTab = observer(() => {
                     className='d-flex justify-content-center'
                     style={{ minWidth: "190px" }}>
                     <SideBarTypes
-
                     />
                 </Col>
-                <Col sm={3}
-                >
+                <Col sm={3}>
                     <Row>
                         {types?.map(type =>
                             <div key={type.id}
@@ -64,8 +62,6 @@ const TypesTab = observer(() => {
                                 className={isSelected(type) ? "bg-info " : "bg-light "}
                                 style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem" }}>
                                 <b>Тип:</b> {type.name} <em>(ID: {type.id})</em>
-
-
                             </div>
                         )}
                     </Row>
