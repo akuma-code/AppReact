@@ -8,10 +8,10 @@ const EditTypeForm = observer(({ type }) => {
     const [showImg, setShowImg] = useState(false);
     const [name, setName] = useState("")
     const [img, setImg] = useState("")
-    const [info, setInfo] = useState([{ desc: '', number: Date.now() }])
+    const [info, setInfo] = useState([{ desc: '', number: '' }])
 
     const addInfo = () => {
-        setInfo([...info, { desc: '', number: Date.now() }])
+        setInfo([...info, { desc: '', number: '' }])
     }
     const removeInfo = (number) => {
         setInfo(info.filter(i => i.number !== number))
@@ -30,55 +30,55 @@ const EditTypeForm = observer(({ type }) => {
 
     return (
         <Form className="d-flex flex-column justify-content-between">
-            {type.info.length !== 0 && <Button className="bg-primary mb-2 w-25" onClick={() => setShowInfo(!showInfo)}>Edit Info</Button>}
-            <Form.Group as={Row} className="mb-2 " controlId="name">
-                <Col sm={2}>
-                    <Form.Label as={Button} className="w-100"
-                        onClick={() => setShowName(!showName)}
+            { type.info.length !== 0 && <Button className="bg-primary mb-2 w-25" onClick={ () => setShowInfo(!showInfo) }>Edit Info</Button> }
+            <Form.Group as={ Row } className="mb-2 " controlId="name">
+                <Col sm={ 2 }>
+                    <Form.Label as={ Button } className="w-100"
+                        onClick={ () => setShowName(!showName) }
                     >
-                        {!showName ? "Edit Name" : "Save"}
+                        { !showName ? "Edit Name" : "Save" }
                     </Form.Label>
                 </Col>
-                <Col sm={{ offset: 0, span: 10 }}>
-                    {showName &&
-                        <Form.Control type="text" placeholder={type.name} value={name}
-                            onChange={(e) => setName(e.target.value)}
+                <Col sm={ { offset: 0, span: 10 } }>
+                    { showName &&
+                        <Form.Control type="text" placeholder={ type.name } value={ name }
+                            onChange={ (e) => setName(e.target.value) }
                         />
                     }
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className="mb-3" controlId="img">
+            <Form.Group as={ Row } className="mb-3" controlId="img">
                 <Col sm="2">
-                    <Form.Label as={Button} className="w-100"
-                        onClick={() => setShowImg(!showImg)}
+                    <Form.Label as={ Button } className="w-100"
+                        onClick={ () => setShowImg(!showImg) }
                     >
-                        {!showImg ? "Edit Image" : "Save"}
+                        { !showImg ? "Edit Image" : "Save" }
                     </Form.Label>
                 </Col>
-                <Col sm={{ offset: 0 }}>
-                    {showImg &&
-                        <Form.Control type="file" value={img}
-                            onChange={(e) => setImg(e.target.value)}
+                <Col sm={ { offset: 0 } }>
+                    { showImg &&
+                        <Form.Control type="file" value={ img }
+                            onChange={ (e) => setImg(e.target.value) }
                         />
                     }
                 </Col>
             </Form.Group>
 
 
-            {showInfo && type?.info.map((i, idx) =>
-                <InputGroup as={Row} className="mb-3" key={idx}>
+            { showInfo && type?.info.map((i, idx) =>
+                <InputGroup as={ Row } className="mb-3" key={ idx }>
                     <Col>
-                        <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
+                        <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
                     </Col>
                     <Col>
-                        <Form.Label as={Button} className="w-100"
+                        <Form.Label as={ Button } className="w-100"
 
                         >
                             Save
                         </Form.Label>
                     </Col>
                 </InputGroup>
-            )}
+            ) }
 
         </Form>
     );
