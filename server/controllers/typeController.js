@@ -35,6 +35,42 @@ class TypeController {
         }
 
     }
+
+    async edit(req, res, next) {
+        const { typeId, name, info, imgSrc } = req.body
+
+
+        try {
+            const type = await OkType.findOne({ where: { id: typeId }, include: [{ model: OkTypeInfo, as: 'info' }] })
+            let filename = (req.files) ? v4() + ".jpg" : imgSrc;
+            if (req.files) {
+                const { img } = req.files;
+
+                img.mv(path.resolve(__dirname, '..', 'static', filename));
+            }
+            type.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
+            return res.json(type)
+        } catch (error) {
+            console.log('#######', error.message)
+            next(ApiError.badRequest(error.message))
+        }
+
+        if (info) {
+            try {
+                info = JSON.parse(info)
+
+                let typeInfo = await OkTypeInfo.findOne({ where: { typeId: typeId } })
+                info.forEach(i => {
+                    typeInfo.update({ desc: i.desc }, { where: { id: i.id } })
+                })
+                res.json(info)
+            } catch (error) {
+                console.log("#####12", error.message)
+                next(ApiError.badRequest(error.message))
+            }
+        }
+    }
+
     async getAll(req, res) {
         const types = await OkType.findAndCountAll({ include: [{ all: true }] })
         return res.json(types)
@@ -88,23 +124,7 @@ class TypeController {
         }
     }
 
-    async edit(req, res, next) {
-        const { typeId, name, info } = req.body
-        const { img } = req.files;
-        let filename = v4() + ".jpg";
 
-        img.mv(path.resolve(__dirname, '..', 'static', filename));
-
-
-        try {
-            const type = await OkType.findOne({ where: { id }, include: [{ model: OkTypeInfo, as: 'info' }] })
-            type.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
-            return res.json(type)
-        } catch (error) {
-            console.log('#######', error.message)
-            next(ApiError.badRequest(error.message))
-        }
-    }
 }
 
 module.exports = new TypeController()

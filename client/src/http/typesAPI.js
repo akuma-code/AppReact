@@ -28,3 +28,9 @@ export const clearTypes = async () => {
 
     return data
 }
+
+export const editType = async (type, id) => {
+
+    const newType = await $authHost.put(`api/type/${id}`, type)
+    return newType.data
+}
