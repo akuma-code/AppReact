@@ -37,38 +37,38 @@ class TypeController {
     }
 
     async edit(req, res, next) {
-        const { typeId, name, info, imgSrc } = req.body
 
+        let { typeId, name, info, imgSrc } = req.body
 
         try {
-            const type = await OkType.findOne({ where: { id: typeId }, include: [{ model: OkTypeInfo, as: 'info' }] })
             let filename = (req.files) ? v4() + ".jpg" : imgSrc;
             if (req.files) {
                 const { img } = req.files;
 
                 img.mv(path.resolve(__dirname, '..', 'static', filename));
             }
-            type.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
-            return res.json(type)
+            await OkType.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
+
         } catch (error) {
             console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
         }
 
         if (info) {
+            const parsedInfo = JSON.parse(info)
             try {
-                info = JSON.parse(info)
-
-                let typeInfo = await OkTypeInfo.findOne({ where: { typeId: typeId } })
-                info.forEach(i => {
-                    typeInfo.update({ desc: i.desc }, { where: { id: i.id } })
+                parsedInfo.forEach(info => {
+                    if (!info.id) return OkTypeInfo.create({ desc: info.desc, typeId: typeId })
+                    OkTypeInfo.update({ desc: info.desc, typeId: typeId }, { where: { id: info.id } })
                 })
-                res.json(info)
+
+                return res.status(200).json(parsedInfo)
             } catch (error) {
-                console.log("#####12", error.message)
+                console.log("##### updateINFO ERROR: ", error.message)
                 next(ApiError.badRequest(error.message))
             }
         }
+
     }
 
     async getAll(req, res) {

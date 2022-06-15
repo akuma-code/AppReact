@@ -26,8 +26,8 @@ const Homepage = observer(() => {
     }, []);
     return (
         <Tabs
-            defaultActiveKey="sklad"
-            transition={ true }
+            defaultActiveKey="type"
+            transition={true}
             className="mb-3 mx-5"
         >
 
@@ -35,12 +35,12 @@ const Homepage = observer(() => {
                 <TypesTab />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
-                <SkladTab skladItems={ sklad.skladItems } />
+                <SkladTab skladItems={sklad.skladItems} />
 
             </Tab>
             <Tab eventKey="shop" title="Витрина">
                 <ShopTab
-                    shopItmes={ shop.shopItmes }
+                    shopItmes={shop.shopItmes}
                 />
             </Tab>
         </Tabs>

@@ -37,8 +37,8 @@ const EditTypeForm = ({ type }) => {
         form.append("img", imgNew)
         form.append("info", JSON.stringify(info))
 
-        const infos = JSON.parse(JSON.stringify(info))
-        console.log({ typeId, name, img, info: infos });
+        // const infos = JSON.parse(JSON.stringify(info))
+        // console.log({ typeId, name, img, info: infos });
         return editType(form, typeId)
 
     }
@@ -65,16 +65,17 @@ const EditTypeForm = ({ type }) => {
 
 
     const addInfo = () => {
-        setInfo([...info, { desc: '', number: '' }])
+        setInfo([...info, { desc: '', id: '', typeId: type.id }])
+        setIsChanged(true)
     }
     const removeInfo = (id) => {
+        setIsChanged(true)
         setInfo(info.filter(i => i.id !== id))
     }
 
 
 
     const changeInfo = (key, value, id) => {
-        console.log("changed: ", key, value);
         setIsChanged(true)
         setInfo(info.map(i => i.id === id ? { ...i, [key]: value } : i))
 
@@ -91,20 +92,20 @@ const EditTypeForm = ({ type }) => {
         <Form className="d-flex flex-column justify-content-between">
             <Button
                 className=" mb-2 w-100"
-                onClick={ () => openForm() }
-                variant={ "secondary" }
+                onClick={() => openForm()}
+                variant={"secondary"}
             >
                 Редактировать
             </Button>
 
-            { showForm &&
-                <Form.Group as={ Row } className="mb-2 mt-2" controlId="name">
-                    <Col sm={ { offset: 0, span: 10 } }>
-                        <Form.Control type="text" placeholder={ type.name } value={ name }
-                            onChange={ (e) => changeName(e.target.value) }
+            {showForm &&
+                <Form.Group as={Row} className="mb-2 mt-2" controlId="name">
+                    <Col sm={{ offset: 0, span: 4 }}>
+                        <Form.Control type="text" placeholder={type.name} value={name}
+                            onChange={(e) => changeName(e.target.value)}
                         />
                     </Col>
-                    <Col sm={ 2 }>
+                    <Col sm={4}>
                         <Form.Label className="w-100"
                         >Изменить имя
                         </Form.Label>
@@ -112,12 +113,12 @@ const EditTypeForm = ({ type }) => {
 
                 </Form.Group>
             }
-            { showForm &&
-                <Form.Group as={ Row } className="mb-3" controlId="img">
-                    <Col sm={ { offset: 0 } }>
+            {showForm &&
+                <Form.Group as={Row} className="mb-3" controlId="img">
+                    <Col sm={{ offset: 0 }}>
 
                         <Form.Control type="file"
-                            onChange={ (e) => selectFile(e) }
+                            onChange={(e) => selectFile(e)}
                         />
 
                     </Col>
@@ -129,23 +130,34 @@ const EditTypeForm = ({ type }) => {
                 </Form.Group>
 
             }
+            {
+                isChanged && <Button
+                    className='mb-2'
+                    variant={"info"}
+                    onClick={() => updateType()}>UPDATE</Button>
+            }
 
-            { showForm && info.map((i, idx) =>
-                <InputGroup as={ Row } className="mb-3 mt-2" key={ idx }>
+            {showForm && <Button
+                onClick={() => addInfo()}
+            >
+                ADD INFO
+            </Button>
+            }
+            {showForm && info.map((i, idx) =>
+                <InputGroup as={Row} className="mb-3 mt-2" key={idx}>
                     <Col>
-                        <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
+                        <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
                     </Col>
-                    {/* <Col>
-                        <Form.Label as={ Button } className="w-100"
+                    {<Col>
+                        <Form.Label as={Button} className="w-100"
+                            onClick={() => removeInfo(i.id)}
                         >
-                            Save
+                            DEL
                         </Form.Label>
-                    </Col> */}
+                    </Col>}
                 </InputGroup>
-            ) }
-            { isChanged && <Button
-                variant={ !isChanged ? "secondary" : "info" }
-                onClick={ () => updateType() }>UPDATE</Button> }
+            )}
+
         </Form>
     );
 }

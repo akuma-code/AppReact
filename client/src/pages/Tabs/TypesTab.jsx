@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
-import { Button, ButtonGroup, Col, Container, Form, Image, InputGroup, Row, } from "react-bootstrap";
+import { Badge, Button, ButtonGroup, Col, Container, Form, Image, InputGroup, Row, } from "react-bootstrap";
 import { clearTypes, fetchTypes } from "../../http/typesAPI";
 import { Context } from "../..";
 import SideBarTypes from "../../Components/sidebar/SideBarTypes";
@@ -59,9 +59,9 @@ const TypesTab = observer(() => {
                         {types?.map(type =>
                             <div key={type.id}
                                 onClick={() => toggleSelect(type)}
-                                className={isSelected(type) ? "bg-info " : "bg-light "}
+                                className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between`}
                                 style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem" }}>
-                                <b>Тип:</b> {type.name} <em>(ID: {type.id})</em>
+                                <span><b>Тип:</b> {type.name}</span><Badge bg="dark" text="danger" >ID: {type.id}</Badge>
                             </div>
                         )}
                     </Row>
