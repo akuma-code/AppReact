@@ -59,6 +59,7 @@ class TypeController {
             try {
                 parsedInfo.forEach(info => {
                     if (!info.id) return OkTypeInfo.create({ desc: info.desc, typeId: typeId })
+                    if (!info.typeId) return OkTypeInfo.destroy({ where: { id: info.id } })
                     OkTypeInfo.update({ desc: info.desc, typeId: typeId }, { where: { id: info.id } })
                 })
 

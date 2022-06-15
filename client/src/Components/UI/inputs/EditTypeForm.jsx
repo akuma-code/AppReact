@@ -68,9 +68,12 @@ const EditTypeForm = ({ type }) => {
         setInfo([...info, { desc: '', id: '', typeId: type.id }])
         setIsChanged(true)
     }
-    const removeInfo = (id) => {
+    const removeInfo = (infoItem) => {
         setIsChanged(true)
-        setInfo(info.filter(i => i.id !== id))
+        setInfo(info.map(i => i.id === infoItem.id ? { ...i, typeId: "" } : i))
+        // setInfo([...info, { desc: infoItem.desc, typeId: '', id: infoItem.id }])
+        setInfo(info.filter(i => i.id !== infoItem.id))
+
     }
 
 
@@ -150,7 +153,7 @@ const EditTypeForm = ({ type }) => {
                     </Col>
                     {<Col>
                         <Form.Label as={Button} className="w-100"
-                            onClick={() => removeInfo(i.id)}
+                            onClick={() => removeInfo(i)}
                         >
                             DEL
                         </Form.Label>
