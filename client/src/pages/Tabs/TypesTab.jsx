@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
 import { Badge, Button, ButtonGroup, Col, Container, Form, Image, InputGroup, Row, } from "react-bootstrap";
-import { clearTypes, fetchTypes } from "../../http/typesAPI";
+import { clearTypes, fetchOneType, fetchTypes } from "../../http/typesAPI";
 import { Context } from "../..";
 import SideBarTypes from "../../Components/sidebar/SideBarTypes";
 import CreateType from "../../Components/modals/CreateType";
@@ -20,7 +20,7 @@ const TypesTab = observer(() => {
     const [info, setInfo] = useState([])
     const [showName, setShowName] = useState(false)
     const [showInfo, setShowInfo] = useState(false);
-    const [showImg, setShowImg] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false);
     const isSelected = type => type.id === ogo.selectedType.id
 
     const toggleSelect = (type) => {
@@ -30,16 +30,21 @@ const TypesTab = observer(() => {
 
     useEffect(() => {
         setPreviewType(ogo.selectedType)
+        fetchTypes().then(data => {
+            ogo.setTypes(data);
+            setTypes(data)
+        })
         return () => {
-            fetchTypes().then(data => setTypes(data))
+
         };
     }, [ogo.selectedType]);
 
 
     useLayoutEffect(() => {
-        fetchTypes().then(data => setTypes(data))
+        // fetchTypes().then(data => setTypes(data))
+        fetchOneType(ogo.selectedType.id).then(data => setPreviewType(data))
 
-    }, [])
+    }, [ogo.selectedType])
 
 
 
@@ -48,29 +53,36 @@ const TypesTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col sm={1}
+                <Col sm={ 1 }
                     className='d-flex justify-content-center'
-                    style={{ minWidth: "190px" }}>
+                    style={ { minWidth: "190px" } }>
                     <SideBarTypes
+                        show={ () => setShowEditForm(!showEditForm) }
                     />
                 </Col>
-                <Col sm={3}>
+                <Col sm={ 2 }>
                     <Row>
-                        {types?.map(type =>
-                            <div key={type.id}
-                                onClick={() => toggleSelect(type)}
-                                className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between`}
-                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem" }}>
-                                <span><b>Тип:</b> {type.name}</span><Badge bg="dark" text="danger" >ID: {type.id}</Badge>
+                        { types?.map(type =>
+                            <div key={ type.id }
+                                onClick={ () => toggleSelect(type) }
+                                className={ `${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1` }
+                                style={ { cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" } }
+                            >
+                                <span><b>Тип:</b> { type.name }</span><Badge bg="dark" text="light" >ID: { type.id }</Badge>
                             </div>
-                        )}
+                        ) }
                     </Row>
 
                 </Col>
-                <Col>
+                <Col sm={ 4 }>
                     <Row>
-                        <PreviewType type={previewType} />
-                        {previewType.info && <EditTypeForm type={previewType} />}
+                        <PreviewType type={ previewType } />
+
+                    </Row>
+                </Col>
+                <Col sm={ 4 }>
+                    <Row>
+                        { showEditForm && <EditTypeForm type={ previewType } /> }
                     </Row>
                 </Col>
             </Row>

@@ -18,8 +18,9 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
     useEffect(() => {
         fetchTypes().then(data => {
             setTypes(data)
+
         })
-    }, [])
+    }, [ogo.types])
 
 
 
@@ -41,8 +42,8 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
+            show={ show }
+            onHide={ onHide }
             centered
         >
             <Modal.Header closeButton>
@@ -56,15 +57,15 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={typeName ? typeName : "укажите тип"}
-                            value={typeName}
+                            title={ typeName ? typeName : "укажите тип" }
+                            value={ typeName }
                             id="input-group-dropdown-1"
-                        >{types.map((type, idx) =>
-                            <Dropdown.Item key={idx}
-                                onClick={() => clickType(type)}
-                            >{type.name}
+                        >{ types.map((type, idx) =>
+                            <Dropdown.Item key={ idx }
+                                onClick={ () => clickType(type) }
+                            >{ type.name }
                             </Dropdown.Item>
-                        )}
+                        ) }
                         </DropdownButton>
                         {/* <FormControl placeholder="название окна"
                             value={typeName}
@@ -73,19 +74,19 @@ const CreateSkladPosition = observer(({ show, onHide }) => {
                     <Form.Control
                         className='mt-2 '
                         placeholder="количество"
-                        value={quant}
+                        value={ quant }
                         type="number"
-                        onChange={(e) => setQuant(e.target.value)}
+                        onChange={ (e) => setQuant(e.target.value) }
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={'outline-dark'}
-                    onClick={addNewPos}
+                    variant={ 'outline-dark' }
+                    onClick={ addNewPos }
                 >Добавить</Button>
-                <Button onClick={onHide}>Отмена</Button>
+                <Button onClick={ onHide }>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

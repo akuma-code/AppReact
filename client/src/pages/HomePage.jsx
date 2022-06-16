@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Col, Fade, Tab, Tabs } from 'react-bootstrap';
 import { Context } from '..';
 import OkList from '../Components/OkList';
@@ -15,6 +15,9 @@ import TypesTab from "./Tabs/TypesTab";
 
 const Homepage = observer(() => {
     const { sklad, ogo, shop } = useContext(Context)
+    const [skladItems, setSkladItems] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [shopItems, setShopItems] = useState([]);
 
     const hpCounter = useCallCount("homepage")
 
@@ -24,10 +27,16 @@ const Homepage = observer(() => {
         fetchPositions().then(data => shop.setShopItems(data))
         hpCounter("home/useEffect")
     }, []);
+
+    useLayoutEffect(() => {
+        setShopItems(shop.shopItems)
+        setSkladItems(sklad.skladItems)
+        setTypes(ogo.types)
+    }, [ogo.types, sklad.skladItems])
     return (
         <Tabs
             defaultActiveKey="type"
-            transition={true}
+            transition={ true }
             className="mb-3 mx-5"
         >
 
@@ -35,12 +44,12 @@ const Homepage = observer(() => {
                 <TypesTab />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
-                <SkladTab skladItems={sklad.skladItems} />
+                <SkladTab skladItems={ skladItems } />
 
             </Tab>
             <Tab eventKey="shop" title="Витрина">
                 <ShopTab
-                    shopItmes={shop.shopItmes}
+                    shopItmes={ shopItems }
                 />
             </Tab>
         </Tabs>
