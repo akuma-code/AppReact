@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, computed, action } from 'mobx'
 
 
 export default class OgoStore {
@@ -10,7 +10,6 @@ export default class OgoStore {
         this._selectedType = {}
         makeAutoObservable(this)
     }
-
     setTypes(types) {
         this._types = types
     }

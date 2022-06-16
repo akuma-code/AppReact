@@ -8,6 +8,7 @@ import CreateType from "../../Components/modals/CreateType";
 import PreviewType from "../../Components/UI/card/PreviewType";
 import EditTypeForm from "../../Components/UI/inputs/EditTypeForm";
 import { useSpyState } from "../../hooks/useConsole";
+import SettingsBadge from "../../Components/buttons/SettingsBadge";
 
 
 
@@ -27,11 +28,13 @@ const TypesTab = observer(() => {
     const isSelected = type => type.id === ogo.selectedType.id
 
     const toggleSelect = (type) => {
-        if (isSelected(type)) {
-            setShowEditForm(false)
-            ogo.setSelectedType({})
+        if (isSelected(type)) return setShowEditForm(false)
+
+        else {
+            ogo.setSelectedType(type)
+            // setShowEditForm(true)
+
         }
-        else return ogo.setSelectedType(type)
     }
 
     useEffect(() => {
@@ -39,10 +42,7 @@ const TypesTab = observer(() => {
             ogo.setTypes(data);
             setTypes(data)
         })
-
-        return () => {
-            useSpyState(ogo.selectedType)
-        };
+        ogo.setSelectedType(currentType)
     }, []);
 
 
@@ -65,19 +65,24 @@ const TypesTab = observer(() => {
                     <SideBarTypes
                         show={() => setShowEditForm(!showEditForm)}
                     />
+                    {info && info}
                 </Col>
                 <Col sm={2}>
                     <Row>
                         {types?.map(type =>
                             <div key={type.id}
-                                onClick={() => toggleSelect(type)}
+                                onClick={() => ogo.setSelectedType(type)}
                                 className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1`}
-                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" }}
+                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.6rem", borderRadius: "10px" }}
                             >
                                 <span><b>Тип:</b> {type.name}</span>
-                                <Badge bg="dark" text="light"
+                                <SettingsBadge
+                                    item={type}
+                                    onHide={setShowEditForm}
+                                    as={Button}
                                 // onClick={() => isSelected(type) ? setShowEditForm(true) : setShowEditForm(false)}
-                                >ID: {type.id}</Badge>
+                                >&#9881;
+                                </SettingsBadge>
                             </div>
                         )}
                     </Row>
