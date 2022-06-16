@@ -50,7 +50,7 @@ class TypeController {
             await OkType.update({ typeId: typeId, name: name, img: filename }, { where: { id: typeId } })
 
         } catch (error) {
-            console.log('#######', error.message)
+            console.log('####### EDIT ERROR: ', error.message)
             next(ApiError.badRequest(error.message))
         }
 
@@ -83,8 +83,9 @@ class TypeController {
 
 
     async getOne(req, res) {
+        const { id } = req.params
+        if (!id) return console.log("ID NOT FOUND!");
         try {
-            const { id } = req.params
             const type = await OkType.findOne({
                 where: { id },
                 include: [{ all: true }]
@@ -92,7 +93,7 @@ class TypeController {
 
             return res.json(type)
         } catch (error) {
-            console.log('#######', error.message)
+            console.log('####### GETONE ERROR:', error.message)
         }
 
     }

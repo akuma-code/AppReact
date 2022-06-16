@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState, useLayoutEffect, useContext } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { isEqualString } from '../../../utils/Compare';
-import { editType } from "../../../http/typesAPI";
+import { editType, fetchTypes } from "../../../http/typesAPI";
 import { useConsole } from "../../../hooks/useConsole";
 import { Context } from "../../..";
 
@@ -19,21 +19,14 @@ const EditTypeForm = observer(({ type }) => {
     const [info, setInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [savedInfo, setSavedInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [isChanged, setIsChanged] = useState(false)
+    const [typeId, setTypeId] = useState("")
     const { ogo } = useContext(Context)
 
-    useLayoutEffect(() => {
-        setIsChanged(false)
-        setImg(type.img)
-        setName(type.name)
-        setInfo(type.info)
-        setSavedInfo(type.info)
-        return () => setShowForm(false)
-    }, [type.id, type.info])
 
-    const checkId = (id) => { info.map(i => i.id).includes(id) }
 
 
     const saveForm = async (typeId, name, img, info) => {
+        if (!typeId) return console.log("NO TYPE ID");
         const form = new FormData();
         form.append("typeId", typeId)
         form.append("name", name)
@@ -57,8 +50,9 @@ const EditTypeForm = observer(({ type }) => {
 
     const updateType = () => {
         saveForm(type.id, name, img, savedInfo)
+        // ogo.setSelectedType(type)
+        setShowForm(false)
         // .then(data => setInfo(savedInfo.filter(i => !i.del)))
-        ogo.setSelectedType(type)
     }
 
 
@@ -70,69 +64,75 @@ const EditTypeForm = observer(({ type }) => {
         setIsChanged(true)
     }
     const removeInfo = (infoItem) => {
-        setIsChanged(true)
         setSavedInfo(savedInfo.map(i => i.id === infoItem.id ? { ...i, del: true, typeId: "" } : i))
-        // setInfo([...info, { desc: infoItem.desc, typeId: '', id: infoItem.id }])
         setInfo(info.filter(i => i.id !== infoItem.id))
+        setIsChanged(true)
+        // setInfo([...info, { desc: infoItem.desc, typeId: '', id: infoItem.id }])
         // setInfo(info.filter(i => !i.del))
     }
 
 
 
     const changeInfo = (key, value, id) => {
-        setIsChanged(true)
         setInfo(info.map(i => i.id === id ? { ...i, [key]: value } : i))
         setSavedInfo(savedInfo.map(i => i.id === id ? { ...i, [key]: value } : i))
+        setIsChanged(true)
 
     }
 
     const selectFile = e => {
-        setIsChanged(true)
         setImgNew(e.target.files[0])
+        setIsChanged(true)
     }
 
 
 
+    useLayoutEffect(() => {
+        setIsChanged(false)
+        setImg(type.img)
+        setName(type.name)
+        setInfo(type.info)
+        setSavedInfo(type.info)
+
+        // return () => setShowForm(false)
+    }, [type.id, type.info])
+
+
     return (
         <Form className="d-flex flex-column justify-content-between">
-            {/* <Button
-                className=" mb-2 w-100"
-                onClick={ () => setShowForm(!showForm) }
-                variant={ "secondary" }
-            >
-                Редактировать
-            </Button> */}
-            {
-                <Button
-                    className='mb-2'
-                    variant={ isChanged ? "danger" : "secondary" }
-                    disabled={ isChanged ? false : true }
-                    style={ { visibility: `${isChanged ? "visible" : "hidden"}` } }
 
-                    onClick={ () => updateType() }>Сохранить изменения</Button>
+            {showForm && <Button
+                className='mb-2'
+                variant={isChanged ? "danger" : "secondary"}
+                disabled={isChanged ? false : true}
+                // style={ { visibility: `${isChanged ? "visible" : "hidden"}` } }
+                active
+                size='lg'
+                onClick={() => updateType()}>
+                {isChanged ? "Сохранить изменения" : "Параметры типа"}
+
+            </Button>
             }
-            { showForm &&
-                <Form.Group as={ Row } className="mb-2 mt-2" controlId="name">
-                    <Col sm={ { offset: 0, span: 4 } }>
-                        <Form.Control type="text" placeholder={ type.name } value={ name }
-                            onChange={ (e) => changeName(e.target.value) }
-                        />
-                    </Col>
-                    <Col sm={ 4 }>
-                        <Form.Label className="w-100"
-                        >Изменить имя
-                        </Form.Label>
-                    </Col>
+            {showForm && <Form.Group as={Row} className="mb-2 mt-2" controlId="name">
+                <Col sm={{ offset: 0, span: 4 }}>
+                    <Form.Control type="text" placeholder={type.name} value={name}
+                        onChange={(e) => changeName(e.target.value)}
+                    />
+                </Col>
+                <Col sm={4}>
+                    <Form.Label className="w-100"
+                    >Изменить имя
+                    </Form.Label>
+                </Col>
 
-                </Form.Group>
+            </Form.Group>
             }
             {
-                showForm &&
-                <Form.Group as={ Row } className="mb-3" controlId="img">
-                    <Col sm={ { offset: 0 } }>
+                showForm && <Form.Group as={Row} className="mb-3" controlId="img">
+                    <Col sm={{ offset: 0 }}>
 
                         <Form.Control type="file"
-                            onChange={ (e) => selectFile(e) }
+                            onChange={(e) => selectFile(e)}
                         />
 
                     </Col>
@@ -145,33 +145,31 @@ const EditTypeForm = observer(({ type }) => {
 
             }
 
-
-
             {
-                showForm && info.map((i, idx) =>
-                    <InputGroup as={ Row } className="mb-3 mt-2" key={ idx }>
+                showForm && info?.map((i, idx) =>
+                    <InputGroup as={Row} className="mb-3 mt-2" key={idx}>
                         <Col>
-                            <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
+                            <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
                         </Col>
-                        { <Col>
-                            <Form.Label as={ Button } className="w-100"
-                                onClick={ () => removeInfo(i) }
-                                variant={ "outline-danger" }
+                        {<Col>
+                            <Form.Label as={Button} className="w-100"
+                                onClick={() => removeInfo(i)}
+                                variant={"outline-danger"}
                             >
                                 DEL
                             </Form.Label>
-                        </Col> }
+                        </Col>}
                     </InputGroup>
                 )
             }
             {
                 showForm && <Button
-                    onClick={ () => addInfo() }
+                    onClick={() => addInfo()}
                 >
-                    ADD INFO
+                    Добавить характеристику
                 </Button>
             }
-        </Form >
+        </Form>
     );
 })
 

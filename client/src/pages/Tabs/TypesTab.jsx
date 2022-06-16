@@ -7,42 +7,48 @@ import SideBarTypes from "../../Components/sidebar/SideBarTypes";
 import CreateType from "../../Components/modals/CreateType";
 import PreviewType from "../../Components/UI/card/PreviewType";
 import EditTypeForm from "../../Components/UI/inputs/EditTypeForm";
+import { useSpyState } from "../../hooks/useConsole";
 
 
 
 const TypesTab = observer(() => {
+    const { ogo } = useContext(Context);
     const [types, setTypes] = useState([]);
     const [keys, setKeys] = useState([])
-    const { ogo } = useContext(Context);
-    const [previewType, setPreviewType] = useState({ info: [] })
+    const [currentType, setCurrentType] = useState({ info: [] })
     const [name, setName] = useState("")
     const [img, setImg] = useState("")
     const [info, setInfo] = useState([])
     const [showName, setShowName] = useState(false)
     const [showInfo, setShowInfo] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+
+
     const isSelected = type => type.id === ogo.selectedType.id
 
     const toggleSelect = (type) => {
-        if (isSelected(type)) ogo.setSelectedType({})
-        else ogo.setSelectedType(type)
+        if (isSelected(type)) {
+            setShowEditForm(false)
+            ogo.setSelectedType({})
+        }
+        else return ogo.setSelectedType(type)
     }
 
     useEffect(() => {
-        setPreviewType(ogo.selectedType)
         fetchTypes().then(data => {
             ogo.setTypes(data);
             setTypes(data)
         })
+
         return () => {
-
+            useSpyState(ogo.selectedType)
         };
-    }, [ogo.selectedType]);
+    }, []);
 
 
-    useLayoutEffect(() => {
-        // fetchTypes().then(data => setTypes(data))
-        fetchOneType(ogo.selectedType.id).then(data => setPreviewType(data))
+    useEffect(() => {
+        fetchTypes().then(data => setTypes(data))
+
 
     }, [ogo.selectedType])
 
@@ -53,36 +59,39 @@ const TypesTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col sm={ 1 }
+                <Col sm={1}
                     className='d-flex justify-content-center'
-                    style={ { minWidth: "190px" } }>
+                    style={{ minWidth: "190px" }}>
                     <SideBarTypes
-                        show={ () => setShowEditForm(!showEditForm) }
+                        show={() => setShowEditForm(!showEditForm)}
                     />
                 </Col>
-                <Col sm={ 2 }>
+                <Col sm={2}>
                     <Row>
-                        { types?.map(type =>
-                            <div key={ type.id }
-                                onClick={ () => toggleSelect(type) }
-                                className={ `${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1` }
-                                style={ { cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" } }
+                        {types?.map(type =>
+                            <div key={type.id}
+                                onClick={() => toggleSelect(type)}
+                                className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1`}
+                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" }}
                             >
-                                <span><b>Тип:</b> { type.name }</span><Badge bg="dark" text="light" >ID: { type.id }</Badge>
+                                <span><b>Тип:</b> {type.name}</span>
+                                <Badge bg="dark" text="light"
+                                // onClick={() => isSelected(type) ? setShowEditForm(true) : setShowEditForm(false)}
+                                >ID: {type.id}</Badge>
                             </div>
-                        ) }
+                        )}
                     </Row>
 
                 </Col>
-                <Col sm={ 4 }>
+                <Col sm={4}>
                     <Row>
-                        <PreviewType type={ previewType } />
+                        <PreviewType type={ogo.selectedType} />
 
                     </Row>
                 </Col>
-                <Col sm={ 4 }>
+                <Col sm={4}>
                     <Row>
-                        { showEditForm && <EditTypeForm type={ previewType } /> }
+                        {showEditForm && <EditTypeForm type={ogo.selectedType} />}
                     </Row>
                 </Col>
             </Row>

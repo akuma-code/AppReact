@@ -11,7 +11,7 @@ const SideBarTypes = observer(({ show, props }) => {
 
     const { ogo } = useContext(Context);
     const [showCreateType, setShowCreateType] = useState(false);
-
+    const canOpen = () => ogo.selectedType.id ? true : false
 
 
     const isConfirmed = (text) => confirm(text);
@@ -19,22 +19,23 @@ const SideBarTypes = observer(({ show, props }) => {
     const deleteType = (id) => isConfirmed("Удалить тип") ? removeType(id) : null
     const getInfo = (type) => fetchOneType(type.id).then(data => { useConsole(data, alert) })
     return (
-        <Row style={ { maxHeight: "300px" } }>
+        <Row style={{ maxHeight: "300px" }}>
             <ButtonGroup vertical
                 className="w-100 mb-1">
-                <Button variant="success" onClick={ () => setShowCreateType(true) }
+                <Button variant="success" onClick={() => setShowCreateType(true)}
                 >Добавить новый тип
                 </Button>
-                <Button variant="warning"
-                    onClick={ () => show() }
-                > Редактировать выбранный
+                <Button variant={canOpen() ? "danger" : "secondary"}
+                    style={{ visibility: canOpen() ? "visible" : "hidden" }}
+                    onClick={() => show()}
+                > Открыть редактор
                 </Button>
             </ButtonGroup>
 
             <ButtonGroup vertical
                 className="w-100 my-1 mt-2">
-                <Button variant={ "danger" }
-                    onClick={ () => deleteType(ogo.selectedType.id) }
+                <Button variant={"danger"}
+                    onClick={() => deleteType(ogo.selectedType.id)}
                 >Удалить выбранный
                 </Button>
 
@@ -42,7 +43,7 @@ const SideBarTypes = observer(({ show, props }) => {
             <ButtonGroup vertical
                 className="w-100 my-1">
                 <Button
-                    onClick={ () => getInfo(ogo.selectedType) }
+                    onClick={() => getInfo(ogo.selectedType)}
                 >ИНФО
                 </Button>
             </ButtonGroup>
@@ -51,12 +52,12 @@ const SideBarTypes = observer(({ show, props }) => {
                 vertical
                 className="mt-5">
                 <Button variant="danger"
-                    onClick={ () => removeTypes() }>Удалить все!</Button>
+                    onClick={() => removeTypes()}>Удалить все!</Button>
             </ButtonGroup>
 
             <CreateType
-                show={ showCreateType }
-                onHide={ () => setShowCreateType(false) }
+                show={showCreateType}
+                onHide={() => setShowCreateType(false)}
             />
         </Row>
     );
