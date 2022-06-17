@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { Col, Fade, Tab, Tabs } from 'react-bootstrap';
+import { Col, Fade, Spinner, Tab, Tabs } from 'react-bootstrap';
 import { Context } from '..';
 import OkList from '../Components/OkList';
 import { useCallCount } from '../hooks/useConsole';
+import { useStoreRefresh } from "../hooks/useStoreRefresh";
 import { fetchPositions } from '../http/shopAPI';
 import { fetchOneSklad, fetchSklad, removeSkladPosition } from "../http/SkladAPI";
 import { fetchTypes } from '../http/typesAPI';
@@ -20,19 +21,24 @@ const Homepage = observer(() => {
     const [shopItems, setShopItems] = useState([]);
 
     const hpCounter = useCallCount("homepage")
+    const [refSklad, isSkLoading, errSK] = useStoreRefresh(fetchSklad, sklad.setSkladItems)
+    const [refreshTypes, isLoadingTypes, errorType] = useStoreRefresh(fetchTypes, ogo.setTypes)
 
-    useEffect(() => {
-        fetchSklad().then(data => sklad.setSkladItems(data))
-        fetchTypes().then(data => ogo.setTypes(data))
-        fetchPositions().then(data => shop.setShopItems(data))
-        hpCounter("home/useEffect")
-    }, []);
 
-    useLayoutEffect(() => {
-        setShopItems(shop.shopItems)
-        setSkladItems(sklad.skladItems)
-        setTypes(ogo.types)
-    }, [ogo.types, sklad.skladItems])
+    // useEffect(() => {
+    //     refSklad()
+    //     refreshTypes()
+    //     // fetchSklad().then(data => sklad.setSkladItems(data))
+    //     // fetchTypes().then(data => ogo.setTypes(data))
+    //     fetchPositions().then(data => shop.setShopItems(data))
+    //     hpCounter("home/useEffect")
+    // }, []);
+
+    // useLayoutEffect(() => {
+    //     setShopItems(shop.shopItems)
+    //     setSkladItems(sklad.skladItems)
+    //     setTypes(ogo.types)
+    // }, [ogo.types, sklad.skladItems])
     return (
         <Tabs
             defaultActiveKey="type"
@@ -44,14 +50,22 @@ const Homepage = observer(() => {
                 <TypesTab />
             </Tab>
             <Tab eventKey="sklad" title="Склад">
-                <SkladTab skladItems={ skladItems } />
+                <SkladTab />
 
             </Tab>
             <Tab eventKey="shop" title="Витрина">
-                <ShopTab
-                    shopItmes={ shopItems }
-                />
+                <ShopTab />
             </Tab>
+            <Tab
+                title={
+                    isLoadingTypes &&
+                    <Spinner animation="border" role="status" size="lg" className="mx-auto">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                }
+                eventKey="selectedItem" />
+
+
         </Tabs>
     );
 })

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useLayoutEffect } from 'react';
-import { Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Badge, Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../..";
 import { useConsole } from "../../../hooks/useConsole";
@@ -31,60 +31,44 @@ const SkladCard = observer(({ skladItem }) => {
         fetchOneType(type.id).then(data => setInfo(data.info))
     }, [])
     return (
-        <Card style={{ width: '14rem', cursor: "pointer", border: "2px solid black", height: "25rem" }} className="mt-2 mb-1 mx-2"
+        <Card style={ { width: '14rem', cursor: "pointer", border: "2px solid black" } } className="mt-2 mb-1 mx-2"
 
-            bg={id === sklad.selectedItem.id ? "info" : "light"}
+            bg={ id === sklad.selectedItem.id ? "secondary" : "light" }
         >
             <Card.Body
                 className='d-flex flex-column justify-content-between'
-                onClick={toggleSelect}
+                onClick={ toggleSelect }
             >
-                <Card.Title as="h4">{type?.name}</Card.Title>
+                <Card.Title as="h4"
+                    className='d-flex flex-row justify-content-between'>
+                    { type?.name }
+                    <Badge as={ Button }
+                        bg="dark"
+                        text="light"
+                        onClick={ openModalUpdate }>
+                        &#9776;
+                    </Badge>
+                </Card.Title>
                 <Card.Img
+                    className="mx-auto"
                     variant="top"
-                    src={`${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}`}
+                    src={ `${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}` }
                     alt='NO PICTURE'
-                    width={"20"}
+
                 />
-                <ListGroup >
-                    <ListGroupItem className='bg-light'>
-                        {/* <div> ID типа: { type.id }</div> */}
-                        <div> Осталось: {quant} шт.</div>
-                    </ListGroupItem>
-
-                    {type?.info && type.info.map((i, idx) => (
-                        <ListGroupItem
-                            key={idx}
-                            style={{
-                                backgroundColor: (idx % 2 === 0) ? "lightgray" : "darkgray",
-                                fontSize: 10,
-                                margin: 0,
-                                padding: 0,
-                                textAlign: "center"
-                            }}
-                        >
-                            <p>{i.desc}</p>
-                        </ListGroupItem>))
-                    }
-
-                </ListGroup>
 
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-between "
+            <Card.Footer className="d-flex justify-content-center "
             >
-                <Button
-                    className="mx-auto"
-                    variant="secondary"
-                    size="lg"
-                    onClick={() => openModalUpdate()}
-                >
-                    Редактировать
-                </Button>
+                <ListGroupItem className='bg-danger fw-bold' >
+                    Осталось: <Badge style={ { fontHeight: "1.2rem" } }>{ quant } шт.</Badge>
+                </ListGroupItem>
+
             </Card.Footer>
             <EditSkladPosition
-                show={updateSkladVisible}
-                onHide={() => setUpdateSkladVisible(false)}
-                skladItem={skladItem}
+                show={ updateSkladVisible }
+                onHide={ () => setUpdateSkladVisible(false) }
+                skladItem={ skladItem }
             />
         </Card>
     );

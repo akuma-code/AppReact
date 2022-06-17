@@ -51,7 +51,7 @@ const EditTypeForm = observer(({ type }) => {
     const updateType = () => {
         saveForm(type.id, name, img, savedInfo)
         // ogo.setSelectedType(type)
-        setShowForm(false)
+        setIsChanged(false)
         // .then(data => setInfo(savedInfo.filter(i => !i.del)))
     }
 
@@ -101,25 +101,25 @@ const EditTypeForm = observer(({ type }) => {
     return (
         <Form className="d-flex flex-column justify-content-between">
 
-            {showForm && <Button
+            { showForm && <Button
                 className='mb-2'
-                variant={isChanged ? "danger" : "secondary"}
-                disabled={isChanged ? false : true}
+                variant={ isChanged ? "danger" : "secondary" }
+                disabled={ isChanged ? false : true }
                 // style={ { visibility: `${isChanged ? "visible" : "hidden"}` } }
                 active
                 size='lg'
-                onClick={() => updateType()}>
-                {isChanged ? "Сохранить изменения" : "Параметры типа"}
+                onClick={ () => updateType() }>
+                { isChanged ? "Сохранить изменения" : "Параметры типа" }
 
             </Button>
             }
-            {showForm && <Form.Group as={Row} className="mb-2 mt-2" controlId="name">
-                <Col sm={{ offset: 0, span: 4 }}>
-                    <Form.Control type="text" placeholder={type.name} value={name}
-                        onChange={(e) => changeName(e.target.value)}
+            { showForm && <Form.Group as={ Row } className="mb-2 mt-2" controlId="name">
+                <Col sm={ { offset: 0, span: 4 } }>
+                    <Form.Control type="text" placeholder={ type.name } value={ name }
+                        onChange={ (e) => changeName(e.target.value) }
                     />
                 </Col>
-                <Col sm={4}>
+                <Col sm={ 4 }>
                     <Form.Label className="w-100"
                     >Изменить имя
                     </Form.Label>
@@ -128,11 +128,11 @@ const EditTypeForm = observer(({ type }) => {
             </Form.Group>
             }
             {
-                showForm && <Form.Group as={Row} className="mb-3" controlId="img">
-                    <Col sm={{ offset: 0 }}>
+                showForm && <Form.Group as={ Row } className="mb-3" controlId="img">
+                    <Col sm={ { offset: 0 } }>
 
                         <Form.Control type="file"
-                            onChange={(e) => selectFile(e)}
+                            onChange={ (e) => selectFile(e) }
                         />
 
                     </Col>
@@ -147,24 +147,24 @@ const EditTypeForm = observer(({ type }) => {
 
             {
                 showForm && info?.map((i, idx) =>
-                    <InputGroup as={Row} className="mb-3 mt-2" key={idx}>
+                    <InputGroup as={ Row } className="mb-3 mt-2" key={ idx }>
                         <Col>
-                            <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
+                            <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
                         </Col>
-                        {<Col>
-                            <Form.Label as={Button} className="w-100"
-                                onClick={() => removeInfo(i)}
-                                variant={"outline-danger"}
+                        { <Col>
+                            <Form.Label as={ Button } className="w-100"
+                                onClick={ () => removeInfo(i) }
+                                variant={ "outline-danger" }
                             >
                                 DEL
                             </Form.Label>
-                        </Col>}
+                        </Col> }
                     </InputGroup>
                 )
             }
             {
                 showForm && <Button
-                    onClick={() => addInfo()}
+                    onClick={ () => addInfo() }
                 >
                     Добавить характеристику
                 </Button>

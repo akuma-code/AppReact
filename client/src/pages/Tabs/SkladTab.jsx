@@ -65,7 +65,7 @@ const SkladTab = observer(() => {
 
                 >
                     <CtrlBtns_Sklad
-                        style={ { minWidth: "130px" } }
+                        style={ { minWidth: "150px" } }
                         handlers={ { onHide: createSkladModal, getAll, getOne, clearAll, deleteItem, activeItem, createShopModal } } />
 
                 </Col>

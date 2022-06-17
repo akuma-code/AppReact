@@ -18,4 +18,4 @@ export const useConsole = (data, cb = null) => {
 
 export const useCallCount = (module) => { return (execPlace) => console.count(`${module} called from ${execPlace}`) }
 
-export const useSpyState = (args) => { return console.log(JSON.parse(JSON.stringify(args))) }
+export const useSpyState = (args) => console.log(JSON.parse(JSON.stringify(...args)))
