@@ -28,10 +28,13 @@ const TypesTab = observer(() => {
 
     const toggleSelect = (type) => {
         if (isSelected(type)) {
-            setShowEditForm(false)
-            ogo.setSelectedType({})
+            setShowEditForm(true)
+
         }
-        else return ogo.setSelectedType(type)
+        else {
+            setShowEditForm(false)
+            ogo.setSelectedType(type)
+        }
     }
 
     useEffect(() => {
@@ -41,15 +44,14 @@ const TypesTab = observer(() => {
         })
 
         return () => {
-            useSpyState(ogo.selectedType)
+
         };
     }, []);
 
 
     useEffect(() => {
         fetchTypes().then(data => setTypes(data))
-
-
+        fetchOneType(ogo.selectedType.id).then(data => setCurrentType(data))
     }, [ogo.selectedType])
 
 
@@ -59,39 +61,39 @@ const TypesTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col sm={1}
+                <Col sm={ 1 }
                     className='d-flex justify-content-center'
-                    style={{ minWidth: "190px" }}>
+                    style={ { minWidth: "190px" } }>
                     <SideBarTypes
-                        show={() => setShowEditForm(!showEditForm)}
+                        show={ () => setShowEditForm(!showEditForm) }
                     />
                 </Col>
-                <Col sm={2}>
+                <Col sm={ 2 }>
                     <Row>
-                        {types?.map(type =>
-                            <div key={type.id}
-                                onClick={() => toggleSelect(type)}
-                                className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1`}
-                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" }}
+                        { types?.map(type =>
+                            <div key={ type.id }
+                                onClick={ (e) => { toggleSelect(type) } }
+                                className={ `${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1` }
+                                style={ { cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" } }
                             >
-                                <span><b>Тип:</b> {type.name}</span>
-                                <Badge bg="dark" text="light"
-                                // onClick={() => isSelected(type) ? setShowEditForm(true) : setShowEditForm(false)}
-                                >ID: {type.id}</Badge>
+                                <span><b>Тип:</b> { type.name }</span>
+                                <Badge bg="dark" text="light" as={ Button }
+                                    onClick={ () => toggleSelect(type) }
+                                >&#9776;</Badge>
                             </div>
-                        )}
+                        ) }
                     </Row>
 
                 </Col>
-                <Col sm={4}>
+                <Col sm={ 4 }>
                     <Row>
-                        <PreviewType type={ogo.selectedType} />
+                        <PreviewType type={ currentType } />
 
                     </Row>
                 </Col>
-                <Col sm={4}>
+                <Col sm={ 4 }>
                     <Row>
-                        {showEditForm && <EditTypeForm type={ogo.selectedType} />}
+                        { showEditForm && <EditTypeForm type={ currentType } /> }
                     </Row>
                 </Col>
             </Row>
