@@ -31,44 +31,52 @@ const SkladCard = observer(({ skladItem }) => {
         fetchOneType(type.id).then(data => setInfo(data.info))
     }, [])
     return (
-        <Card style={ { width: '14rem', cursor: "pointer", border: "2px solid black" } } className="mt-2 mb-1 mx-2"
+        <Card style={{ width: '15rem', cursor: "pointer", border: "2px solid black" }} className="mt-2 mb-1 mx-2"
 
-            bg={ id === sklad.selectedItem.id ? "secondary" : "light" }
+            bg={id === sklad.selectedItem.id ? "secondary" : "light"}
         >
             <Card.Body
                 className='d-flex flex-column justify-content-between'
-                onClick={ toggleSelect }
+                onClick={toggleSelect}
             >
                 <Card.Title as="h4"
                     className='d-flex flex-row justify-content-between'>
-                    { type?.name }
-                    <Badge as={ Button }
+                    {type?.name}
+                    <Badge as={Button}
                         bg="dark"
                         text="light"
-                        onClick={ openModalUpdate }>
+                        onClick={openModalUpdate}>
                         &#9776;
                     </Badge>
                 </Card.Title>
                 <Card.Img
                     className="mx-auto"
                     variant="top"
-                    src={ `${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}` }
+                    src={`${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}`}
                     alt='NO PICTURE'
 
                 />
 
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-center "
+            <Card.Footer as={"h4"}
+                className="d-flex justify-content-center "
             >
-                <ListGroupItem className='bg-danger fw-bold' >
-                    Осталось: <Badge style={ { fontHeight: "1.2rem" } }>{ quant } шт.</Badge>
+                <ListGroupItem className='bg-secondary d-flex flex-row justify-content-around ' >
+                    ВСЕГО
+                    <Badge
+                        bg="light"
+                        text="dark"
+                        className="pl-2"
+                    >
+                        {quant} шт.</Badge>
                 </ListGroupItem>
-
             </Card.Footer>
+
+
             <EditSkladPosition
-                show={ updateSkladVisible }
-                onHide={ () => setUpdateSkladVisible(false) }
-                skladItem={ skladItem }
+                show={updateSkladVisible}
+                onHide={() => setUpdateSkladVisible(false)}
+                skladItem={skladItem}
             />
         </Card>
     );

@@ -42,7 +42,7 @@ const Homepage = observer(() => {
     return (
         <Tabs
             defaultActiveKey="type"
-            transition={ true }
+            transition={true}
             className="mb-3 mx-5"
         >
 
@@ -56,14 +56,7 @@ const Homepage = observer(() => {
             <Tab eventKey="shop" title="Витрина">
                 <ShopTab />
             </Tab>
-            <Tab
-                title={
-                    isLoadingTypes &&
-                    <Spinner animation="border" role="status" size="lg" className="mx-auto">
-                        <span className="visually-hidden">Loading...</span>
-                    </Spinner>
-                }
-                eventKey="selectedItem" />
+
 
 
         </Tabs>

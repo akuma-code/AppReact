@@ -66,7 +66,7 @@ const TypesTab = observer(() => {
                     <SideBarTypes
                         show={() => setShowEditForm(!showEditForm)}
                     />
-                    {info && info}
+
                 </Col>
                 <Col sm={2}>
 
@@ -92,15 +92,7 @@ const TypesTab = observer(() => {
                 </Col>
                 <Col sm={4}>
                     <Row>
-
-                        {
-                            isLoading ?
-                                <Spinner animation="border" role="status" size="lg" className="mx-auto">
-                                    <span className="visually-hidden">Loading...</span>
-                                </Spinner>
-                                :
-                                <PreviewType type={currentType} />
-                        }
+                        <PreviewType type={currentType} isLoading={isLoading} />
                     </Row>
 
                 </Col>
