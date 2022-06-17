@@ -18,10 +18,8 @@ const ShopTab = observer(() => {
     const isConfirmed = (text) => confirm(text)
     const clearAll = () => isConfirmed("Убрать все с витрины") ? clearShop().then(data => setShopItems([])) : null
 
-    const uniteData = async (shopItems, types) => {
-        setShopItems(shopItems.map(si =>
-            FetchingCenter.fetchOne("type", si.sklad.typeId)
-        ))
+    const uniteData = async () => {
+
     }
 
     useLayoutEffect(() => {
