@@ -101,45 +101,48 @@ const EditTypeForm = observer(({ type }) => {
     return (
         <Form className="d-flex flex-column justify-content-between">
 
-            { showForm && <Button
+            {showForm && <Button
                 className='mb-2'
-                variant={ isChanged ? "danger" : "secondary" }
-                disabled={ isChanged ? false : true }
+                variant={isChanged ? "danger" : "secondary"}
+                disabled={isChanged ? false : true}
                 // style={ { visibility: `${isChanged ? "visible" : "hidden"}` } }
                 active
                 size='lg'
-                onClick={ () => updateType() }>
-                { isChanged ? "Сохранить изменения" : "Параметры типа" }
+                onClick={() => updateType()}>
+                {isChanged ? "Сохранить изменения" : "Параметры типа"}
 
             </Button>
             }
-            { showForm && <Form.Group as={ Row } className="mb-2 mt-2" controlId="name">
-                <Col sm={ { offset: 0, span: 4 } }>
-                    <Form.Control type="text" placeholder={ type.name } value={ name }
-                        onChange={ (e) => changeName(e.target.value) }
-                    />
-                </Col>
-                <Col sm={ 4 }>
-                    <Form.Label className="w-100"
-                    >Изменить имя
-                    </Form.Label>
-                </Col>
+            {showForm && <Form.Group as={Row} className="mb-2 mt-2" controlId="name">
+                <InputGroup>
 
+                    <InputGroup.Text
+                    >Изменить имя
+                    </InputGroup.Text>
+                    <Form.Control type="text" placeholder={type.name} value={name}
+                        onChange={(e) => changeName(e.target.value)}
+                    />
+
+                </InputGroup>
             </Form.Group>
             }
             {
-                showForm && <Form.Group as={ Row } className="mb-3" controlId="img">
-                    <Col sm={ { offset: 0 } }>
+                showForm && <Form.Group as={Row} className="mb-3" controlId="img">
+                    <Col>
+
 
                         <Form.Control type="file"
-                            onChange={ (e) => selectFile(e) }
-                        />
+                            onChange={(e) => selectFile(e)}
+                            placeholder={"Изменить картинку"}
 
-                    </Col>
-                    <Col sm="2">
-                        <Form.Label className="w-100"
-                        >Изменить картинку
+                        />
+                        <Form.Label column className='w-100 text-center bd-secondary mt-1'>
+                            Изменить картинку
                         </Form.Label>
+                        {/* </Col> */}
+                        {/* <Col sm="2"> */}
+
+
                     </Col>
                 </Form.Group>
 
@@ -147,24 +150,23 @@ const EditTypeForm = observer(({ type }) => {
 
             {
                 showForm && info?.map((i, idx) =>
-                    <InputGroup as={ Row } className="mb-3 mt-2" key={ idx }>
-                        <Col>
-                            <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
-                        </Col>
-                        { <Col>
-                            <Form.Label as={ Button } className="w-100"
-                                onClick={ () => removeInfo(i) }
-                                variant={ "outline-danger" }
-                            >
-                                DEL
-                            </Form.Label>
-                        </Col> }
+                    <InputGroup className="mb-3 mt-2" key={idx}>
+
+                        <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
+
+                        <InputGroup.Text as={Button}
+                            onClick={() => removeInfo(i)}
+                            variant={"outline-danger"}
+                        >
+                            Удалить
+                        </InputGroup.Text>
+
                     </InputGroup>
                 )
             }
             {
                 showForm && <Button
-                    onClick={ () => addInfo() }
+                    onClick={() => addInfo()}
                 >
                     Добавить характеристику
                 </Button>
