@@ -15,7 +15,7 @@ export const useStoreRefresh = (request, storeSetter) => {
             setIsLoading(false)
         }
     }
-    useConsole(refresh)
+    // useConsole(refresh)
 
     return [refresh, isLoading, error]
 

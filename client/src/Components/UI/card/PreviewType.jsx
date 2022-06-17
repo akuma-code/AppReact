@@ -15,12 +15,12 @@ const PreviewType = ({ type }) => {
                 </ListGroup.Item>
             }
             <Row>
-                <Col>
-                    <Image
+                <Col className="d-flex flex-row justify-content-center">
+                    { img && <Image
                         style={ { maxWidth: "300px" } }
                         src={ `${process.env.REACT_APP_API_URL}/${img || "noimage.jpg"}` }
                         thumbnail
-                    />
+                    /> }
                 </Col>
                 <Col>
                     <ListGroup

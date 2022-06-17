@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
-import { Badge, Button, ButtonGroup, Col, Container, Form, Image, InputGroup, Row, } from "react-bootstrap";
+import { Badge, Button, ButtonGroup, Col, Container, Form, Image, InputGroup, Row, Spinner, } from "react-bootstrap";
 import { clearTypes, fetchOneType, fetchTypes } from "../../http/typesAPI";
 import { Context } from "../..";
 import SideBarTypes from "../../Components/sidebar/SideBarTypes";
@@ -8,6 +8,7 @@ import CreateType from "../../Components/modals/CreateType";
 import PreviewType from "../../Components/UI/card/PreviewType";
 import EditTypeForm from "../../Components/UI/inputs/EditTypeForm";
 import { useSpyState } from "../../hooks/useConsole";
+import { useStoreRefresh } from "../../hooks/useStoreRefresh";
 
 
 
@@ -22,37 +23,35 @@ const TypesTab = observer(() => {
     const [showName, setShowName] = useState(false)
     const [showInfo, setShowInfo] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
-
+    const [fetchType, isLoading, error] = useStoreRefresh(fetchOneType, setCurrentType)
+    const [refreshTypes, isLoadingTypes, errorType] = useStoreRefresh(fetchTypes, setTypes)
 
     const isSelected = type => type.id === ogo.selectedType.id
-
-    const toggleSelect = (type) => {
-        if (isSelected(type)) {
-            setShowEditForm(true)
-
-        }
-        else {
-            setShowEditForm(false)
-            ogo.setSelectedType(type)
-        }
-    }
-
-    useEffect(() => {
-        fetchTypes().then(data => {
-            ogo.setTypes(data);
-            setTypes(data)
-        })
-
-        return () => {
-
-        };
-    }, []);
+    const select = (type) => ogo.setSelectedType(type)
 
 
-    useEffect(() => {
-        fetchTypes().then(data => setTypes(data))
-        fetchOneType(ogo.selectedType.id).then(data => setCurrentType(data))
+
+    useLayoutEffect(() => {
+        // fetchTypes().then(data => setTypes(data))
+        // fetchOneType(ogo.selectedType.id).then(data => setCurrentType(data))
+        refreshTypes()
+        fetchType(ogo.selectedType.id)
     }, [ogo.selectedType])
+
+
+    // useEffect(() => {
+    //     fetchTypes().then(data => {
+    //         ogo.setTypes(data);
+    //         setTypes(data)
+    //     })
+    // }, []);
+    // useEffect(() => {
+    //     fetchTypes().then(data => {
+
+    //         setTypes(data)
+    //     })
+    // }, [ogo.types])
+
 
 
 
@@ -69,27 +68,40 @@ const TypesTab = observer(() => {
                     />
                 </Col>
                 <Col sm={ 2 }>
+
                     <Row>
                         { types?.map(type =>
                             <div key={ type.id }
-                                onClick={ (e) => { toggleSelect(type) } }
+                                onClick={ () => { select(type) } }
                                 className={ `${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1` }
                                 style={ { cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" } }
                             >
                                 <span><b>Тип:</b> { type.name }</span>
-                                <Badge bg="dark" text="light" as={ Button }
-                                    onClick={ () => toggleSelect(type) }
-                                >&#9776;</Badge>
+                                <Badge as={ Button }
+                                    bg="dark"
+                                    text="light"
+                                    onClick={ () => setShowEditForm(!showEditForm) }>
+                                    &#9776;
+                                </Badge>
                             </div>
                         ) }
+
                     </Row>
 
                 </Col>
                 <Col sm={ 4 }>
                     <Row>
-                        <PreviewType type={ currentType } />
 
+                        {
+                            isLoading ?
+                                <Spinner animation="border" role="status" size="lg" className="mx-auto">
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                                :
+                                <PreviewType type={ currentType } />
+                        }
                     </Row>
+
                 </Col>
                 <Col sm={ 4 }>
                     <Row>

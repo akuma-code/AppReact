@@ -13,13 +13,6 @@ const SideBarTypes = observer(({ show }) => {
     const [showCreateType, setShowCreateType] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
 
-    const clickHandler = () => {
-        show();
-        setIsOpen(!isOpen)
-    }
-    const canOpen = () => ogo.selectedType.id ? true : false
-
-
     const isConfirmed = (text) => confirm(text);
     const removeTypes = () => isConfirmed("Удалить все типы") ? clearTypes() : null
     const deleteType = (id) => isConfirmed("Удалить тип") ? removeType(id) : null
@@ -31,10 +24,9 @@ const SideBarTypes = observer(({ show }) => {
                 <Button variant="success" onClick={ () => setShowCreateType(true) }
                 >Добавить новый тип
                 </Button>
-                <Button variant={ isOpen ? "warning" : "secondary" }
-                    style={ { visibility: canOpen() ? "visible" : "hidden" } }
-                    onClick={ clickHandler }
-                > { !isOpen ? "Открыть настройки" : "Закрыть настройки" }
+                <Button
+                    onClick={ () => getInfo(ogo.selectedType) }
+                >ИНФО
                 </Button>
             </ButtonGroup>
 
@@ -48,10 +40,7 @@ const SideBarTypes = observer(({ show }) => {
             </ButtonGroup>
             <ButtonGroup vertical
                 className="w-100 my-1">
-                <Button
-                    onClick={ () => getInfo(ogo.selectedType) }
-                >ИНФО
-                </Button>
+
             </ButtonGroup>
             <ButtonGroup
                 size="lg"
