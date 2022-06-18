@@ -21,7 +21,7 @@ const ShopCard = ({ shopItem }) => {
                     <Col>
 
                         <Card.Img
-                            src={`${process.env.REACT_APP_API_URL}/${type.img}`} />
+                            src={`${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}`} />
                     </Col>
                     <Col>
                         <ListGroup numbered>

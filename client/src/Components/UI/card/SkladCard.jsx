@@ -28,7 +28,7 @@ const SkladCard = observer(({ skladItem }) => {
     }
 
     useLayoutEffect(() => {
-        fetchOneType(type.id).then(data => setInfo(data.info))
+        fetchOneType(type?.id).then(data => setInfo(data.info))
     }, [])
     return (
         <Card style={{ width: '15rem', cursor: "pointer", border: "2px solid black" }} className="mt-2 mb-1 mx-2"
@@ -40,15 +40,19 @@ const SkladCard = observer(({ skladItem }) => {
                 onClick={toggleSelect}
             >
                 <Card.Title as="h4"
-                    className='d-flex flex-row justify-content-between'>
+                    className='d-flex flex-row justify-content-between'
+                >
                     {type?.name}
+
                     <Badge as={Button}
                         bg="dark"
                         text="light"
                         onClick={openModalUpdate}>
                         &#9776;
                     </Badge>
+
                 </Card.Title>
+
                 <Card.Img
                     className="mx-auto"
                     variant="top"
@@ -56,7 +60,15 @@ const SkladCard = observer(({ skladItem }) => {
                     alt='NO PICTURE'
 
                 />
-
+                {skladItem.shop &&
+                    <Badge
+                        bg={"success"}
+                        // style={{ position: "absolute", right: "-1rem", top: "-.5rem", width: "2rem" }}
+                        // as={Button}
+                        disabled
+                    >
+                        Добавлено на витрину &#9816;
+                    </Badge>}
             </Card.Body>
             <Card.Footer as={"h4"}
                 className="d-flex justify-content-center "

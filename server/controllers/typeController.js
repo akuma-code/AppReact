@@ -107,7 +107,7 @@ class TypeController {
             // const shopItem = await Shop.findAll({
             //     where: { id: type.id }
             // })
-            type.destroy()
+            type.destroy({ truncate: true, cascade: true })
             // shopItem.destroy()
         } catch (error) {
             console.log('#######', error.message)
