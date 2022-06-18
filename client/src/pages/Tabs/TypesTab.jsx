@@ -36,6 +36,7 @@ const TypesTab = observer(() => {
         // fetchOneType(ogo.selectedType.id).then(data => setCurrentType(data))
         refreshTypes()
         fetchType(ogo.selectedType.id)
+        return () => setTypes(types.sort((a) => a.name))
     }, [ogo.selectedType])
 
 
@@ -71,7 +72,7 @@ const TypesTab = observer(() => {
                 <Col sm={2}>
 
                     <Row>
-                        {types?.map(type =>
+                        {types?.sort((a, b) => a.id - b.id).map(type =>
                             <div key={type.id}
                                 onClick={() => { select(type) }}
                                 className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1`}

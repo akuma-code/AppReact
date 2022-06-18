@@ -1,7 +1,8 @@
 const { v4 } = require('uuid')
 const { OkType, OkTypeInfo, Shop } = require('../models/prodModels')
 const path = require('path')
-const ApiError = require('../Error/ApiError')
+const ApiError = require('../Error/ApiError');
+const { title } = require('process');
 
 class TypeController {
     async create(req, res, next) {
@@ -73,7 +74,7 @@ class TypeController {
     }
 
     async getAll(req, res) {
-        const types = await OkType.findAndCountAll({ include: [{ all: true }] })
+        const types = await OkType.findAndCountAll({ include: [{ all: true, order: [OkType, 'name', 'ASC'] }] })
         return res.json(types)
     }
     async getAllInfo(req, res) {
