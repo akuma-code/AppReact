@@ -1,33 +1,42 @@
 import React, { useContext, useState } from 'react';
 import { observer } from "mobx-react-lite";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { useConsole } from "../../../hooks/useConsole";
 import { Context } from '../../..';
 
-const ShopCard = ({ shopItem, type }) => {
-    const { id, price, title, skladId } = shopItem;
-    const { ogo, sklad } = useContext(Context)
-    const [image, setImage] = useState(type?.img)
+const ShopCard = ({ shopItem }) => {
+    const { id, shop, type, quant, typeId } = shopItem;
 
 
-    const getData = (skladId) => {
-        const sitem = sklad.skladItems.filter(s => s.id === skladId)
-        const type = ogo.types.filter(t => t.id === sitem.typeId)
-        const p = JSON.parse(JSON.stringify(sitem))
-        setImage(p?.type?.img)
-    }
+
+
+
 
 
     return (
-        <Card className="mt-2 mx-1">
-            <Card.Header
-                onClick={() => getData(skladId)}
-            >{title}
+        <Card className="mt-2 mx-1"
+            style={ { width: '40vh' } }>
+            <Card.Header className="d-flex justify-content-between"
+            >
+                <Card.Text as="h4">{ shop?.title || type?.name }</Card.Text>
+                <Card.Text as="h4"> { shop?.price } руб.</Card.Text>
             </Card.Header>
             <Card.Body>
-                <Card.Img src={`${process.env.REACT_APP_API_URL}/${type.img}`} />
-
+                <Row>
+                    <Col>
+                        <Card.Img
+                            src={ `${process.env.REACT_APP_API_URL}/${type.img}` } />
+                    </Col>
+                    <Col>
+                        {/* { type?.info.map(i =>
+                            <Card.Text key={ i.id }>{ i.desc }</Card.Text>)
+                        } */}
+                    </Col>
+                </Row>
             </Card.Body>
+            <Card.Footer>
+
+            </Card.Footer>
         </Card>
     );
 }

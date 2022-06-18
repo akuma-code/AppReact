@@ -31,3 +31,15 @@ export class FetchingCenter {
     }
 }
 
+export class DBService {
+    constructor (path = 'type') {
+        this.path = path
+    }
+    async fetchAll() {
+        const { data } = await $host.get(`api/${this.path}`)
+        return data.rows
+    }
+
+}
+
+export default new DBService('type')

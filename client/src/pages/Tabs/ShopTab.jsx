@@ -4,49 +4,40 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Context } from "../..";
 import SideBarShop from "../../Components/sidebar/SideBarShop";
 import ShopCard from "../../Components/UI/card/ShopCard";
-import { useStoreRefresh } from '../../hooks/useStoreRefresh';
+import { useDBService, useStoreRefresh } from '../../hooks/useStoreRefresh';
 import { fetchPositions } from "../../http/shopAPI";
 import { clearShop } from "../../http/shopAPI"
-import { FetchingCenter } from '../../hooks/useFetchingCenter'
-import { useConsole } from '../../hooks/useConsole';
+import { DBService, FetchingCenter } from '../../hooks/useFetchingCenter'
+import { useConsole, useSpyState } from '../../hooks/useConsole';
 
-const ShopTab = observer(() => {
-    const { shop } = useContext(Context);
+const ShopTab = () => {
+    const { shop, sklad, ogo } = useContext(Context);
     const [shopItems, setShopItems] = useState([])
-    const [update, isLoading, error] = useStoreRefresh(fetchPositions, setShopItems)
+    const [Sklad, setSklad] = useState([])
     const [types, setTypes] = useState([]);
-    const isConfirmed = (text) => confirm(text)
-    const clearAll = () => isConfirmed("Убрать все с витрины") ? clearShop().then(data => setShopItems([])) : null
-
-    const uniteData = async () => {
-
-    }
-
-    useLayoutEffect(() => {
-        fetchPositions().then(data => setShopItems(data))
-        fetchPositions().then(data => shop.setShopItems(data))
-        FetchingCenter.fetchAll('type').then(types => setTypes(types)).then(() => uniteData(shopItems))
-    }, [])
-
-
+    const [getTypes, isLoadTypes, error] = useStoreRefresh(FetchingCenter.fetchAll, setTypes)
+    const [getSklad, isLoadSklad, errorSklad] = useStoreRefresh(FetchingCenter.fetchAll, setSklad)
+    useEffect(() => {
+        getTypes('type')
+        getSklad('sklad')
+        console.log(Object.entries(types))
+    }, []);
     return (
         <Container fluid>
             <Row>
-                <Col md={1} bg='dark'>
+                <Col md={ 1 } bg='dark'>
                     <SideBarShop></SideBarShop>
                 </Col>
-                <Col md={{ offset: 0 }}>
+                <Col md={ { offset: 0 } }>
                     <Row>
-                        {shopItems && shopItems.map((item, id) =>
-                            <ShopCard shopItem={item}
-                                key={id}
-                                type={types.filter(t => t.id === item.sklad.typeId)} />)}
+                        { Sklad.map(s =>
+                            <ShopCard shopItem={ s } key={ s.id }></ShopCard>) }
                     </Row>
 
                 </Col>
             </Row>
         </Container>
     );
-})
+}
 
 export default ShopTab;
