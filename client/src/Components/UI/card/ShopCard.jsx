@@ -1,41 +1,64 @@
 import React, { useContext, useState } from 'react';
 import { observer } from "mobx-react-lite";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Badge, Button, ButtonGroup, Card, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { useConsole } from "../../../hooks/useConsole";
 import { Context } from '../../..';
 
 const ShopCard = ({ shopItem }) => {
-    const { id, shop, type, quant, typeId } = shopItem;
-
-
-
-
-
+    const { sklad: { type, quant }, price, title } = shopItem;
 
 
     return (
         <Card className="mt-2 mx-1"
-            style={ { width: '40vh' } }>
+            style={{ width: '45vh' }}>
             <Card.Header className="d-flex justify-content-between"
             >
-                <Card.Text as="h4">{ shop?.title || type?.name }</Card.Text>
-                <Card.Text as="h4"> { shop?.price } руб.</Card.Text>
+                <Card.Text as="h4">{title || type?.name}</Card.Text>
+                <Card.Text as="h4"> {price} руб.</Card.Text>
             </Card.Header>
             <Card.Body>
                 <Row>
                     <Col>
+
                         <Card.Img
-                            src={ `${process.env.REACT_APP_API_URL}/${type.img}` } />
+                            src={`${process.env.REACT_APP_API_URL}/${type.img}`} />
                     </Col>
                     <Col>
-                        {/* { type?.info.map(i =>
-                            <Card.Text key={ i.id }>{ i.desc }</Card.Text>)
-                        } */}
+                        <ListGroup numbered>
+
+                            {type?.info.map(i =>
+                                <ListGroupItem
+                                    as={"li"}
+                                    className="mb-1"
+                                    action
+                                    variant="secondary"
+                                    key={i.id}
+                                >
+                                    {i.desc}
+                                </ListGroupItem>
+                            )
+                            }
+                        </ListGroup>
                     </Col>
                 </Row>
             </Card.Body>
-            <Card.Footer>
 
+            <Card.Footer as={"h5"}
+                className="d-flex justify-content-around "
+            >
+                <ButtonGroup>
+                    <Button variant='outline-dark' >BTN1</Button>
+                    <Button variant='outline-dark' >BTN2</Button>
+                </ButtonGroup>
+                <ListGroupItem className='bg-secondary d-flex flex-row justify-content-around ' >
+                    НА СКЛАДЕ
+                    <Badge
+                        bg="light"
+                        text="dark"
+                    >
+                        {quant} шт.
+                    </Badge>
+                </ListGroupItem>
             </Card.Footer>
         </Card>
     );

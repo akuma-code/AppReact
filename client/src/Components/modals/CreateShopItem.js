@@ -1,13 +1,15 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap";
+import { FetchingCenter } from "../../hooks/useFetchingCenter";
+import { useStoreRefresh } from "../../hooks/useStoreRefresh";
 import { fetchSklad } from "../../http/prodQueryAPI";
 import { createPosition } from "../../http/shopAPI";
 import { fetchTypes, fetchOneType } from "../../http/typesAPI";
 import { Context } from '../../index'
 
 const CreateShopItem = observer(({ show, onHide }) => {
-    const { ogo } = useContext(Context)
+    const { ogo, shop } = useContext(Context)
     const { sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
     const [price, setPrice] = useState("")
@@ -15,7 +17,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
     const [shopName, setShopName] = useState("");
     const [skladId, setSkladId] = useState("");
     const [skladItems, setSkladItems] = useState([]);
-
+    const [updateShop, isLoad, error] = useStoreRefresh(FetchingCenter.fetchAll, shop.setShopItems)
 
     useEffect(() => {
         fetchSklad().then(data =>
@@ -36,6 +38,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
         setPosName(item.type.name)
         item.shop && setShopName(item.shop.title)
         setSkladId(item.id)
+        setTypeId(item.typeId)
     }
     const addNewPos = () => {
         const form = new FormData();
@@ -44,7 +47,7 @@ const CreateShopItem = observer(({ show, onHide }) => {
         form.append('typeId', typeId)
         form.append('price', price)
         form.append('title', shopName)
-        createPosition(form).then(data => onHide())
+        createPosition(form).then(data => onHide()).finally(() => updateShop('shop'))
     }
 
     return (

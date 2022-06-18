@@ -3,12 +3,12 @@ const ApiError = require('../Error/ApiError')
 
 class ShopController {
     async create(req, res, next) {
-        let { skladId, price, title } = req.body;
+        let { skladId, price, title, typeId } = req.body;
 
         try {
             const okno = await Shop.create({ title, price, skladId });
             const skPos = await SkladMain.findOne({ where: { id: skladId } })
-            skPos.update({ shopId: okno.id }, { where: { id: skladId } })
+            skPos.update({ shopId: okno.id, typeId: typeId }, { where: { id: skladId } })
 
             console.log('updated :>> ', skPos.dataValues);
             return res.json(okno)
@@ -32,7 +32,7 @@ class ShopController {
     }
     async getAll(req, res) {
 
-        const okna = await Shop.findAndCountAll({ include: [{ all: true }] })
+        const okna = await Shop.findAndCountAll({ include: [{ all: true, nested: true }] })
         return res.json(okna)
     }
 

@@ -1,5 +1,5 @@
 const ApiError = require("../../Error/ApiError")
-const { SkladMain } = require('../../models/ProdModels')
+const { SkladMain, OkTypeInfo } = require('../../models/ProdModels')
 
 
 class skladController {
@@ -18,7 +18,7 @@ class skladController {
     }
 
     async getAll(req, res) {
-        const items = await SkladMain.findAndCountAll({ include: [{ all: true }] })
+        const items = await SkladMain.findAndCountAll({ include: [{ all: true, nested: true }] })
         return res.json(items)
     }
 
@@ -64,7 +64,7 @@ class skladController {
         const { id, typeId, shopId } = req.body
         try {
             const item = await SkladMain.findOne({ where: { id }, include: [{ all: true }] })
-            item.update({ shopId: shopId, quant: quant }, { where: { id, typeId } })
+            item.update({ shopId: shopId, quant: quant, typeId: typeId }, { where: { id, typeId } })
             res.json(item)
         } catch (error) {
             next(ApiError.badRequest(error.message))
