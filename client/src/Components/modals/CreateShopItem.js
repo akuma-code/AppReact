@@ -4,11 +4,28 @@ import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, M
 import { FetchingCenter } from "../../hooks/useFetchingCenter";
 import { useStoreRefresh } from "../../hooks/useStoreRefresh";
 import { fetchSklad } from "../../http/SkladAPI";
-import { createPosition } from "../../http/shopAPI";
+import { createPosition, removeShopPosition } from "../../http/shopAPI";
 import { fetchTypes, fetchOneType } from "../../http/typesAPI";
 import { Context } from '../../index'
+import TypeCard from "../UI/card/TypeCard";
 
-const CreateShopItem = observer(({ show, onHide }) => {
+/**
+ * item={
+ * id, quant, typeId, 
+ * type:
+ *   {
+ *   name,
+ *   img,
+ *   info[]
+ *   },
+ * shop:{
+ *  title,
+ *  price}
+ *   },
+ * prod:[]
+ */
+
+const CreateShopItem = observer(({ show, onHide, item }) => {
     const { ogo, shop } = useContext(Context)
     const { sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
@@ -20,16 +37,14 @@ const CreateShopItem = observer(({ show, onHide }) => {
     const [updateShop, isLoad, error] = useStoreRefresh(FetchingCenter.fetchAll, shop.setShopItems)
 
     useEffect(() => {
-        fetchSklad().then(data =>
-            setSkladItems(data)
-        )
-
+        setSkladId(item.id)
+        setTypeId(item.typeId)
     }, [])
 
-    useEffect(() => {
-        fetchSklad().then(data =>
-            setSkladItems(data))
-    }, [sklad.skladItems])
+    // useEffect(() => {
+    //     fetchSklad().then(data =>
+    //         setSkladItems(data))
+    // }, [sklad.skladItems])
 
     const click = (item) => {
         console.log(item);
@@ -50,10 +65,12 @@ const CreateShopItem = observer(({ show, onHide }) => {
         createPosition(form).then(data => onHide()).finally(() => updateShop('shop'))
     }
 
+
+
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
         >
             <Modal.Header closeButton>
@@ -61,46 +78,63 @@ const CreateShopItem = observer(({ show, onHide }) => {
                     Добавить позицию на витрину
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="d-flex justify-content-around gap-2">
+                <TypeCard type={item.type} ></TypeCard>
                 <Form>
-                    <InputGroup className="mb-3">
-                        <DropdownButton
-                            variant="outline-secondary"
-                            title={ posName ? posName : "укажите позицию" }
-                            value={ posName }
-                            id="input-group-dropdown-1"
-                        >
-                            { skladItems.map((item, idx) =>
-                                <Dropdown.Item key={ idx }
-                                    onClick={ () => click(item) }
-                                >
-                                    { item.type?.name }
-                                </Dropdown.Item>
-                            ) }
-                        </DropdownButton>
-                        <FormControl placeholder="название окна"
-                            value={ shopName }
-                            onChange={ (e) => setShopName(e.target.value) } />
+                    <InputGroup className="w-100">
+                        <Form.Label className="text-center fw-bold">
+
+                            <FormControl
+                                value={shopName}
+                                onChange={(e) => setShopName(e.target.value)}
+                                className="mb-2 w-100"
+                            />
+                            <Form.Text>Название позиции</Form.Text>
+                        </Form.Label>
+                        <Form.Label className="text-center fw-bold">
+
+                            <Form.Control
+                                className='my-2 w-100'
+
+                                value={price}
+                                type="number"
+                                onChange={(e) => setPrice(e.target.value)}
+                            />
+                            <Form.Text>
+                                Цена, руб
+                            </Form.Text>
+                        </Form.Label>
                     </InputGroup>
-                    <Form.Control
-                        className='mt-2 '
-                        placeholder="цена"
-                        value={ price }
-                        type="number"
-                        onChange={ (e) => setPrice(e.target.value) }
-                    />
+                    <Button
+
+                        className='w-100 mt-4'
+                        variant={'outline-dark'}
+                        onClick={addNewPos}
+                    >Добавить
+                    </Button>
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
-                <Button
-                    className='btn btn-success'
-                    variant={ 'outline-dark' }
-                    onClick={ addNewPos }
-                >Добавить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+
+                <Button onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );
 })
 
 export default CreateShopItem;
+
+
+{/**  <DropdownButton
+                            variant="outline-secondary"
+                            title={posName ? posName : "укажите позицию"}
+                            value={posName}
+                            id="input-group-dropdown-1"
+                        ></DropdownButton>
+                         skladItems.map((item, idx) =>
+                                <Dropdown.Item key={idx}
+                                    onClick={() => click(item)}
+                                >
+                                    {item.type?.name}
+                                </Dropdown.Item>
+                            )*/}

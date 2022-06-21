@@ -1,11 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useState, useLayoutEffect } from 'react';
-import { Badge, Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Badge, Button, ButtonGroup, Card, Dropdown, DropdownButton, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Context } from "../../..";
 import { useConsole } from "../../../hooks/useConsole";
+import { removeShopPosition } from "../../../http/shopAPI";
 import { removeSkladPosition, updateSkladItem } from '../../../http/SkladAPI';
 import { fetchOneType } from "../../../http/typesAPI";
+import CreateShopItem from "../../modals/CreateShopItem";
 import EditSkladPosition from "../../modals/EditSkladPosition";
 
 
@@ -14,6 +16,7 @@ const SkladCard = observer(({ skladItem }) => {
     const { id, type, quant } = skladItem;
     const { sklad } = useContext(Context)
     const [updateSkladVisible, setUpdateSkladVisible] = useState(false);
+    const [shopVisible, setShopVisible] = useState(false);
     const [isActive, setIsActive] = useState(false)
     const [info, setInfo] = useState([]);
 
@@ -30,6 +33,10 @@ const SkladCard = observer(({ skladItem }) => {
     useLayoutEffect(() => {
         fetchOneType(type?.id).then(data => setInfo(data.info))
     }, [])
+
+    const removePos = (id) => {
+        removeShopPosition(id).then(data => onHide())
+    }
     return (
         <Card style={{ width: '15rem', cursor: "pointer", border: "2px solid black" }} className="mt-2 mb-1 mx-2"
 
@@ -43,13 +50,37 @@ const SkladCard = observer(({ skladItem }) => {
                     className='d-flex flex-row justify-content-between'
                 >
                     {type?.name}
+                    <Dropdown >
+                        <Badge as={Dropdown.Toggle}
+                            bg="dark"
+                            text="light"
+                        >
+                            &#9776;
+                        </Badge>
 
-                    <Badge as={Button}
-                        bg="dark"
-                        text="light"
-                        onClick={openModalUpdate}>
-                        &#9776;
-                    </Badge>
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={openModalUpdate}
+                            >
+                                Редактировать
+                            </Dropdown.Item>
+                            {skladItem.shop ?
+
+                                <Dropdown.Item
+                                    onClick={() => removeShopPosition(skladItem.shop.id)}
+                                    className="bg-info">
+                                    Убрать с витрины
+                                </Dropdown.Item>
+                                :
+                                <Dropdown.Item onClick={() => setShopVisible(true)}
+                                >
+                                    Добавить на витрину
+                                </Dropdown.Item>
+                            }
+                        </Dropdown.Menu>
+
+                    </Dropdown>
+
 
                 </Card.Title>
 
@@ -89,6 +120,11 @@ const SkladCard = observer(({ skladItem }) => {
                 show={updateSkladVisible}
                 onHide={() => setUpdateSkladVisible(false)}
                 skladItem={skladItem}
+            />
+            <CreateShopItem
+                item={skladItem}
+                show={shopVisible}
+                onHide={() => setShopVisible(false)}
             />
         </Card>
     );

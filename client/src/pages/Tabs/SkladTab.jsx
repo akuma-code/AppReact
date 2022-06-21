@@ -89,10 +89,10 @@ const SkladTab = observer(() => {
                     show={skladVisible}
                     onHide={() => setSkladVisible(false)}
                 />
-                <CreateShopItem
+                {/* <CreateShopItem
                     show={shopVisible}
                     onHide={() => setShopVisible(false)}
-                />
+                /> */}
             </Row>
         </Container>
     );

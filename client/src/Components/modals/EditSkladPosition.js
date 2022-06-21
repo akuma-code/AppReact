@@ -8,7 +8,7 @@ import { addToShop, createSkladPosition, fetchSklad, updateSkladItem } from "../
 import { fetchTypes } from "../../http/typesAPI";
 import { Context } from '../../index'
 
-const EditSkladPosition = observer(({ show, onHide }) => {
+const EditSkladPosition = observer(({ show, onHide, skladItem }) => {
     const { ogo, sklad } = useContext(Context)
     const [typeId, setTypeId] = useState("")
     const [quant, setQuant] = useState("")
@@ -20,11 +20,11 @@ const EditSkladPosition = observer(({ show, onHide }) => {
     useEffect(() => {
         fetchTypes().then(data => setTypes(data))
 
-        // setQuant(sklad.selectedItem.quant)
+        setQuant(skladItem.quant)
     }, [])
 
     useEffect(() => {
-        sklad.selectedItem.type && setTypeName(sklad.selectedItem.type.name)
+        sklad.selectedItem.type && setTypeName(skladItem.type.name)
 
     }, [sklad.selectedItem.type]);
 
@@ -36,9 +36,9 @@ const EditSkladPosition = observer(({ show, onHide }) => {
     }
     const updatePos = () => {
         const form = new FormData();
-        form.append('quant', quant || sklad.selectedItem.quant)
-        form.append('typeId', typeId || sklad.selectedItem.typeId)
-        form.append('id', sklad.selectedItem.id)
+        form.append('quant', quant || skladItem.quant)
+        form.append('typeId', typeId || skladItem.typeId)
+        form.append('id', skladItem.id)
         updateSkladItem(form).then(data => {
             onHide()
             useConsole(data)
@@ -53,7 +53,7 @@ const EditSkladPosition = observer(({ show, onHide }) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Редактировать окно, (ID склада: {sklad.selectedItem.id})
+                    Редактировать окно, (ID склада: {skladItem.id})
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -65,12 +65,13 @@ const EditSkladPosition = observer(({ show, onHide }) => {
                             title={typeName ? typeName : "изменить тип окна"}
                             value={typeId}
                             id="input-group-dropdown-1"
-                        >{types.map((type, idx) =>
-                            <DropdownItem key={idx}
-                                onClick={() => clickType(type)}
-                            >{type.name}
-                            </DropdownItem>
-                        )}
+                        >
+                            {types.map((type, idx) =>
+                                <Dropdown.Item key={idx}
+                                    onClick={() => clickType(type)}
+                                >{type.name}
+                                </Dropdown.Item>
+                            )}
                         </DropdownButton>
 
                     </InputGroup>
