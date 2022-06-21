@@ -41,13 +41,13 @@ const ProductionBasket = observer(({ show, onHide }) => {
         const result = [];
         positions.forEach(pos => _makeProductionForm(pos, result))
 
-        startProdQuery(result)
+        // startProdQuery(result)
     }
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
+            show={ show }
+            onHide={ onHide }
             centered
             size="lg"
         >
@@ -59,50 +59,50 @@ const ProductionBasket = observer(({ show, onHide }) => {
             <Modal.Body>
                 <Form>
 
-                    {positions.map(pos =>
+                    { positions.map(pos =>
 
 
-                        <Row key={pos.number}
+                        <Row key={ pos.number }
                             className="mt-1 "
-                            md={5}
+                            md={ 5 }
                         >
                             <Col
-                                md={4}>
+                                md={ 4 }>
                                 <Form.Select
-                                    value={pos.title}
-                                    onChange={(e) => changePos('title', e.target.value, pos.number)}
+                                    value={ pos.title }
+                                    onChange={ (e) => changePos('title', e.target.value, pos.number) }
                                 >
                                     <option>Выберите позицию</option>
-                                    {shopItems.map(sItem =>
-                                        <option key={sItem.id}>{sItem.title}</option>)}
+                                    { shopItems.map(sItem =>
+                                        <option key={ sItem.id }>{ sItem.title }</option>) }
                                 </Form.Select>
                             </Col>
                             <Col
-                                md={3}>
+                                md={ 3 }>
                                 <Form.Control
                                     placeholder="количество"
                                     type="number"
-                                    value={pos.count}
-                                    onChange={(e) => changePos('count', e.target.value, pos.number)}
+                                    value={ pos.count }
+                                    onChange={ (e) => changePos('count', e.target.value, pos.number) }
                                 />
                             </Col>
                             <Col
-                                md={3}>
+                                md={ 3 }>
                                 <FormControl
                                     type="date"
                                     placeholder="Дата готовности"
-                                    value={pos.date}
-                                    onChange={(e) => changePos('date', e.target.value, pos.number)}
+                                    value={ pos.date }
+                                    onChange={ (e) => changePos('date', e.target.value, pos.number) }
                                 >
 
                                 </FormControl>
                             </Col>
-                            <Col md={1}>
+                            <Col md={ 1 }>
                                 <Button
                                     // style={{ width: "86px" }}
-                                    variant={'outline-dark'}
+                                    variant={ 'outline-dark' }
                                     className='btn btn-danger'
-                                    onClick={() => removePos(pos.number)}
+                                    onClick={ () => removePos(pos.number) }
                                 >
                                     Удалить
                                 </Button>
@@ -110,13 +110,13 @@ const ProductionBasket = observer(({ show, onHide }) => {
 
 
                         </Row>
-                    )}
+                    ) }
 
 
                     <Button
                         className="w-100 mt-2 btn-secondary"
-                        variant={'outline-dark'}
-                        onClick={addPos}
+                        variant={ 'outline-dark' }
+                        onClick={ addPos }
                     >
                         Добавить позицию
                     </Button>
@@ -125,10 +125,10 @@ const ProductionBasket = observer(({ show, onHide }) => {
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={'outline-dark'}
-                    onClick={ADD}
+                    variant={ 'outline-dark' }
+                    onClick={ ADD }
                 >Добавить</Button>
-                <Button onClick={onHide}>Отмена</Button>
+                <Button onClick={ onHide }>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

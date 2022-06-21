@@ -14,31 +14,28 @@ const TypeBar = observer(() => {
         <Container
             className="my-4"
         >
-            <ListGroup style={{ textAlign: "center" }}>
-                <ListGroup.displayName>
-                    <h4>Типы изделий</h4>
-                </ListGroup.displayName>
-                {ogo.types.map(oktype =>
-                    <ListGroupItem
+            <ListGroup style={ { textAlign: "center" } }>
+
+                { ogo.types.map(oktype =>
+                    <ListGroup.Item
                         className="mt-2"
-                        style={{ cursor: "pointer", textAlign: "center" }}
-                        key={oktype.id}
-                        active={oktype.id === ogo.sortType.id}
-                        onClick={() => ogo.setSortType(oktype)}
+                        style={ { cursor: "pointer", textAlign: "center" } }
+                        key={ oktype.id }
+                        active={ oktype.id === ogo.sortType.id }
+                        onClick={ () => ogo.setSortType(oktype) }
                     >
-                        {oktype.name}
-                    </ListGroupItem>
-                )}
+                        { oktype.name }
+                    </ListGroup.Item>
+                ) }
             </ListGroup>
-            {ogo.types ? <Button
-                className="mt-2 btn-secondary"
-                size={"sm"}
-                style={{ cursor: "pointer", textAlign: "center" }}
-                onClick={() => ogo.setSortType({})}>
+            <Button
+                className="mt-2 btn-secondary w-100"
+                size={ "sm" }
+                style={ { cursor: "pointer", textAlign: "center" } }
+                onClick={ () => ogo.setSortType({}) }>
                 убрать сортировку
             </Button>
-                :
-                ""}
+
         </Container>
     )
 })

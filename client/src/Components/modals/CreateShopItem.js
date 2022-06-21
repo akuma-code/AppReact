@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Button, Col, Dropdown, DropdownButton, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap";
 import { FetchingCenter } from "../../hooks/useFetchingCenter";
 import { useStoreRefresh } from "../../hooks/useStoreRefresh";
-import { fetchSklad } from "../../http/prodQueryAPI";
+import { fetchSklad } from "../../http/SkladAPI";
 import { createPosition } from "../../http/shopAPI";
 import { fetchTypes, fetchOneType } from "../../http/typesAPI";
 import { Context } from '../../index'
@@ -52,8 +52,8 @@ const CreateShopItem = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
+            show={ show }
+            onHide={ onHide }
             centered
         >
             <Modal.Header closeButton>
@@ -66,38 +66,38 @@ const CreateShopItem = observer(({ show, onHide }) => {
                     <InputGroup className="mb-3">
                         <DropdownButton
                             variant="outline-secondary"
-                            title={posName ? posName : "укажите позицию"}
-                            value={posName}
+                            title={ posName ? posName : "укажите позицию" }
+                            value={ posName }
                             id="input-group-dropdown-1"
                         >
-                            {skladItems.map((item, idx) =>
-                                <Dropdown.Item key={idx}
-                                    onClick={() => click(item)}
+                            { skladItems.map((item, idx) =>
+                                <Dropdown.Item key={ idx }
+                                    onClick={ () => click(item) }
                                 >
-                                    {item.type?.name}
+                                    { item.type?.name }
                                 </Dropdown.Item>
-                            )}
+                            ) }
                         </DropdownButton>
                         <FormControl placeholder="название окна"
-                            value={shopName}
-                            onChange={(e) => setShopName(e.target.value)} />
+                            value={ shopName }
+                            onChange={ (e) => setShopName(e.target.value) } />
                     </InputGroup>
                     <Form.Control
                         className='mt-2 '
                         placeholder="цена"
-                        value={price}
+                        value={ price }
                         type="number"
-                        onChange={(e) => setPrice(e.target.value)}
+                        onChange={ (e) => setPrice(e.target.value) }
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-between'>
                 <Button
                     className='btn btn-success'
-                    variant={'outline-dark'}
-                    onClick={addNewPos}
+                    variant={ 'outline-dark' }
+                    onClick={ addNewPos }
                 >Добавить</Button>
-                <Button onClick={onHide}>Отмена</Button>
+                <Button onClick={ onHide }>Отмена</Button>
             </Modal.Footer>
         </Modal>
     );

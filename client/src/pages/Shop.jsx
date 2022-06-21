@@ -7,7 +7,7 @@ import TypeBar from "../Components/TypeBar"
 import { fetchPositions } from "../http/shopAPI"
 import { fetchTypes } from '../http/typesAPI'
 import ProductionBasket from '../Components/modals/ProductionBasket.js'
-import { fetchSklad } from "../http/prodQueryAPI"
+import { fetchSklad } from "../http/SkladAPI"
 
 
 
@@ -32,28 +32,27 @@ const Shop = observer(() => {
     }, [ogo.sortType])
 
     return (
-        <Container>
-            <Row>
 
-                <Col md={2}>
-                    <TypeBar />
-                    <Button
-                        onClick={() => setAddProdVisible(true)}
-                    >
-                        ProdService
-                    </Button>
-                </Col>
-                <Col md={10} >
+        <Row>
+
+            <Col md={ 2 } >
+                <TypeBar />
+
+            </Col>
+            <Col md={ 10 } >
+                <Row>
+
                     <h3>Главная страница</h3>
-                    <OkList items={sklad.skladItems} />
-                </Col>
+                    <OkList items={ sklad.skladItems } />
+                </Row>
+            </Col>
 
-            </Row>
             <ProductionBasket
-                show={addProdVisible}
-                onHide={() => setAddProdVisible(false)}
+                show={ addProdVisible }
+                onHide={ () => setAddProdVisible(false) }
             />
-        </Container>
+        </Row>
+
     )
 })
 

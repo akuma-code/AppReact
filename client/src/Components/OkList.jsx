@@ -7,20 +7,19 @@ import OkItem from "./OkItem.jsx";
 import ShopCard from "./UI/card/ShopCard";
 import SkladCard from "./UI/card/SkladCard";
 
-const OkList = observer(({ items }) => {
+const OkList = ({ items }) => {
 
     return (
-        <Container className="d-flex flex-wrap border">
-            { items && items.map(item =>
-                <SkladCard
-                    key={ item.id }
-                    skladItem={ item }
-                />
-            ) }
+        items.map(item =>
+            <SkladCard
+                key={ item.id }
+                skladItem={ item }
+            />
+        )
 
 
-        </Container>
+
     )
-})
+}
 
 export default OkList
