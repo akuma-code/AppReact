@@ -38,20 +38,20 @@ const SkladCard = observer(({ skladItem }) => {
         removeShopPosition(id).then(data => onHide())
     }
     return (
-        <Card style={ { width: '15rem', cursor: "pointer", border: "2px solid black" } } className="mt-2 mb-1 mx-2"
+        <Card style={{ width: '15rem', cursor: "pointer", border: "2px solid black" }} className="mt-2 mb-1 mx-2"
 
-            bg={ id === sklad.selectedItem.id ? "secondary" : "light" }
+            bg={id === sklad.selectedItem.id ? "secondary" : "light"}
         >
             <Card.Body
                 className='d-flex flex-column justify-content-between'
-                onClick={ toggleSelect }
+                onClick={toggleSelect}
             >
                 <Card.Title as="h4"
                     className='d-flex flex-row justify-content-between'
                 >
-                    { type?.name }
+                    {type?.name}
                     <Dropdown >
-                        <Badge as={ Dropdown.Toggle }
+                        <Badge as={Dropdown.Toggle}
                             bg="dark"
                             text="light"
                         >
@@ -60,26 +60,27 @@ const SkladCard = observer(({ skladItem }) => {
 
 
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={ openModalUpdate }
+                            <Dropdown.Item onClick={openModalUpdate}
                             >
                                 Редактировать
                             </Dropdown.Item>
-                            { skladItem.shop ?
+                            {skladItem.shop ?
 
                                 <Dropdown.Item
-                                    onClick={ () => removeShopPosition(skladItem.shop.id) }
+                                    onClick={() => removeShopPosition(skladItem.shop.id)}
                                     className="bg-info">
                                     Убрать с витрины
                                 </Dropdown.Item>
                                 :
-                                <Dropdown.Item onClick={ () => setShopVisible(true) }
+                                <Dropdown.Item onClick={() => setShopVisible(true)}
                                 >
                                     Добавить на витрину
                                 </Dropdown.Item>
                             }
+                            <Dropdown.Divider />
                             <Dropdown.Item
-                                className="bg-danger"
-                                onClick={ () => removeSkladPosition(skladItem.id) }
+                                className="text-end"
+                                onClick={() => removeSkladPosition(skladItem.id)}
                             >
                                 Удалить
                             </Dropdown.Item>
@@ -93,44 +94,44 @@ const SkladCard = observer(({ skladItem }) => {
                 <Card.Img
                     className="mx-auto"
                     variant="top"
-                    src={ `${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}` }
+                    src={`${process.env.REACT_APP_API_URL}/${type?.img || "noimage.jpg"}`}
                     alt='NO PICTURE'
 
                 />
-                { skladItem.shop &&
+                {skladItem.shop &&
                     <Badge
-                        bg={ "success" }
+                        bg={"success"}
                         // style={{ position: "absolute", right: "-1rem", top: "-.5rem", width: "2rem" }}
                         // as={Button}
                         disabled
                     >
                         Добавлено на витрину &#9816;
-                    </Badge> }
+                    </Badge>}
             </Card.Body>
-            <Card.Footer as={ "h4" }
+            <Card.Footer as={"h4"}
                 className="d-flex justify-content-center "
             >
                 <ListGroupItem className='bg-secondary d-flex flex-row justify-content-around ' >
                     ВСЕГО
                     <Badge
-                        bg={ quant <= 2 ? "warning" : "light" }
+                        bg={quant <= 2 ? "warning" : "light"}
                         text="dark"
                         className="mx-2"
                     >
-                        { quant } шт.</Badge>
+                        {quant} шт.</Badge>
                 </ListGroupItem>
             </Card.Footer>
 
 
             <EditSkladPosition
-                show={ updateSkladVisible }
-                onHide={ () => setUpdateSkladVisible(false) }
-                skladItem={ skladItem }
+                show={updateSkladVisible}
+                onHide={() => setUpdateSkladVisible(false)}
+                skladItem={skladItem}
             />
             <CreateShopItem
-                item={ skladItem }
-                show={ shopVisible }
-                onHide={ () => setShopVisible(false) }
+                item={skladItem}
+                show={shopVisible}
+                onHide={() => setShopVisible(false)}
             />
         </Card>
     );

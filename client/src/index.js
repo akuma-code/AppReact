@@ -11,13 +11,13 @@ import UserStore from "./store/UserStore";
 export const Context = createContext(null)
 
 ReactDOM.render(
-    <Context.Provider value={ {
+    <Context.Provider value={{
         user: new UserStore(),
         ogo: new OgoStore(),
         sklad: new SkladStore(),
         shop: new ShopStore(),
-        pQuery: new ProdQueryStore()
-    } }>
+        prod: new ProdQueryStore()
+    }}>
         <App />
     </Context.Provider>,
     document.getElementById('root')
