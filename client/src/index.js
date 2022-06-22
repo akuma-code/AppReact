@@ -9,14 +9,18 @@ import UserStore from "./store/UserStore";
 
 
 export const Context = createContext(null)
+const Stores = {
+    user: new UserStore(),
+    ogo: new OgoStore(),
+    sklad: new SkladStore(),
+    shop: new ShopStore(),
+    prod: new ProdQueryStore()
+}
+
 
 ReactDOM.render(
     <Context.Provider value={{
-        user: new UserStore(),
-        ogo: new OgoStore(),
-        sklad: new SkladStore(),
-        shop: new ShopStore(),
-        prod: new ProdQueryStore()
+        ...Stores
     }}>
         <App />
     </Context.Provider>,
