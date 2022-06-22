@@ -34,8 +34,11 @@ const TypesTab = observer(() => {
     useLayoutEffect(() => {
         // fetchTypes().then(data => setTypes(data))
         // fetchOneType(ogo.selectedType.id).then(data => setCurrentType(data))
+
+        if (ogo.selectedType.id) {
+            fetchType(ogo.selectedType.id);
+        }
         refreshTypes()
-        fetchType(ogo.selectedType.id)
         return () => setTypes(types.sort((a) => a.name))
     }, [ogo.selectedType])
 
@@ -61,45 +64,46 @@ const TypesTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col sm={1}
+                <Col sm={ 1 }
                     className='d-flex justify-content-center'
-                    style={{ minWidth: "190px" }}>
+                    style={ { minWidth: "190px" } }>
                     <SideBarTypes
-                        show={() => setShowEditForm(!showEditForm)}
+                        show={ () => setShowEditForm(!showEditForm) }
                     />
 
                 </Col>
-                <Col sm={2}>
+                <Col sm={ 2 }>
 
                     <Row>
-                        {types?.sort((a, b) => a.id - b.id).map(type =>
-                            <div key={type.id}
-                                onClick={() => { select(type) }}
-                                className={`${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1`}
-                                style={{ cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" }}
+                        { types?.sort((a, b) => a.id - b.id).map(type =>
+                            <div key={ type.id }
+                                onClick={ () => { select(type) } }
+                                className={ `${isSelected(type) ? "bg-info " : "bg-light "} d-flex justify-content-between my-1` }
+                                style={ { cursor: "pointer", border: "1px solid black", fontSize: "1.5rem", borderRadius: "10px" } }
                             >
-                                <span><b>Тип:</b> {type.name}</span>
-                                <Badge as={Button}
+                                <span><b>Тип:</b> { type.name }</span>
+                                <Badge as={ Button }
                                     bg="dark"
                                     text="light"
-                                    onClick={() => setShowEditForm(!showEditForm)}>
+                                    onClick={ () => setShowEditForm(!showEditForm) }>
                                     &#9776;
                                 </Badge>
                             </div>
-                        )}
+                        ) }
 
                     </Row>
 
                 </Col>
-                <Col sm={4}>
+                <Col sm={ 4 }>
                     <Row>
-                        <PreviewType type={currentType} isLoading={isLoading} />
+                        { !currentType.img && <h1>Редактирование типов окон</h1> }
+                        <PreviewType type={ currentType } isLoading={ isLoading } />
                     </Row>
 
                 </Col>
-                <Col sm={4}>
+                <Col sm={ 4 }>
                     <Row>
-                        {showEditForm && <EditTypeForm type={currentType} />}
+                        { showEditForm && <EditTypeForm type={ currentType } /> }
                     </Row>
                 </Col>
             </Row>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { NavLink } from "react-router-dom"
-import { ADMIN_ROUTE, AUTH_ROUTE, HOMEPAGE_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from "../../utils/consts"
+import { ADMIN_ROUTE, AUTH_ROUTE, HOMEPAGE_ROUTE, LOGIN_ROUTE, PROD_ROUTE, SHOP_ROUTE } from "../../utils/consts"
 import { Navbar, Nav, Button, Container, Row, Col } from 'react-bootstrap'
 import { Context } from '../../index.js'
 import { observer } from 'mobx-react-lite'
@@ -27,6 +27,10 @@ const NavbarBT = observer(() => {
                 <NavLink className="mx-3 " style={ { color: 'white', fontSize: '1.4em' } } to={ SHOP_ROUTE }
                 >
                     Магазин
+                </NavLink>
+                <NavLink className="mx-3 " style={ { color: 'white', fontSize: '1.4em' } } to={ PROD_ROUTE }
+                >
+                    Очередь производства
                 </NavLink>
             </Col>
             <Col>

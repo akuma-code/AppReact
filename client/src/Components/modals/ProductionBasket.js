@@ -1,30 +1,28 @@
 import { observer } from "mobx-react-lite"
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { Form, Modal, Button, Dropdown, div, Container, Row, Col, FormControl } from 'react-bootstrap'
 import { Context } from '../..'
+import { FetchingCenter } from "../../hooks/useFetchingCenter"
 import { startProdQuery } from "../../http/prodQueryAPI"
 import { fetchPositions } from "../../http/shopAPI"
 import { _makeProductionForm } from "../../utils/formService"
 
 
-const ProductionBasket = observer(({ show, onHide }) => {
-    const { ogo } = useContext(Context);
+const ProductionBasket = ({ show, onHide }) => {
+    const { ogo, sklad, shop } = useContext(Context);
+    const [positions, setPositions] = useState([{ title: '', count: '', date: '', number: Date.now() }])
     const [shopItems, setShopItems] = useState([]);
-    const [positions, setPositions] = useState([])
     const [count, setCount] = useState(1);
-    const [date, setDate] = useState("2022-04-17"); //! убрать заглушку
+    const [date, setDate] = useState("2022-07-17"); //! убрать заглушку
 
 
 
-    useEffect(() => {
-        fetchPositions(ogo.sortType.id).then(data => setShopItems(ogo.shop));
 
-    }, [ogo.shop])
 
     const addPos = () => {
-        setDate("2022-04-17")  //! убрать заглушку
-        setCount(1)  //! убрать заглушку
-        setPositions([...positions, { title: '', count: '', date: date, number: Date.now() }])
+        // setDate("2022-04-17")  //! убрать заглушку
+        // setCount(1)  //! убрать заглушку
+        setPositions([...positions, { title: '', count: '', date: '', number: Date.now() }])
 
     }
 
@@ -41,9 +39,12 @@ const ProductionBasket = observer(({ show, onHide }) => {
         const result = [];
         positions.forEach(pos => _makeProductionForm(pos, result))
 
-        // startProdQuery(result)
+        startProdQuery(result)
     }
+    useLayoutEffect(() => {
+        setShopItems(shop.shopItems)
 
+    }, [])
     return (
         <Modal
             show={ show }
@@ -59,12 +60,11 @@ const ProductionBasket = observer(({ show, onHide }) => {
             <Modal.Body>
                 <Form>
 
-                    { positions.map(pos =>
-
-
-                        <Row key={ pos.number }
+                    { positions && positions.map(pos =>
+                        <Row
                             className="mt-1 "
                             md={ 5 }
+                            key={ pos.number }
                         >
                             <Col
                                 md={ 4 }>
@@ -74,7 +74,7 @@ const ProductionBasket = observer(({ show, onHide }) => {
                                 >
                                     <option>Выберите позицию</option>
                                     { shopItems.map(sItem =>
-                                        <option key={ sItem.id }>{ sItem.title }</option>) }
+                                        <option key={ sItem.id } value={ sItem.title }>{ sItem.title }</option>) }
                                 </Form.Select>
                             </Col>
                             <Col
@@ -132,6 +132,6 @@ const ProductionBasket = observer(({ show, onHide }) => {
             </Modal.Footer>
         </Modal>
     );
-})
+}
 
 export default ProductionBasket

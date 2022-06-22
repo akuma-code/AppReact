@@ -8,52 +8,62 @@ import { fetchPositions } from "../http/shopAPI"
 import { fetchTypes } from '../http/typesAPI'
 import ProductionBasket from '../Components/modals/ProductionBasket.js'
 import { fetchSklad } from "../http/SkladAPI"
+import useFetchingCenter, { FetchingCenter } from "../hooks/useFetchingCenter"
+import { useStoreRefresh } from "../hooks/useStoreRefresh"
+import ShopCard from "../Components/UI/card/ShopCard"
 
 
 
-const Shop = observer(() => {
+const Shop = () => {
 
     const [addProdVisible, setAddProdVisible] = useState(false);
-    const { ogo } = useContext(Context)
-    const { sklad } = useContext(Context)
+    const { ogo, shop, sklad } = useContext(Context)
+    const [shopItems, setShopItems] = useState([]);
+    const [getShops, isLoad, error] = useStoreRefresh(FetchingCenter.fetchAll, setShopItems)
 
     useEffect(() => {
-        fetchSklad().then(data => {
-            sklad.setSkladItems(data)
-        })
-        fetchPositions().then(data => {
-            ogo.setShop(data)
-        })
-    }, [])
-    useEffect(() => {
-        fetchSklad(ogo.sortType.id).then(data => {
-            sklad.setSkladItems(data)
-        })
-    }, [ogo.sortType])
+        getShops('shop')
+        return () => {
+            shop.setShopItems(shopItems)
+        };
+    }, []);
+
+    if (isLoad) return (
+        <h1>LOADING.....</h1>
+    )
 
     return (
-
-        <Row>
-
-            <Col md={ 2 } >
+        <Col md >
+            <Row >
+                <Button className="my-1"
+                    onClick={ () => setAddProdVisible(true) }
+                >
+                    Start Production Query
+                </Button>
+                {/* <Col md={ 2 } >
                 <TypeBar />
 
-            </Col>
-            <Col md={ 10 } >
-                <Row>
+            </Col> */}
 
-                    <h3>Главная страница</h3>
-                    <OkList items={ sklad.skladItems } />
-                </Row>
-            </Col>
 
+
+                { shopItems.map(s =>
+                    <ShopCard shopItem={ s } key={ s.id }></ShopCard>
+                ) }
+
+
+
+
+
+            </Row>
             <ProductionBasket
                 show={ addProdVisible }
                 onHide={ () => setAddProdVisible(false) }
             />
-        </Row>
 
+
+        </Col>
     )
-})
+}
 
 export default Shop

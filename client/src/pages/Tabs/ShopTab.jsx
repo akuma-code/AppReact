@@ -30,13 +30,13 @@ const ShopTab = observer(() => {
     return (
         <Container fluid>
             <Row>
-                <Col md={1} bg='dark'>
-                    <SideBarShop></SideBarShop>
+                <Col md={ 1 } bg='dark'>
+                    <SideBarShop getShops={ getShop }></SideBarShop>
                 </Col>
-                <Col md={{ offset: 0 }}>
+                <Col md={ { offset: 0 } }>
                     <Row>
-                        {shopItems.map(s => <ShopCard shopItem={s} key={s.id}></ShopCard>
-                        )}
+                        { shopItems.map(s => <ShopCard shopItem={ s } key={ s.id }></ShopCard>
+                        ) }
                     </Row>
 
                 </Col>

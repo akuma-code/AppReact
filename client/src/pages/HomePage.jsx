@@ -8,6 +8,7 @@ import { useStoreRefresh } from "../hooks/useStoreRefresh";
 import { fetchPositions } from '../http/shopAPI';
 import { fetchOneSklad, fetchSklad, removeSkladPosition } from "../http/SkladAPI";
 import { fetchTypes } from '../http/typesAPI';
+import ProductionTab from "./Tabs/ProductionTab";
 import ShopTab from './Tabs/ShopTab';
 import SkladTab from "./Tabs/SkladTab";
 import TypesTab from "./Tabs/TypesTab";
@@ -55,6 +56,9 @@ const Homepage = observer(() => {
             </Tab>
             <Tab eventKey="shop" title="Витрина">
                 <ShopTab />
+            </Tab>
+            <Tab eventKey="prod" title="Производство">
+                <ProductionTab />
             </Tab>
 
 
