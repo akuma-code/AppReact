@@ -20,7 +20,7 @@ const Production = () => {
     const [task, setTask] = useState([]);
     const [showDate, setShowDate] = useState(false);
     const [taskForm, setTaskForm] = useState([{ skladId: '', quant: '', unit: {} }]);
-
+    const [formList, setFormList] = useState([]);
 
     useEffect(() => {
         FetchingCenter.fetchAll('sklad')
@@ -30,23 +30,33 @@ const Production = () => {
 
     }, [])
 
-    const addToTask = skladItem => {
+    const selectSI = skladItem => {
         // setTask([...task, skladItem])
         setShowDate(true)
         setShowSklads(false)
-        addFormField(skladItem)
+        setFormList([...formList, { unit: skladItem }])
+        setSklads(sklads.filter(s => s.id !== skladItem.id))
     }
 
-    const changeQuant = (key, value, number) => {
-        setTaskForm(taskForm.map(tf => tf.number === number ? { ...tf, [key]: value } : tf))
+    const changeQuant = (key, value, skladId) => {
+        setTaskForm(taskForm.map(tf => tf.unit.skladId === skladId ? { ...tf, [key]: value } : tf))
     }
 
     const changeInfo = (key, value, number) => {
         setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i))
     }
     const addFormField = (skItem) => {
-        setTask([...task, { quant: '', skladId: skItem.id, unit: skItem }])
+        setTask([...task, skItem])
     }
+    const addTaskFormField = (quant, skItem) => {
+        setTaskForm([...taskForm, { quant, skladId: skItem.id, unit: skItem }])
+    }
+
+    const handleSubmit = (e) => {
+        e && e.preventDefault()
+        console.log(e.target);
+    }
+
 
     return (
         <Container bg="secondary" fluid>
@@ -57,44 +67,46 @@ const Production = () => {
                     </h1>
 
 
-                    <Offcanvas show={ showSklads } onHide={ () => setShowSklads(false) }>
+                    <Offcanvas show={showSklads} onHide={() => setShowSklads(false)}>
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>OKNO</Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            { sklads.map(s =>
+                            {sklads.map(s =>
 
-                                <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
-                                    bg={ task.includes(s) ? "secondary" : "light" }
-                                    onClick={ () => addToTask(s) }>
-                                    <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
-                                        <span>Тип:</span> { s.type.name }
+                                <Card key={s.id} className="gap-4 my-2 " as={ListGroup.Item} action
+                                    bg={"light"}
+                                    onClick={() => selectSI(s)}>
+                                    <Card.Text as={Card.Title} className='d-flex flex-row justify-content-between'>
+                                        <span>Тип:</span> {s.type.name}
                                     </Card.Text>
                                     <Row >
                                         <Col>
                                             <Card.Img
-                                                src={ `${process.env.REACT_APP_API_URL}/${s.type.img || "noimage.jpg"}` }
+                                                src={`${process.env.REACT_APP_API_URL}/${s.type.img || "noimage.jpg"}`}
                                             />
                                         </Col>
                                         <Col>
                                             <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Остаток: </span>{ s.quant } шт.
+                                                <span>Остаток: </span>{s.quant} шт.
                                             </Card.Text>
                                         </Col>
                                     </Row>
-                                </Card>) }
+                                </Card>
+
+                            )}
                         </Offcanvas.Body>
                     </Offcanvas>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Row>
-                            <Col sm={ 4 }>
+                            <Col sm={4}>
                                 <Button variant="success" className="h-100"
-                                    onClick={ () => setShowSklads(!showSklads) }
+                                    onClick={() => setShowSklads(!showSklads)}
                                 >Добавить изделие в очередь
                                 </Button>
                             </Col>
-                            <Col md={ 4 }>
-                                <Collapse in={ showDate }>
+                            <Col md={4}>
+                                <Collapse in={showDate}>
                                     <FloatingLabel
                                         label="Дата готовности">
                                         <FormControl type='date' />
@@ -105,28 +117,29 @@ const Production = () => {
                         </Row>
                         <Container>
                             <Row >
-                                { task.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
+                                {formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
 
-                                    <Col md={ 3 } key={ Math.random() }>
+                                    <Col md={3} key={t.unit.skladId}>
                                         <Card.Img variant="top"
                                             // style={ { maxHeight: "10rem" } }
-                                            src={ `${process.env.REACT_APP_API_URL}/${t.unit?.type?.img || "noimage.jpg"}` } />
-                                        <FormGroup md={ 2 } className='mt-2'>
+                                            src={`${process.env.REACT_APP_API_URL}/${t.unit?.type?.img || "noimage.jpg"}`} />
+                                        <FormGroup md={2} className='mt-2' controlId={`skladItemQuant_${t.skladId}`}>
                                             <FloatingLabel label="Количество" >
                                                 <FormControl
                                                     type='number'
                                                     placeholder="Количество"
                                                     className='text-center'
-                                                    value={ t.quant }
-                                                    onChange={ e => changeQuant('quant', e.target.value, t.skladId) }
+
+                                                    value={t.quant}
+                                                    onChange={e => changeQuant('quant', e.target.value, t.skladId)}
 
                                                 />
                                             </FloatingLabel>
                                         </FormGroup>
                                     </Col>
-                                )
-                                }
+                                )}
                             </Row>
+                            <Button type="submit">Start</Button>
                         </Container>
                     </Form>
                 </Col>
