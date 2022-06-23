@@ -1,8 +1,14 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Form, ListGroup, Offcanvas, OverlayTrigger, Row, Table, Tooltip } from "react-bootstrap";
+import {
+    Button, Card, Col, Collapse, Container,
+    FloatingLabel, Form, FormControl, FormGroup, ListGroup, Offcanvas, OverlayTrigger, Row, Table, Tooltip
+} from "react-bootstrap";
 import { Context } from "..";
 import { FetchingCenter } from "../hooks/useFetchingCenter";
+
+
+const formFields = ['quant', 'dateReady', 'isReady']
 
 const Production = () => {
 
@@ -11,31 +17,36 @@ const Production = () => {
     const [sklads, setSklads] = useState([])
     const [showSklads, setShowSklads] = useState(false);
     const [ishover, setIshover] = useState(false);
+    const [task, setTask] = useState([]);
+    const [showDate, setShowDate] = useState(false);
+    const [taskForm, setTaskForm] = useState([{ skladId: '', quant: '', unit: {} }]);
 
 
-
-
-    const hoverHandler = (e) => {
-        setIshover(true)
-        console.log(e.target);
-        if (!ishover) e.target.classList.add("bg-danger")
-        else e.target.classList.remove("bg-danger")
-
-    }
     useEffect(() => {
-        FetchingCenter.fetchAll('sklad').then(data => setSklads(data))
+        FetchingCenter.fetchAll('sklad')
+            .then(data => setSklads(data))
         FetchingCenter.fetchAll('prod')
             .then(data => setQuery(data))
 
     }, [])
 
-    useEffect(() => {
+    const addToTask = skladItem => {
+        // setTask([...task, skladItem])
+        setShowDate(true)
+        setShowSklads(false)
+        addFormField(skladItem)
+    }
 
+    const changeQuant = (key, value, number) => {
+        setTaskForm(taskForm.map(tf => tf.number === number ? { ...tf, [key]: value } : tf))
+    }
 
-    }, [ishover])
-
-
-
+    const changeInfo = (key, value, number) => {
+        setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i))
+    }
+    const addFormField = (skItem) => {
+        setTask([...task, { quant: '', skladId: skItem.id, unit: skItem }])
+    }
 
     return (
         <Container bg="secondary" fluid>
@@ -45,41 +56,78 @@ const Production = () => {
                         ProdQuery Form
                     </h1>
 
-                    <Button variant="success"
-                        onClick={() => setShowSklads(!showSklads)}
-                    >Add to production task</Button>
-                    <Offcanvas show={showSklads} onHide={() => setShowSklads(false)}>
+
+                    <Offcanvas show={ showSklads } onHide={ () => setShowSklads(false) }>
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>OKNO</Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            {sklads.map(s =>
-                                <Card key={s.id} className="gap-4 my-2 " as={ListGroup.Item} action
-                                    // bg={query.includes(s) ? "secondary" : "light"}
-                                    // onMouseOver={() => setIshover(true)}
-                                    // onMouseLeave={() => setIshover(false)}
-                                    bg={ishover ? "secondary" : "light"}
-                                    onClick={() => setQuery([...query, s])}>
+                            { sklads.map(s =>
+
+                                <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
+                                    bg={ task.includes(s) ? "secondary" : "light" }
+                                    onClick={ () => addToTask(s) }>
+                                    <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
+                                        <span>Тип:</span> { s.type.name }
+                                    </Card.Text>
                                     <Row >
                                         <Col>
                                             <Card.Img
-                                                src={`${process.env.REACT_APP_API_URL}/${s.type.img || "noimage.jpg"}`}
+                                                src={ `${process.env.REACT_APP_API_URL}/${s.type.img || "noimage.jpg"}` }
                                             />
                                         </Col>
-                                        <Col >
+                                        <Col>
                                             <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Тип:</span> {s.type.name}
-                                            </Card.Text>
-                                            <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Остаток: </span>{s.quant}
+                                                <span>Остаток: </span>{ s.quant } шт.
                                             </Card.Text>
                                         </Col>
                                     </Row>
-                                </Card>)}
+                                </Card>) }
                         </Offcanvas.Body>
                     </Offcanvas>
                     <Form>
+                        <Row>
+                            <Col sm={ 4 }>
+                                <Button variant="success" className="h-100"
+                                    onClick={ () => setShowSklads(!showSklads) }
+                                >Добавить изделие в очередь
+                                </Button>
+                            </Col>
+                            <Col md={ 4 }>
+                                <Collapse in={ showDate }>
+                                    <FloatingLabel
+                                        label="Дата готовности">
+                                        <FormControl type='date' />
+                                    </FloatingLabel>
+                                </Collapse>
+                            </Col>
 
+                        </Row>
+                        <Container>
+                            <Row >
+                                { task.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
+
+                                    <Col md={ 3 } key={ Math.random() }>
+                                        <Card.Img variant="top"
+                                            // style={ { maxHeight: "10rem" } }
+                                            src={ `${process.env.REACT_APP_API_URL}/${t.unit?.type?.img || "noimage.jpg"}` } />
+                                        <FormGroup md={ 2 } className='mt-2'>
+                                            <FloatingLabel label="Количество" >
+                                                <FormControl
+                                                    type='number'
+                                                    placeholder="Количество"
+                                                    className='text-center'
+                                                    value={ t.quant }
+                                                    onChange={ e => changeQuant('quant', e.target.value, t.skladId) }
+
+                                                />
+                                            </FloatingLabel>
+                                        </FormGroup>
+                                    </Col>
+                                )
+                                }
+                            </Row>
+                        </Container>
                     </Form>
                 </Col>
                 <Col>
@@ -104,7 +152,7 @@ const Production = () => {
                     </Table>
                 </Col>
             </Row>
-        </Container>
+        </Container >
     );
 }
 
