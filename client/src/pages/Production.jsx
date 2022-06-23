@@ -38,7 +38,7 @@ const Production = () => {
         setSklads(sklads.filter(s => s.id !== skladItem.id))
     }
 
-    const changeQuant = (key, value, id) => {
+    const changeValue = (key, value, id) => {
         setFormList(formList.map(tf => tf.unit.id === id ? { ...tf, [key]: value } : tf))
     }
 
@@ -53,8 +53,8 @@ const Production = () => {
     }
 
     const handleSubmit = (e) => {
-        // e && e.preventDefault()
-        console.log(e.target);
+        e && e.preventDefault()
+
     }
 
 
@@ -131,7 +131,7 @@ const Production = () => {
                                                     className='text-center'
 
                                                     value={t.quant}
-                                                    onChange={e => changeQuant('quant', e.target.value, t.unit.id)}
+                                                    onChange={e => changeValue('quant', e.target.value, t.unit.id)}
 
                                                 />
                                             </FloatingLabel>
