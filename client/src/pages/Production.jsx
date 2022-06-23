@@ -34,12 +34,12 @@ const Production = () => {
         // setTask([...task, skladItem])
         setShowDate(true)
         setShowSklads(false)
-        setFormList([...formList, { unit: skladItem }])
+        setFormList([...formList, { quant: 0, unit: skladItem }])
         setSklads(sklads.filter(s => s.id !== skladItem.id))
     }
 
-    const changeQuant = (key, value, skladId) => {
-        setTaskForm(taskForm.map(tf => tf.unit.skladId === skladId ? { ...tf, [key]: value } : tf))
+    const changeQuant = (key, value, id) => {
+        setFormList(formList.map(tf => tf.unit.id === id ? { ...tf, [key]: value } : tf))
     }
 
     const changeInfo = (key, value, number) => {
@@ -53,7 +53,7 @@ const Production = () => {
     }
 
     const handleSubmit = (e) => {
-        e && e.preventDefault()
+        // e && e.preventDefault()
         console.log(e.target);
     }
 
@@ -119,7 +119,7 @@ const Production = () => {
                             <Row >
                                 {formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
 
-                                    <Col md={3} key={t.unit.skladId}>
+                                    <Col md={3} key={t.unit.id}>
                                         <Card.Img variant="top"
                                             // style={ { maxHeight: "10rem" } }
                                             src={`${process.env.REACT_APP_API_URL}/${t.unit?.type?.img || "noimage.jpg"}`} />
@@ -131,7 +131,7 @@ const Production = () => {
                                                     className='text-center'
 
                                                     value={t.quant}
-                                                    onChange={e => changeQuant('quant', e.target.value, t.skladId)}
+                                                    onChange={e => changeQuant('quant', e.target.value, t.unit.id)}
 
                                                 />
                                             </FloatingLabel>
