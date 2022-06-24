@@ -5,15 +5,18 @@ const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
 
-const EndTask = async (taskId) => await Production.findOne({ where: { id: taskId } }).then(
-    task => task.update({ isReady: true }, { where: { id: taskId } })
-)
+const EndTask = async (id) => await Production.findOne({ where: { id: id }, includes: [{ all: true }] }).then(
+    task => {
+        task.update({ isReady: true }, { where: { id: id } })
+        return task
+    })
 class ProdQueryController {
     async start(req, res, next) {
         const { skladId, quant, isReady = false, dateReady } = req.body
-        const sklad = await getQuant(skladId)
 
+        const sklad = await getQuant(skladId)
         const skladQuant = sklad - quant
+
         try {
             const ptask = await Production.create({ skladId, quant, dateReady, isReady })
             await ProdQuery.create({ prodId: ptask.id, skladId: skladId })
@@ -49,11 +52,12 @@ class ProdQueryController {
     }
 
     async finishTask(req, res, next) {
-        const { taskId } = req.body
-        if (!taskId) console.log("Task ID не указан!")
+        const { id } = req.params
+        if (!id) console.log("Task ID не указан!")
         try {
-            await EndTask(taskId)
-            return res.json(`Production Task (id:${taskId}) complete`)
+            await EndTask(id)
+
+            return res.json(`Production Task (id:${id}) complete`)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }

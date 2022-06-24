@@ -13,7 +13,7 @@ const Production = sequelize.define('prod', {
     quant: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     dateReady: { type: DataTypes.STRING, allowNull: false },
     isReady: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }
-}, { freezeTableName: true, updatedAt: false })
+}, { freezeTableName: true, timestamps: false })
 
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
