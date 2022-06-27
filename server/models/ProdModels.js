@@ -41,7 +41,8 @@ const Shop = sequelize.define('shop', {
 
 
 const ProdQuery = sequelize.define('prodQuery', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    quant: { type: DataTypes.INTEGER, allowNull: true },
 }, { freezeTableName: true, timestamps: false })
 
 
