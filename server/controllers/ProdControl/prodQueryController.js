@@ -1,33 +1,24 @@
 const ApiError = require("../../Error/ApiError")
+const ProductionManager = require("./prodManager.js")
 const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
-
 
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
 
-const EndTask = async (id) => await ProdQuery.findOne({ where: { prodId: id }, includes: [{ all: true, nested: true }] }).then(
-    task => {
-        const { skladId, prodId, quant } = task.dataValues
-        // const prevQuant = getQuant(skladId)
-        getQuant(skladId).then(prev => prev + quant).then(q => {
-            console.log(task.dataValues, q);
-            Production.update({ isReady: true }, { where: { id: prodId } })
-            SkladMain.update({ quant: q }, { where: { id: skladId } })
-        })
-        return task
-    })
+
 class ProdQueryController {
     async start(req, res, next) {
         const { skladId, quant, isReady = false, dateReady } = req.body
 
-        const sklad = await getQuant(skladId)
-        const skladQuant = sklad - quant
+        // const skladQuant = await getQuant(skladId).then(prev => prev - quant)
 
         try {
-            const ptask = await Production.create({ skladId, quant, dateReady, isReady })
-            await ProdQuery.create({ prodId: ptask.id, skladId: skladId, quant: quant })
-            await SkladMain.update({ quant: skladQuant }, { where: { id: skladId } })
-            return res.json(ptask)
+            const ptask = await ProductionManager.startTask(skladId, quant, isReady, dateReady)
+            //     const ptask = await Production.create({ skladId, quant, dateReady, isReady })
+            //     await ProdQuery.create({ prodId: ptask.id, skladId: skladId, quant: quant })
+            //     await SkladMain.update({ quant: skladQuant }, { where: { id: skladId } })
+            //     return res.json(ptask)
+            res.json(ptask)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
@@ -61,8 +52,9 @@ class ProdQueryController {
         const { id } = req.params
         if (!id) console.log("Task ID не указан!")
         try {
-            await EndTask(id)
+            // await EndTask(id)
 
+            await ProductionManager.endTask(id)
             return res.json(`Production Task (id:${id}) complete`)
         } catch (error) {
             next(ApiError.badRequest(error.message))
