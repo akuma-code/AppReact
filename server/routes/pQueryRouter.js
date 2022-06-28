@@ -4,9 +4,12 @@ const ProdQueryController = require('../controllers/ProdControl/prodQueryControl
 const skladController = require('../controllers/ProdControl/skladController')
 
 router.get('/', ProdQueryController.getAll)
+router.get('/test', ProdQueryController.getTest)
 router.get('/query', ProdQueryController.getQuery)
-router.get('/:id', ProdQueryController.getOne)
 router.get('/fin', ProdQueryController.getFinished)
+router.get('/work', ProdQueryController.getProdUnfinished)
+router.put('/set', ProdQueryController.setQuant)
+router.get('/:id', ProdQueryController.getOne)
 router.put('/:id/fin', ProdQueryController.finishTask)
 router.post('/', ProdQueryController.start)
 router.delete('/', ProdQueryController.clearALL)

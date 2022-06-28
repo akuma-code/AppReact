@@ -1,10 +1,13 @@
 const ApiError = require("../../Error/ApiError")
 const ProductionManager = require("./prodManager.js")
 const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
+const prodManager = require("./prodManager.js")
 
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
-
+const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
+    .then(data => data.update({ quant: data.quant + quantPROD }, { where: { id: skladId } }))
+    .then(data => data.toJSON())
 
 class ProdQueryController {
     async start(req, res, next) {
@@ -36,6 +39,7 @@ class ProdQueryController {
     async getAll(req, res, next) {
         const { nested } = req.query
         let items;
+
         if (nested === 'true') items = await Production.findAndCountAll({ include: [{ all: true, nested: true }] })
         else items = await Production.findAndCountAll({ include: [{ all: true }] })
         return res.json(items)
@@ -47,6 +51,13 @@ class ProdQueryController {
         })
         return res.json(items)
     }
+    async getProdUnfinished(req, res, next) {
+        const items = await Production.findAndCountAll({
+            where: { isReady: false },
+            include: [{ all: true, nested: true }]
+        })
+        return res.json(items)
+    }
 
     async finishTask(req, res, next) {
         const { id } = req.params
@@ -54,7 +65,7 @@ class ProdQueryController {
         try {
             // await EndTask(id)
 
-            await ProductionManager.endTask(id)
+            await ProductionManager.finishProdTask(id)
             return res.json(`Production Task (id:${id}) complete`)
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -80,6 +91,25 @@ class ProdQueryController {
             next(ApiError.badRequest(error.message))
         }
 
+    }
+
+    async setQuant(req, res, next) {
+        const { skladId, quantProd } = req.body
+        try {
+            await prodManager.setQuant(skladId, quantProd)
+            res.json(`SkladItem, id: ${skladId} was changed`)
+
+        } catch (e) {
+            console.log(e.message)
+            next(e.message)
+        }
+
+    }
+
+    async getTest(req, res, next) {
+        const test = await SkladMain.getAttributes()
+        console.log('test :>> ', test);
+        res.json(test)
     }
 }
 

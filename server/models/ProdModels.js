@@ -70,8 +70,8 @@ Shop.belongsTo(SkladMain)
 OkType.hasMany(OkTypeInfo, { as: 'info' })
 OkTypeInfo.belongsTo(OkType)
 
-SkladMain.belongsToMany(Production, { through: ProdQuery });
 Production.belongsToMany(SkladMain, { through: ProdQuery });
+SkladMain.belongsToMany(Production, { through: ProdQuery });
 
 
 

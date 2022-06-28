@@ -11,6 +11,10 @@ export const getProdQuery = async (nested = null) => {
     return data.rows
 }
 
+export const getProdWorking = async (nested = null) => {
+    const { data } = (!nested) ? await $host.get('api/prod/work') : await $host.get('api/prod/work?nested=true')
+    return data.rows
+}
 export const clearProdQuery = async () => {
     const { data } = await $authHost.delete('api/prod')
     return data

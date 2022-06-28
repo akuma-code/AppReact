@@ -6,10 +6,9 @@ import {
 } from "react-bootstrap";
 import { Context } from "..";
 import { FetchingCenter } from "../hooks/useFetchingCenter";
-import { clearProdQuery, finishTask, getProdQuery, startProdQuery } from "../http/prodQueryAPI";
-const onSubmit = ({ values }) => {
-    console.log(values, 'submit');
-}
+import { clearProdQuery, finishTask, getProdQuery, getProdWorking, startProdQuery } from "../http/prodQueryAPI";
+import { SRCimg } from "../utils/consts";
+
 
 
 const Production = () => {
@@ -22,12 +21,15 @@ const Production = () => {
     const [showDate, setShowDate] = useState(false);
     const [date, setDate] = useState("2022-06-24");
     const [formList, setFormList] = useState([]);
+    const [working, setWorking] = useState([]);
 
     useEffect(() => {
         FetchingCenter.fetchAll('sklad')
             .then(data => setSklads(data))
         getProdQuery('nested')
             .then(data => setQuery(data))
+        getProdWorking()
+            .then(prod => setWorking(prod))
     }, [])
 
     const selectSI = skladItem => {
@@ -54,6 +56,7 @@ const Production = () => {
     const handleSubmit = (e) => {
         e && e.preventDefault()
         const tasks = task.map(t => makeForm(t))
+
         tasks.forEach(t => startProdQuery(t))
         setFormList([])
         setTimeout(() => setShowDate(false), 1000)
@@ -71,12 +74,12 @@ const Production = () => {
                 <Col>
                     <Container className="my-2 border">
                         <Row >
-                            <Col sm={ 7 }>
+                            <Col sm={7}>
                                 <h2 className="d-block">Запуск в производство</h2>
                             </Col>
-                            <Col sm={ 5 }>
+                            <Col sm={5}>
                                 <Button variant="success" className="h-100 w-100"
-                                    onClick={ () => setShowSklads(!showSklads) }>Добавить</Button>
+                                    onClick={() => setShowSklads(!showSklads)}>Добавить</Button>
                             </Col>
 
 
@@ -84,37 +87,37 @@ const Production = () => {
                     </Container>
 
 
-                    <Offcanvas show={ showSklads } onHide={ () => setShowSklads(false) } placement="start">
+                    <Offcanvas show={showSklads} onHide={() => setShowSklads(false)} placement="start">
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title>OKNO</Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            { sklads.map(s =>
+                            {sklads.map(s =>
 
-                                <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
-                                    bg={ "light" }
-                                    onClick={ () => selectSI(s) }>
-                                    <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
-                                        <span>Тип:</span> { s.type.name }
+                                <Card key={s.id} className="gap-4 my-2 " as={ListGroup.Item} action
+                                    bg={"light"}
+                                    onClick={() => selectSI(s)}>
+                                    <Card.Text as={Card.Title} className='d-flex flex-row justify-content-between'>
+                                        <span>Тип:</span> {s.type.name}
                                     </Card.Text>
                                     <Row >
                                         <Col>
                                             <Card.Img
-                                                src={ `${process.env.REACT_APP_API_URL}/${s.type.img || "noimage.jpg"}` }
+                                                src={`${SRCimg}${s.type.img || "noimage.jpg"}`}
                                             />
                                         </Col>
                                         <Col>
                                             <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Остаток: </span>{ s.quant } шт.
+                                                <span>Остаток: </span>{s.quant} шт.
                                             </Card.Text>
                                         </Col>
                                     </Row>
                                 </Card>
 
-                            ) }
+                            )}
                         </Offcanvas.Body>
                     </Offcanvas>
-                    <Form onSubmit={ handleSubmit }>
+                    <Form onSubmit={handleSubmit}>
                         <Row>
                             {/* <Col sm={ 4 }>
                                 <Button variant="success" className="h-100"
@@ -123,49 +126,49 @@ const Production = () => {
                                 </Button>
                             </Col> */}
 
-                            <Col md={ 4 } >
-                                <Collapse in={ showDate } >
+                            <Col md={4} >
+                                <Collapse in={showDate} >
 
                                     <FloatingLabel
                                         className=""
                                         label="Дата готовности">
                                         <FormControl type='date'
-                                            value={ date }
-                                            onChange={ (e) => setDate(e.target.value) }
+                                            value={date}
+                                            onChange={(e) => setDate(e.target.value)}
                                         />
 
                                     </FloatingLabel>
                                 </Collapse>
                             </Col>
                             <Col>
-                                <Collapse in={ showDate }>
+                                <Collapse in={showDate}>
                                     <Button type="submit" size="lg" className="h-100" >Запуск!</Button>
                                 </Collapse>
                             </Col>
                         </Row>
                         <Container>
                             <Row >
-                                { formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
+                                {formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
 
-                                    <Col md={ 3 } key={ t.unit.id }>
+                                    <Col md={3} key={t.unit.id}>
                                         <Card.Img variant="top"
                                             // style={ { maxHeight: "10rem" } }
-                                            src={ `${process.env.REACT_APP_API_URL}/${t.unit?.type?.img || "noimage.jpg"}` } />
-                                        <FormGroup md={ 2 } className='mt-2' controlId={ `skladItemQuant_${t.skladId}` }>
+                                            src={`${SRCimg}${t.unit?.type?.img || "noimage.jpg"}`} />
+                                        <FormGroup md={2} className='mt-2' controlId={`skladItemQuant_${t.skladId}`}>
                                             <FloatingLabel label="Количество" >
                                                 <FormControl
                                                     type='number'
                                                     placeholder="Количество"
                                                     className='text-center'
 
-                                                    value={ t.quant }
-                                                    onChange={ e => changeValue('quant', e.target.value, t.unit.id) }
+                                                    value={t.quant}
+                                                    onChange={e => changeValue('quant', e.target.value, t.unit.id)}
 
                                                 />
                                             </FloatingLabel>
                                         </FormGroup>
                                     </Col>
-                                ) }
+                                )}
 
                             </Row>
                         </Container>
@@ -177,7 +180,7 @@ const Production = () => {
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Task ID</th>
+                                <th>Prod ID</th>
                                 <th>Sklad Id</th>
                                 <th>Type</th>
                                 <th>quant</th>
@@ -187,21 +190,21 @@ const Production = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            { query.map((p, idx) =>
-                                <tr key={ idx }>
-                                    <td>{ idx + 1 }</td>
-                                    <td>{ p.id }</td>
-                                    <td>{ p?.sklads[0].id }</td>
-                                    <td>{ p?.sklads[0].type.name }</td>
-                                    <td>{ p?.quant }</td>
-                                    <td>{ p?.dateReady }</td>
-                                    <td>{ p?.isReady ? "DONE!" : "Working" }</td>
-                                    <td><Button onClick={ () => EndTask(p.id) }>FIN</Button></td>
+                            {working.map((p, idx) =>
+                                <tr key={idx}>
+                                    <td>{idx + 1}</td>
+                                    <td>{p.id}</td>
+                                    <td>{p?.sklads[0]?.id}</td>
+                                    <td>{p?.sklads[0]?.type.name}</td>
+                                    <td>{p?.quant}</td>
+                                    <td>{p?.dateReady}</td>
+                                    <td>{p?.isReady ? "DONE!" : "Working"}</td>
+                                    <td><Button onClick={() => EndTask(p.id)}>FIN</Button></td>
                                 </tr>
-                            ) }
+                            )}
                         </tbody>
                     </Table>
-                    <Button onClick={ reset }>RESET</Button>
+                    <Button onClick={reset}>RESET</Button>
                 </Col>
             </Row>
         </Container >
@@ -217,3 +220,7 @@ export default Production;
                 <li key={item.id}>TaskID: {item.id} | SkladID: {item?.sklads.map(s => s.id)} | Quantity: {item.quant} | DateReady: {item.dateReady} | {item.isReady ? "DONE" : "Not Ready!"} | </li>
             )}
         </div> */}
+
+//         const onSubmit = ({ values }) => {
+//     console.log(values, 'submit');
+// }

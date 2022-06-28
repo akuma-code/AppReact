@@ -1,32 +1,25 @@
 const ApiError = require("../../Error/ApiError")
 const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
 
-
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
 
-const SkladQuantIncrease = async (query) => {
+const setQuant = async (skladId, current) => await getQuant(skladId)
+    .then(prev => Number(prev) + Number(current))
+    .then(newQuant => SkladMain.update({ quant: newQuant }, { where: { id: skladId } }))
+
+const SetSkladQuant = async (query) => {
     if (!query.dataValues) return console.log("QUERY ERROR", query);
     const { skladId, quant, prodId } = query.dataValues
     getQuant(skladId)
-        .then(prev => prev + quant)
+        .then(prev => Number(prev) + quant)
         .then(newQuant => {
-            Production.update({ isReady: true }, { where: { id: prodId } })
             SkladMain.update({ quant: newQuant }, { where: { id: skladId } })
         })
+    Production.update({ isReady: true }, { where: { id: prodId } })
 
 }
-const SkladQuantDecrease = async (query) => {
-    if (!query.dataValues) return console.log("QUERY ERROR", query);
-    const { skladId, quant, prodId } = query.dataValues
-    getQuant(skladId)
-        .then(prev => prev - quant)
-        .then(newQuant => {
-            Production.update({ isReady: true }, { where: { id: prodId } })
-            SkladMain.update({ quant: newQuant }, { where: { id: skladId } })
-        })
 
-}
 
 class ProductionManager {
     async startTask(skladId, quant, isReady = false, dateReady) {
@@ -51,7 +44,7 @@ class ProductionManager {
 
         if (!finished) {
             await ProdQuery.findOne({ where: { prodId: prodId }, includes: [{ all: true, nested: true }] })
-                .then(SkladQuantIncrease)
+                .then(SetSkladQuant)
 
         }
         else {
@@ -59,7 +52,21 @@ class ProductionManager {
         }
         return prodUnit
     }
+    async finishProdTask(prodId) {
+        const prodUnit = await Production.findOne({ where: { id: prodId }, attributes: ['isReady', 'quant'], include: [{ all: true }] })
+        const finished = await prodUnit.getDataValue('isReady') === true
+        if (finished) return console.log("Task Already Finished!");
 
+        prodUnit.update({ isReady: true }, { where: { id: prodId } })
+            .then(setQuant(prodUnit.sklads[0].skladId, prodUnit.quant))
+        return prodUnit
+    }
+    async setQuant(skladId, current) {
+        const item = await getQuant(skladId)
+            .then(prev => Number(prev) + Number(current))
+            .then(newQuant => SkladMain.update({ quant: newQuant }, { where: { id: skladId } }))
+        return item
+    }
 }
 
 module.exports = new ProductionManager()
