@@ -5,6 +5,7 @@ const skladController = require('../controllers/ProdControl/skladController')
 
 router.get('/', ProdQueryController.getAll)
 router.get('/test', ProdQueryController.getTest)
+router.post('/test', ProdQueryController.getTest)
 router.get('/query', ProdQueryController.getQuery)
 router.get('/fin', ProdQueryController.getFinished)
 router.get('/work', ProdQueryController.getProdUnfinished)

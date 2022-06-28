@@ -2,7 +2,7 @@ const ApiError = require("../../Error/ApiError")
 const ProductionManager = require("./prodManager.js")
 const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
 const prodManager = require("./prodManager.js")
-
+const { ProductionTask, QueryTask, PTQuery } = require("../../models/Tasks")
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
 const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
@@ -10,6 +10,17 @@ const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: 
     .then(data => data.toJSON())
 
 class ProdQueryController {
+    async getTest(req, res, next) {
+        const { skladId, quant, isReady = false } = req.body
+        const test = new ProductionTask(skladId, quant)
+        console.log(test.getForm());
+        const qpt = new PTQuery(skladId, 1, 1)
+        const qpt1 = new PTQuery(skladId, 2, 1)
+        const qt = new QueryTask([qpt, qpt1], "22/07/28")
+        console.log('qt :>> ', qt);
+        res.json(qt)
+    }
+
     async start(req, res, next) {
         const { skladId, quant, isReady = false, dateReady } = req.body
 
@@ -106,11 +117,7 @@ class ProdQueryController {
 
     }
 
-    async getTest(req, res, next) {
-        const test = await SkladMain.getAttributes()
-        console.log('test :>> ', test);
-        res.json(test)
-    }
+
 }
 
 module.exports = new ProdQueryController()
