@@ -71,12 +71,12 @@ OkType.hasMany(OkTypeInfo, { as: 'info' })
 OkTypeInfo.belongsTo(OkType)
 
 Production.belongsToMany(SkladMain, { through: ProdQuery });
-SkladMain.belongsToMany(Production, { through: ProdQuery });
+SkladMain.belongsToMany(Production, {
+    through: ProdQuery
+});
 
 
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
-
-
 module.exports = { Production, ProdQuery, SkladMain, OkType, OkTypeInfo, Shop, User }

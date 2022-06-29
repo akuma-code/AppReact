@@ -1,24 +1,28 @@
 const ApiError = require("../../Error/ApiError")
 const ProductionManager = require("./prodManager.js")
-const { Production, ProdQuery, SkladMain } = require("../../models/ProdModels")
+const { Production, ProdQuery, SkladMain, Shop } = require("../../models/ProdModels")
 const prodManager = require("./prodManager.js")
 const { ProductionTask, QueryTask, PTQuery } = require("../../models/Tasks")
+const { Op } = require("sequelize")
 const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.getDataValue('quant'))
 const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
     .then(data => data.update({ quant: data.quant + quantPROD }, { where: { id: skladId } }))
     .then(data => data.toJSON())
-
+const QuantInc = async (skladId, value) => {
+    const item = await SkladMain.findOne({ where: { id: skladId } })
+    await item.increment('quant', { by: value })
+    return item
+}
 class ProdQueryController {
     async getTest(req, res, next) {
-        const { skladId, quant, isReady = false } = req.body
-        const test = new ProductionTask(skladId, quant)
-        console.log(test.getForm());
-        const qpt = new PTQuery(skladId, 1, 1)
-        const qpt1 = new PTQuery(skladId, 2, 1)
-        const qt = new QueryTask([qpt, qpt1], "22/07/28")
-        console.log('qt :>> ', qt);
-        res.json(qt)
+        // const { skladId, quant, isReady = false, dateReady } = { skladId: 2, quant: 3, isReady: false, dateReady: "2022-07-01" }
+        // const task = await Production.create({ skladId, quant, isReady, dateReady })
+        //     .then(t => ProdQuery.create({ prodId: t.id, skladId: t.skladId }))
+
+        const sklads = await SkladMain.findOne({ where: { id: 2 } })
+            .then(data => QuantInc(2, 5))
+        res.json(sklads)
     }
 
     async start(req, res, next) {

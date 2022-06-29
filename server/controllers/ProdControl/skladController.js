@@ -18,7 +18,7 @@ class skladController {
     }
 
     async getAll(req, res) {
-        const items = await SkladMain.findAndCountAll({ include: [{ all: true, nested: true }] })
+        const items = await SkladMain.findAndCountAll({ include: [{ all: true, nested: true }], order: ['typeId'] })
         return res.json(items)
     }
 

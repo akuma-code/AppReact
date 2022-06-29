@@ -32,7 +32,7 @@ class ShopController {
     }
     async getAll(req, res) {
 
-        const okna = await Shop.findAndCountAll({ include: [{ all: true, nested: true }] })
+        const okna = await Shop.findAndCountAll({ include: [{ all: true, nested: true }], order: ["skladId"] })
         return res.json(okna)
     }
 

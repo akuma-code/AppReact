@@ -1,3 +1,6 @@
+//@ts-check
+
+
 class ProductionTask {
     constructor (skladId, quant) {
         this._skladID = skladId
@@ -9,21 +12,22 @@ class ProductionTask {
     }
 
     set quant(value) {
-        return this._quant = Number(value)
+        this._quant = Number(value)
+
     }
     get skladId() {
         return this._skladId
     }
 
     set skladId(value) {
-        return this._skladId = value
+        this._skladId = value
     }
     get prodId() {
         return this._prodId
     }
 
     set prodId(value) {
-        return this._prodId = value
+        this._prodId = value
     }
 
     getForm() {
@@ -47,21 +51,21 @@ class PTQuery {
     }
 
     set skladId(value) {
-        return this._skladId = value
+        this._skladId = value
     }
     get prodId() {
         return this._prodId
     }
 
     set prodId(value) {
-        return this._prodId = value
+        this._prodId = value
     }
     get queryId() {
         return this._queryId
     }
 
     set queryId(value) {
-        return this._queryId = value
+        this._queryId = value
     }
 }
 
@@ -77,14 +81,14 @@ class QueryTask {
     }
 
     set dateReady(value) {
-        return this._dateReady = value
+        this._dateReady = value
     }
     get qtId() {
         return this._qtId
     }
 
     set qtId(value) {
-        return this._qtId = value
+        this._qtId = value
     }
     get tasks() {
         return this._tasks
@@ -92,15 +96,26 @@ class QueryTask {
 
     set tasks(value) {
         !Array.isArray(value) ? this._tasks = [value] : value
-        return this._tasks
     }
 
 
 }
 
+class PTask {
 
-const pt = new ProductionTask(2, 4)
-const qpt = new PTQuery(2, 1, 1)
-const qt = new QueryTask(qpt, '2022-07-02')
+
+    setTask(skladId, quant) {
+        this._skladId = skladId
+        this._quant = quant
+
+    }
+
+    getTask() {
+        const task = { skid: this._skladId, q: this._quant }
+        return task
+    }
+}
+
+
 
 module.exports = { ProductionTask, PTQuery, QueryTask }
