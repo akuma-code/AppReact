@@ -26,7 +26,6 @@ const ShopCard = ({ shopItem, ...props }) => {
     useEffect(() => {
         checked ? props?.add(shopItem) : props?.rem(shopItem)
         return () => {
-            console.log("ADDED: ", shopItem);
         };
     }, [checked]);
     return (
@@ -72,7 +71,7 @@ const ShopCard = ({ shopItem, ...props }) => {
             >
                 <ButtonGroup>
                     <Button
-                        variant='outline-success' onClick={() => addToProd(shopItem)}
+                        variant='outline-success' onClick={() => setChecked(!checked)}
                     >
                         {checked ? "ADDED!" : "Add to query"}
                     </Button>

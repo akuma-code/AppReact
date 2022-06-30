@@ -2,18 +2,11 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Container, FormControl, ListGroup, Offcanvas, OffcanvasBody, OffcanvasHeader, Row, Spinner } from "react-bootstrap"
 import { Context } from '..'
-import OkList from "../Components/OkList.jsx"
-import TypeBar from "../Components/TypeBar"
-import { fetchPositions } from "../http/shopAPI"
-import { fetchTypes } from '../http/typesAPI'
-import ProductionBasket from '../Components/modals/ProductionBasket.js'
-import { fetchSklad } from "../http/SkladAPI"
 import useFetchingCenter, { FetchingCenter } from "../hooks/useFetchingCenter"
 import { useStoreRefresh } from "../hooks/useStoreRefresh"
 import ShopCard from "../Components/UI/card/ShopCard"
 import { SRCimg } from '../utils/consts'
-import { sklad1 } from '../store/DataOrganaoser'
-
+import { useTaskForm } from '../hooks/useQueryTask'
 // id: 4,
 //  price: 6000,
 //  title: "okno10",
@@ -35,6 +28,7 @@ const Shop = () => {
     const [getShops, isLoad, error] = useStoreRefresh(FetchingCenter.fetchAll, setShopItems)
     const [prodQuery, setProdQuery] = useState([]);
     const [quant, setQuant] = useState([{ value: '', keyID: '' }])
+    const [add, rem] = useTaskForm(prodQuery)
     useEffect(() => {
         getShops('shop')
         return () => {
@@ -43,12 +37,17 @@ const Shop = () => {
     }, []);
 
 
-
     if (isLoad) return (
         <h1>LOADING.....</h1>
     )
-    const toProd = (shopItem) => setProdQuery([...prodQuery, shopItem])
-    const fromProd = (shopItem) => setProdQuery(prodQuery.filter(p => p.id !== shopItem.id))
+    const toProd = (shopItem) => {
+        setProdQuery([...prodQuery, shopItem])
+        add(shopItem, "22-07-03")
+    }
+    const fromProd = (shopItem) => {
+        setProdQuery(prodQuery.filter(p => p.id !== shopItem.id))
+        rem(shopItem)
+    }
     const changeQuant = (value, keyID) => {
         setQuant(quant.map(pq => pq.id === keyID ? [...pq, { value, id }] : pq))
     }

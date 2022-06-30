@@ -2,10 +2,11 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from 'react';
 import {
     Button, Card, Col, Collapse, Container,
-    FloatingLabel, Form, FormControl, FormGroup, ListGroup, Offcanvas, OverlayTrigger, Row, Table, Tooltip
+    FloatingLabel, Form, FormControl, FormGroup, ListGroup, Offcanvas, Row, Table, Tooltip
 } from "react-bootstrap";
 import { Context } from "..";
 import { FetchingCenter } from "../hooks/useFetchingCenter";
+import { useQueryTask, useTaskForm } from "../hooks/useQueryTask";
 import { clearProdQuery, finishTask, getProdQuery, getProdWorking, startProdQuery } from "../http/prodQueryAPI";
 import { SRCimg } from "../utils/consts";
 
@@ -22,7 +23,7 @@ const Production = () => {
     const [date, setDate] = useState("2022-06-24");
     const [formList, setFormList] = useState([]);
     const [working, setWorking] = useState([]);
-
+    const [ADD, REM] = useTaskForm(query)
     useEffect(() => {
         FetchingCenter.fetchAll('sklad')
             .then(data => setSklads(data))
@@ -38,6 +39,8 @@ const Production = () => {
         setShowSklads(false)
         setFormList([...formList, { quant: "", unit: skladItem }])
         setSklads(sklads.filter(s => s.id !== skladItem.id))
+        ADD(skladItem, date)
+        // prod.addTaskToQuery(skladItem, 5, date)
         // setTask(task.map(t => t.skladId === skladItem.id ? { ...t, skladId: skladItem.id } : t))
     }
 
@@ -60,6 +63,8 @@ const Production = () => {
         tasks.forEach(t => startProdQuery(t))
         setFormList([])
         setTimeout(() => setShowDate(false), 1000)
+        // const tq = formList.map(fl => fl.unit)
+        // prod.addTaskToQuery(tq)
     }
     useEffect(() => {
         setTask(formList.map(fl => ({ skladId: fl.unit.id, quant: fl.quant, dateReady: date })))
@@ -154,7 +159,7 @@ const Production = () => {
                                         <Card.Img variant="top"
                                             // style={ { maxHeight: "10rem" } }
                                             src={`${SRCimg}${t.unit?.type?.img || "noimage.jpg"}`} />
-                                        <FormGroup md={2} className='mt-2' controlId={`skladItemQuant_${t.skladId}`}>
+                                        <FormGroup md={2} className='mt-2' controlId={`skladItemQuant_${t.unit.id}`}>
                                             <FloatingLabel label="Количество" >
                                                 <FormControl
                                                     type='number'

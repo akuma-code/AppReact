@@ -17,6 +17,10 @@ const ShopTab = observer(() => {
     const [types, setTypes] = useState([]);
     const [getSklad, isLoadSklad, errorSklad] = useStoreRefresh(FetchingCenter.fetchAll, setSklad)
     const [getShop, isLoadShop, errorShop] = useStoreRefresh(FetchingCenter.fetchAll, setShopItems)
+    const [prodQuery, setProdQuery] = useState([]);
+
+    const toProd = (shopItem) => setProdQuery([...prodQuery, shopItem])
+    const fromProd = (shopItem) => setProdQuery(prodQuery.filter(p => p.id !== shopItem.id))
     useLayoutEffect(() => {
         // FetchingCenter.fetchAll('sklad').then(data => setShopItems(data.filter(s => s.shop !== null)))
         getSklad('sklad')
@@ -26,7 +30,7 @@ const ShopTab = observer(() => {
     useEffect(() => {
         // setShopItems(Sklad.filter(s => s.shop !== null))
         getShop('shop')
-    }, [sklad.SkladItems, shop.shopItems])
+    }, [sklad.skladItems, shop.shopItems])
     return (
         <Container fluid>
             <Row>
@@ -35,7 +39,7 @@ const ShopTab = observer(() => {
                 </Col>
                 <Col md={{ offset: 0 }}>
                     <Row>
-                        {shopItems.map(s => <ShopCard shopItem={s} key={s.id} rem></ShopCard>
+                        {shopItems.map(s => <ShopCard shopItem={s} key={s.id} rem={fromProd} add={toProd}></ShopCard>
                         )}
                     </Row>
 
