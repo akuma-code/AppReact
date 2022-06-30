@@ -12,6 +12,7 @@ import useFetchingCenter, { FetchingCenter } from "../hooks/useFetchingCenter"
 import { useStoreRefresh } from "../hooks/useStoreRefresh"
 import ShopCard from "../Components/UI/card/ShopCard"
 import { SRCimg } from '../utils/consts'
+import { sklad1 } from '../store/DataOrganaoser'
 
 // id: 4,
 //  price: 6000,
@@ -49,7 +50,7 @@ const Shop = () => {
     const toProd = (shopItem) => setProdQuery([...prodQuery, shopItem])
     const fromProd = (shopItem) => setProdQuery(prodQuery.filter(p => p.id !== shopItem.id))
     const changeQuant = (value, keyID) => {
-        setQuant(prodQuery.map(pq => pq.id === keyID ? [...pq, { value, id }] : pq))
+        setQuant(quant.map(pq => pq.id === keyID ? [...pq, { value, id }] : pq))
     }
 
     return (

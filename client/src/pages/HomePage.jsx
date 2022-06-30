@@ -43,8 +43,9 @@ const Homepage = observer(() => {
     return (
         <Tabs
             defaultActiveKey="sklad"
-            transition={ true }
-            className="mb-3 mx-5"
+            transition={true}
+            className="mb-3 mx-5 bg-secondary"
+
         >
 
             <Tab eventKey="type" title="Типы" className="mx-5">

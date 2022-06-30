@@ -13,7 +13,7 @@ import { SRCimg } from '../../../utils/consts';
 
 
 
-const ShopCard = ({ shopItem, add, rem }) => {
+const ShopCard = ({ shopItem, ...props }) => {
     const [checked, setChecked] = useState(false);
     const { sklad: { type, quant, id: skladId }, price, title } = shopItem;
     const { prod } = useContext(Context)
@@ -24,7 +24,7 @@ const ShopCard = ({ shopItem, add, rem }) => {
         setChecked(!checked)
     }
     useEffect(() => {
-        checked ? add(shopItem) : rem(shopItem)
+        checked ? props?.add(shopItem) : props?.rem(shopItem)
         return () => {
             console.log("ADDED: ", shopItem);
         };
@@ -32,7 +32,7 @@ const ShopCard = ({ shopItem, add, rem }) => {
     return (
         <Card className="mt-2 mx-1"
             // style={ { width: '45vh' } }
-            style={{ border: checked ? "3px solid green" : "", width: '15vw' }}
+            style={{ border: checked ? "3px solid green" : "", width: '25vw' }}
         >
 
             <Card.Header className="d-flex justify-content-between"
