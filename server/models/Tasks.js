@@ -102,8 +102,6 @@ class QueryTask {
 }
 
 class PTask {
-
-
     setTask(skladId, quant) {
         this._skladId = skladId
         this._quant = quant
