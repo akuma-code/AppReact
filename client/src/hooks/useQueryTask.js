@@ -80,46 +80,20 @@ const tasks = [
 ]
 
 const typeSwitcher = (item) => {
-    // let price, title, name, img;
-    let result = {}
+    let quant, dateReady ,skladId;
+    let result = {};
+    const isShop = item=>(item.skladId && item.sklad)?true:false
     const values = Object.entries(item).reduce((prev, [k, val]) => ({ ...prev, [k]: val ?? {} }), {})
+        console.log(isShop(values));
 
-    console.log(values);
+    const { id,   ...rest } = values
+    if(!isShop(values)) {
+        ([quant]=rest)
+        skladId=id
+    const skladProps={skladId:skladId, quant:parseInt(quant)}
+    return skladProps
+        }
 
-    const { id: skladId, type, quant, ...rest } = values
-    console.log({ skladId, quant, rest });
-    // const props3 = item => Object.entries(item).reduce((prev, [k, val]) => {
-    const pr = i => Object.entries(i).reduce((prev, [k, val]) => ({ ...prev, [k]: val })
-        // if (typeof val === 'number' || typeof val === 'string') return ;
-        // if (!val) return
-        , {})
-    return values
-    // switch (itemType) {
-    //     case ('sklad'): {
-    //         console.log('skladItem', values)
-    //         const { id: skladId, type: { img }, quant, } = values
-    //         // const { price = '', title = '' } = values.shop !== null ? values.shop : { price: 0, title: 'NONE' }
-    //         const { price } = values.shop || 0
-    //         const { title } = values.shop || ''
-    //         // if (values.shop) result = { ...result, price: values.shop.price, title: values.shop.title }
-    //         //  let { price = '', title = '' } = item.shop 
-
-    //         // if (values.type!==null) result = { ...result, name: values.type.name, img: values.type.img }
-    //         console.log({ skladId, quant, name, img, price, title });
-    //         return { skladId, quant, name, img, price, title };
-    //     }
-    //     case ('shop'):
-    //         console.log('shopItem');
-    //         const { sklad: { type: { img }, id: skladId }, price, title } = values
-
-
-    //         break;
-
-    //     default:
-    //         console.log("TYPE ERROR at ", item)
-    // }
-
-    // return { img, quant, skladId, price, title }
 
 
 
@@ -168,7 +142,7 @@ export const useTaskForm = (setState, constType) => {
 
 export const useQueryTask = (itemsQuery = [], date) => {
     // !Array.isArray(itemsQuery) ? itemsQuery = [itemsQuery] : itemsQuery
-    const prodTask = (task, dateReady, amount) => task = { ...task, dateReady, amount }
+    const prodTask = (task, dateReady, amount) => task = { ...task, dateReady:dateReady, amount:amount }
 
     const selected = itemsQuery.map(item => {
         if (item.quant && item.typeId) {
@@ -222,3 +196,30 @@ export const useQueryTask = (itemsQuery = [], date) => {
 //         },
 //     }
 // }
+
+    // switch (itemType) {
+    //     case ('sklad'): {
+    //         console.log('skladItem', values)
+    //         const { id: skladId, type: { img }, quant, } = values
+    //         // const { price = '', title = '' } = values.shop !== null ? values.shop : { price: 0, title: 'NONE' }
+    //         const { price } = values.shop || 0
+    //         const { title } = values.shop || ''
+    //         // if (values.shop) result = { ...result, price: values.shop.price, title: values.shop.title }
+    //         //  let { price = '', title = '' } = item.shop 
+
+    //         // if (values.type!==null) result = { ...result, name: values.type.name, img: values.type.img }
+    //         console.log({ skladId, quant, name, img, price, title });
+    //         return { skladId, quant, name, img, price, title };
+    //     }
+    //     case ('shop'):
+    //         console.log('shopItem');
+    //         const { sklad: { type: { img }, id: skladId }, price, title } = values
+
+
+    //         break;
+
+    //     default:
+    //         console.log("TYPE ERROR at ", item)
+    // }
+
+    // return { img, quant, skladId, price, title }
