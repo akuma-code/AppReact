@@ -15,6 +15,7 @@ import { SRCimg } from "../utils/consts";
 const Production = () => {
 
     const { prod } = useContext(Context);
+    const [queryForm, setQueryForm] = useState([]);
     const [query, setQuery] = useState([])
     const [sklads, setSklads] = useState([])
     const [showSklads, setShowSklads] = useState(false);
@@ -23,7 +24,10 @@ const Production = () => {
     const [date, setDate] = useState("2022-06-24");
     const [formList, setFormList] = useState([]);
     const [working, setWorking] = useState([]);
-    const [ADD, REM] = useTaskForm(query)
+    const [ADD, REM, START] = useTaskForm(setQueryForm, 'sklad')
+
+
+
     useEffect(() => {
         FetchingCenter.fetchAll('sklad')
             .then(data => setSklads(data))
@@ -62,6 +66,7 @@ const Production = () => {
 
         tasks.forEach(t => startProdQuery(t))
         setFormList([])
+        console.log("USE TASK HOOK", queryForm);
         setTimeout(() => setShowDate(false), 1000)
         // const tq = formList.map(fl => fl.unit)
         // prod.addTaskToQuery(tq)

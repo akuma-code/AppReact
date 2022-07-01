@@ -61,6 +61,93 @@ const tasks = [
     },
 ]
 
+const typeSwitcher = (item) => {
+    // let price, title, name, img;
+    let result = {}
+    const values = Object.entries(item).reduce((prev, [k, val]) => ({ ...prev, [k]: val ?? {} }), {})
+
+    console.log(values);
+
+    const { id: skladId, type, quant, ...rest } = values
+    console.log({ skladId, quant, rest });
+    // const props3 = item => Object.entries(item).reduce((prev, [k, val]) => {
+    const pr = i => Object.entries(i).reduce((prev, [k, val]) => ({ ...prev, [k]: val })
+        // if (typeof val === 'number' || typeof val === 'string') return ;
+        // if (!val) return
+        , {})
+    return values
+    // switch (itemType) {
+    //     case ('sklad'): {
+    //         console.log('skladItem', values)
+    //         const { id: skladId, type: { img }, quant, } = values
+    //         // const { price = '', title = '' } = values.shop !== null ? values.shop : { price: 0, title: 'NONE' }
+    //         const { price } = values.shop || 0
+    //         const { title } = values.shop || ''
+    //         // if (values.shop) result = { ...result, price: values.shop.price, title: values.shop.title }
+    //         //  let { price = '', title = '' } = item.shop 
+
+    //         // if (values.type!==null) result = { ...result, name: values.type.name, img: values.type.img }
+    //         console.log({ skladId, quant, name, img, price, title });
+    //         return { skladId, quant, name, img, price, title };
+    //     }
+    //     case ('shop'):
+    //         console.log('shopItem');
+    //         const { sklad: { type: { img }, id: skladId }, price, title } = values
+
+
+    //         break;
+
+    //     default:
+    //         console.log("TYPE ERROR at ", item)
+    // }
+
+    // return { img, quant, skladId, price, title }
+
+
+
+
+}
+
+export const useTaskForm = (setState, constType) => {
+    const [query, setQuery] = useState([]);
+
+    useEffect(() => {
+        // setQuery(query.map(typeSwitcher))
+        console.log(query);
+
+    }, []);
+
+
+    const makeForm = ({ skladId = '1', quant = '5', dateReady = '2000-01-01' }) => {
+        const form = new FormData();
+        form.append('dateReady', dateReady)
+        form.append('skladId', skladId)
+        form.append('quant', quant)
+        form.append('isReady', `false`)
+        return form
+    }
+
+
+    const ADD = (task, date) => {
+        const data = typeSwitcher(task, constType)
+        setQuery([...query, { ...data, date }])
+
+    }
+    const REM = (task) => setQuery(query.filter(t => t.id !== task.id))
+
+    const START = () => {
+        setQuery(query.map(item => makeForm(item)))
+        setState(query)
+    }
+
+
+
+
+
+    return [ADD, REM, START]
+}
+
+
 export const useQueryTask = (itemsQuery = [], date) => {
     // !Array.isArray(itemsQuery) ? itemsQuery = [itemsQuery] : itemsQuery
     const prodTask = (task, dateReady, amount) => task = { ...task, dateReady, amount }
@@ -87,23 +174,6 @@ export const useQueryTask = (itemsQuery = [], date) => {
         return newform
     }
     return selected.map(s => wrapform(s))
-}
-
-export const useTaskForm = (taskQuery = []) => {
-    const [query, setQuery] = useState([]);
-
-    useEffect(() => {
-        console.log(query);
-
-    }, [query]);
-    const ADD = (task, date) => {
-        setQuery([...query, { ...task, date }])
-        if (task.skladId) console.log('shopItem');
-        if (task.typeId) console.log('skladItem');
-        console.log(task);
-    }
-    const REM = (task) => setQuery(query.filter(t => t.id !== task.id))
-    return [ADD, REM]
 }
 // {
 //     "id": 4,
