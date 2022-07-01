@@ -59,6 +59,24 @@ const tasks = [
             },
         }
     },
+    {
+        "id": 4,
+        "quant": 8,
+        "typeId": 4,
+        "type": {
+            "id": 4,
+            "name": "ОК-10",
+            "img": "6897179e-2db7-43c5-8e77-7a69315d34f0.jpg",
+            "info": []
+        },
+        "shop": {
+            "id": 4,
+            "price": 6000,
+            "title": "okno10",
+            "skladId": 4
+        },
+        "prods": []
+    }
 ]
 
 const typeSwitcher = (item) => {
@@ -175,24 +193,7 @@ export const useQueryTask = (itemsQuery = [], date) => {
     }
     return selected.map(s => wrapform(s))
 }
-// {
-//     "id": 4,
-//     "quant": 8,
-//     "typeId": 4,
-//     "type": {
-//         "id": 4,
-//         "name": "ОК-10",
-//         "img": "6897179e-2db7-43c5-8e77-7a69315d34f0.jpg",
-//         "info": []
-//     },
-//     "shop": {
-//         "id": 4,
-//         "price": 6000,
-//         "title": "okno10",
-//         "skladId": 4
-//     },
-//     "prods": []
-// }
+
 // {
 //     id: 1,
 //         price: 8100,
