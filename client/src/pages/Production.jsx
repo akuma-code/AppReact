@@ -6,7 +6,7 @@ import {
 } from "react-bootstrap";
 import { Context } from "..";
 import { FetchingCenter } from "../hooks/useFetchingCenter";
-import { useQueryTask, useTaskForm } from "../hooks/useQueryTask";
+import { useTaskForm } from "../hooks/useQueryTask";
 import { clearProdQuery, finishTask, getProdQuery, getProdWorking, startProdQuery } from "../http/prodQueryAPI";
 import { SRCimg } from "../utils/consts";
 
@@ -24,7 +24,7 @@ const Production = () => {
     const [date, setDate] = useState("2022-06-24");
     const [formList, setFormList] = useState([]);
     const [working, setWorking] = useState([]);
-    const [ADD, REM, START] = useTaskForm(setQueryForm, 'sklad')
+    const [ADD, REM, START] = useTaskForm(setQueryForm)
 
 
 

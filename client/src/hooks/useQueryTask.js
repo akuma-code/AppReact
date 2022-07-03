@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { useEffect, useState } from 'react'
 
 const tasks = [
@@ -78,6 +78,19 @@ const tasks = [
     },
 ]
 
+const exData = item => {
+    let id, skladId, t
+    const itype = {
+        'sklad': "id",
+        'shop': skladId
+    }
+    const isSklad = (i) => ((i.type && i.quant) ? "sklad" : "shop")
+        (t = isSklad(item))
+        (itype[t] = item)
+    console.log(itype[t]);
+    return itype[t]
+}
+
 const typeSwitcher = (item) => {
     let quant, dateReady, skladId
     let result = {}
@@ -87,20 +100,20 @@ const typeSwitcher = (item) => {
 
     const { id, ...rest } = values
     if (!isShop(values)) {
-        ;[quant] = rest
+        ({ quant } = rest)
         skladId = id
         const skladProps = { skladId: skladId, quant: parseInt(quant) }
         return skladProps
     }
 }
 
-export const useTaskForm = (setState, constType) => {
+export const useTaskForm = (setState) => {
     const [query, setQuery] = useState([])
 
     useEffect(() => {
         // setQuery(query.map(typeSwitcher))
         console.log(query)
-    }, [])
+    }, [query])
 
     const makeForm = ({ skladId = '1', quant = '5', dateReady = '2000-01-01' }) => {
         const form = new FormData()
@@ -112,7 +125,7 @@ export const useTaskForm = (setState, constType) => {
     }
 
     const ADD = (task, date) => {
-        const data = typeSwitcher(task, constType)
+        const data = exData(task)
         setQuery([...query, { ...data, date }])
     }
     const REM = (task) => setQuery(query.filter((t) => t.id !== task.id))
@@ -120,77 +133,78 @@ export const useTaskForm = (setState, constType) => {
     const START = () => {
         setQuery(query.map((item) => makeForm(item)))
         setState(query)
+        setQuery([])
     }
 
     return [ADD, REM, START]
 }
 
-export const useQueryTask = (itemsQuery = [], date) => {
-    // !Array.isArray(itemsQuery) ? itemsQuery = [itemsQuery] : itemsQuery
-    const prodTask = (task, dateReady, amount) => (task = { ...task, dateReady: dateReady, amount: amount })
+// export const useQueryTask = (itemsQuery = [], date) => {
+//     // !Array.isArray(itemsQuery) ? itemsQuery = [itemsQuery] : itemsQuery
+//     const prodTask = (task, dateReady, amount) => (task = { ...task, dateReady: dateReady, amount: amount })
 
-    const selected = itemsQuery.map((item) => {
-        if (item.quant && item.typeId) {
-            const {
-                amount,
-                id,
-                quant,
-                shop: { price, title },
-                type: { name, img },
-            } = item
-            return prodTask({ skladId: id, price, title, name, img }, date)
-        }
-        if (item.price && item.title && item.skladId) {
-            const {
-                sklad: {
-                    type: { name, img },
-                    quant,
-                    id: skladId,
-                },
-                price,
-                title,
-                amount,
-            } = item
-            return prodTask({ skladId, price, title, name, img }, date)
-        }
-    })
-    console.log(selected)
-    const wrapform = (ptask) => {
-        const form = new FormData()
-        const newform = Object.entries(ptask).map(([key, val]) => form.append(key, val))
-        return newform
-    }
-    return selected.map((s) => wrapform(s))
-}
-
-// {
-//     id: 1,
-//         price: 8100,
-//             title: "ОК4 1170х1000",
-//                 skladId: 1,
-//                     sklad: {
-//         id: 1,
-//             quant: 6,
-//                 typeId: 2,
-//                     type: {
-//             id: 2,
-//                 name: "OK-4",
-//                     img: "89e75e2f-f355-4d8c-8b47-eb6400f439ed.jpg",
-//                         info: [
-//                             {
-//                                 id: 3,
-//                                 desc: "Популярное",
-//                                 typeId: 2
-//                             },
-//                             {
-//                                 id: 4,
-//                                 desc: "ВХС",
-//                                 typeId: 2
-//                             }
-//                         ]
-//         },
+//     const selected = itemsQuery.map((item) => {
+//         if (item.quant && item.typeId) {
+//             const {
+//                 amount,
+//                 id,
+//                 quant,
+//                 shop: { price, title },
+//                 type: { name, img },
+//             } = item
+//             return prodTask({ skladId: id, price, title, name, img }, date)
+//         }
+//         if (item.price && item.title && item.skladId) {
+//             const {
+//                 sklad: {
+//                     type: { name, img },
+//                     quant,
+//                     id: skladId,
+//                 },
+//                 price,
+//                 title,
+//                 amount,
+//             } = item
+//             return prodTask({ skladId, price, title, name, img }, date)
+//         }
+//     })
+//     console.log(selected)
+//     const wrapform = (ptask) => {
+//         const form = new FormData()
+//         const newform = Object.entries(ptask).map(([key, val]) => form.append(key, val))
+//         return newform
 //     }
+//     return selected.map((s) => wrapform(s))
 // }
+
+// // {
+// //     id: 1,
+// //         price: 8100,
+// //             title: "ОК4 1170х1000",
+// //                 skladId: 1,
+// //                     sklad: {
+// //         id: 1,
+// //             quant: 6,
+// //                 typeId: 2,
+// //                     type: {
+// //             id: 2,
+// //                 name: "OK-4",
+// //                     img: "89e75e2f-f355-4d8c-8b47-eb6400f439ed.jpg",
+// //                         info: [
+// //                             {
+// //                                 id: 3,
+// //                                 desc: "Популярное",
+// //                                 typeId: 2
+// //                             },
+// //                             {
+// //                                 id: 4,
+// //                                 desc: "ВХС",
+// //                                 typeId: 2
+// //                             }
+// //                         ]
+// //         },
+// //     }
+// // }
 
 // switch (itemType) {
 //     case ('sklad'): {
