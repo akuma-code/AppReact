@@ -80,15 +80,29 @@ const tasks = [
 
 const exData = item => {
     let id, skladId, t
-    const itype = {
-        'sklad': "id",
-        'shop': skladId
+    if (item.type && item.quant) {
+        console.log("skladItem");
+        skladId = item.id
+
     }
-    const isSklad = (i) => ((i.type && i.quant) ? "sklad" : "shop")
-        (t = isSklad(item))
-        (itype[t] = item)
-    console.log(itype[t]);
-    return itype[t]
+    if (item.sklad && item.price) {
+        skladId = item.skladId
+    }
+    return skladId
+
+
+
+
+
+    // const itype = {
+    //     'sklad': "id",
+    //     'shop': skladId
+    // }
+    // const isSklad = (i) => ((i.type && i.quant) ? "sklad" : "shop")
+    //     (t = isSklad(item))
+    //     (itype[t] = item)
+    // console.log(itype[t]);
+    // return itype[t]
 }
 
 const typeSwitcher = (item) => {
