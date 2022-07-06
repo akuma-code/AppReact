@@ -37,7 +37,13 @@ const Production = () => {
         getProdWorking()
             .then(prod => setWorking(prod))
     }, [])
-
+    const selectProd = item => {
+        setShowDate(true)
+        setShowSklads(false)
+        // prod.setTask(item)
+        prod.addTaskToQuery(item, date)
+        setFormList([...formList, { quant: "", unit: item }])
+    }
     const selectSI = skladItem => {
         // setTask([...task, skladItem])
         setShowDate(true)
@@ -53,6 +59,7 @@ const Production = () => {
     const changeValue = (key, value, id) => {
         setFormList(formList.map(fl => fl.unit.id === id ? { ...fl, [key]: value } : fl))
         setTaskState(taskState.map(t => t.id === id ? { ...t, [key]: value } : t))
+        prod.setQuery(prod.query.map(task => task.skladId === id ? { ...task, [key]: value } : task))
     }
     const makeForm = ({ skladId, quant, dateReady }) => {
         const form = new FormData();
@@ -109,7 +116,7 @@ const Production = () => {
 
                                 <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
                                     bg={ "light" }
-                                    onClick={ () => selectSI(s) }>
+                                    onClick={ () => selectProd(s) }>
                                     <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
                                         <span>Тип:</span> { s.type.name }
                                     </Card.Text>

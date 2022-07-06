@@ -17,11 +17,8 @@ export default class ProductionStore {
     }
 
     async setTask(skItem) {
-        const { id,
-            quant,
-            shop: { price, title },
-            type: { name, img } } = skItem
-        this._task = { skladId: id }
+        const { id, quant, type: { name, img } } = skItem
+        this._task = { skladId: id, name }
     }
 
     get task() {
@@ -37,7 +34,8 @@ export default class ProductionStore {
     }
 
     async addTaskToQuery(skladItem, ...options) {
-        this.setQuery([...this._query, { ...skladItem }])
+        this.setTask(skladItem)
+        this.setQuery([...this._query, { ...this.task, ...options }])
     }
 
     clearQuery() {
