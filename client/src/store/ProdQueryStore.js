@@ -4,7 +4,7 @@ export default class ProductionStore {
     constructor () {
         this._query = []
         this._task = {}
-        this._dateReady = ''
+
         makeAutoObservable(this)
     }
 
@@ -16,22 +16,16 @@ export default class ProductionStore {
         return this._query
     }
 
-    async setTask(skItem) {
-        const { id, quant, type: { name, img } } = skItem
-        this._task = { skladId: id, name }
+    async setTask(skladItem) {
+        const { id, quant, type: { name, img } } = skladItem
+        this._task = { skladId: id, name, dateReady: "", number: "" }
     }
 
     get task() {
         return this._task
     }
 
-    setDate(dateReady) {
-        this._dateReady = dateReady
-    }
 
-    get dateReady() {
-        return this._dateReady
-    }
 
     async addTaskToQuery(skladItem, ...options) {
         this.setTask(skladItem)
@@ -46,5 +40,14 @@ export default class ProductionStore {
 
 
         return this._query
+    }
+
+    changeNumber(value, id) {
+        //! queryItem{skladId, name, number, dateReady}
+        this.setQuery(this.query.map(queryItem => queryItem.skladId === id ? { ...queryItem, number: value } : queryItem))
+    }
+    changeDate(value, id) {
+        //! queryItem{skladId, name, number, dateReady}
+        this.setQuery(this.query.map(queryItem => queryItem.skladId === id ? { ...queryItem, dateReady: value } : queryItem))
     }
 }

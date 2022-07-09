@@ -1,14 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink } from "react-router-dom"
 import { ADMIN_ROUTE, AUTH_ROUTE, HOMEPAGE_ROUTE, LOGIN_ROUTE, PROD_ROUTE, SHOP_ROUTE } from "../../utils/consts"
 import { Navbar, Nav, Button, Container, Row, Col } from 'react-bootstrap'
 import { Context } from '../../index.js'
 import { observer } from 'mobx-react-lite'
 import { useHistory } from 'react-router-dom'
+import ProductionModal from "../../pages/ProductionModal"
+
 
 const NavbarBT = observer(() => {
     const { user } = useContext(Context)
     const history = useHistory()
+    const [showProd, setShowProd] = useState(false);
 
     const logout = () => {
         user.setUser({})
@@ -39,6 +42,12 @@ const NavbarBT = observer(() => {
 
                 { user.isAuth ?
                     <Nav >
+                        <Button
+                            variant={ "outline-light" }
+                            onClick={ () => setShowProd(true) }
+                            className="mr-0"
+                        >ProdModal
+                        </Button>
                         <Button
                             variant={ "outline-light" }
                             onClick={ () => history.push(ADMIN_ROUTE) }
@@ -82,6 +91,7 @@ const NavbarBT = observer(() => {
                 }
 
             </Col>
+            <ProductionModal show={ showProd } onHide={ () => setShowProd(false) } />
         </Navbar>
 
     )

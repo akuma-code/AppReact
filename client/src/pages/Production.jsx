@@ -21,7 +21,7 @@ const Production = () => {
     const [showSklads, setShowSklads] = useState(false);
     const [task, setTask] = useState([]);
     const [showDate, setShowDate] = useState(false);
-    const [date, setDate] = useState("2022-06-24");
+    const [date, setDate] = useState("");
     const [formList, setFormList] = useState([]);
     const [working, setWorking] = useState([]);
     const [ADD, REM, START] = useTaskForm(setQueryForm);
@@ -60,6 +60,7 @@ const Production = () => {
         setFormList(formList.map(fl => fl.unit.id === id ? { ...fl, [key]: value } : fl))
         setTaskState(taskState.map(t => t.id === id ? { ...t, [key]: value } : t))
         prod.setQuery(prod.query.map(task => task.skladId === id ? { ...task, [key]: value } : task))
+        prod.changeNumber(value, id)
     }
     const makeForm = ({ skladId, quant, dateReady }) => {
         const form = new FormData();

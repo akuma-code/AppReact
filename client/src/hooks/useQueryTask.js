@@ -89,20 +89,6 @@ const exData = item => {
         skladId = item.skladId
     }
     return skladId
-
-
-
-
-
-    // const itype = {
-    //     'sklad': "id",
-    //     'shop': skladId
-    // }
-    // const isSklad = (i) => ((i.type && i.quant) ? "sklad" : "shop")
-    //     (t = isSklad(item))
-    //     (itype[t] = item)
-    // console.log(itype[t]);
-    // return itype[t]
 }
 
 const typeSwitcher = (item) => {
@@ -245,3 +231,12 @@ export const useTaskForm = (setState) => {
 // }
 
 // return { img, quant, skladId, price, title }
+ // const itype = {
+    //     'sklad': "id",
+    //     'shop': skladId
+    // }
+    // const isSklad = (i) => ((i.type && i.quant) ? "sklad" : "shop")
+    //     (t = isSklad(item))
+    //     (itype[t] = item)
+    // console.log(itype[t]);
+    // return itype[t]
