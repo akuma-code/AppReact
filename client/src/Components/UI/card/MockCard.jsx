@@ -4,7 +4,7 @@ import { SRCimg } from '../../../utils/consts'
 const MockCard = (props) => {
     return (
         <Card
-            {...props}
+            { ...props }
             className="d-flex "
         >
             <Card.Title className="text-center ">
@@ -12,7 +12,7 @@ const MockCard = (props) => {
             </Card.Title>
             <Card.Img
                 // className='place-self-center'
-                src={SRCimg + "30dc7df1-1a3f-4ca0-81ce-45818e9a67e4.jpg"}
+                src={ SRCimg + "2c4303e4-2f50-4918-b312-3f864385892e.jpg" }
                 alt='NO PICTURE'
             // style={{ height: "150px", width: "150px" }}
 

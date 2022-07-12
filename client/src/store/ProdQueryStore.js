@@ -4,14 +4,28 @@ export default class ProductionStore {
     constructor () {
         this._query = []
         this._task = {}
-
+        this._queryForm = []
         makeAutoObservable(this)
     }
 
     setQuery(tasks) {
         this._query = tasks
     }
+    setQueryForm(query = []) {
+        const makeForm = ({ skladId, number, dateReady }) => {
+            const form = new FormData();
+            form.append('dateReady', dateReady)
+            form.append('skladId', skladId)
+            form.append('number', number)
+            form.append('isReady', false)
+            return form
+        }
 
+        this._queryForm = query.map(i => makeForm(i))
+    }
+    get queryForm() {
+        return this._queryForm
+    }
     get query() {
         return this._query
     }
@@ -27,7 +41,7 @@ export default class ProductionStore {
 
 
 
-    async addTaskToQuery(skladItem, ...options) {
+    async addTaskToQuery(skladItem, options) {
         this.setTask(skladItem)
         this.setQuery([...this._query, { ...this.task, ...options }])
     }
@@ -49,5 +63,14 @@ export default class ProductionStore {
     changeDate(value, id) {
         //! queryItem{skladId, name, number, dateReady}
         this.setQuery(this.query.map(queryItem => queryItem.skladId === id ? { ...queryItem, dateReady: value } : queryItem))
+    }
+
+    setDate(date) {
+        this.setQuery(this.query.map(qi => ({ ...qi, dateReady: date })))
+    }
+
+    submitQuery() {
+        this.setQueryForm(this.query)
+        this.clearQuery()
     }
 }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-const TypeCard = ({ type }) => {
+const TypeCard = (props) => {
+    const { type } = props
     return (
-        <Card bg={ "success" }>
+        <Card bg={ "success" }
+            { ...props }>
             <Card.Title as={ "h2" } className="text-center ">
                 { type.name }
             </Card.Title>
