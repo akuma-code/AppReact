@@ -1,4 +1,7 @@
 import { makeAutoObservable } from "mobx"
+import { startProdQuery } from "../http/prodQueryAPI"
+
+
 
 export default class ProductionStore {
     constructor () {
@@ -72,5 +75,9 @@ export default class ProductionStore {
     submitQuery() {
         this.setQueryForm(this.query)
         this.clearQuery()
+    }
+
+    async startProduction() {
+        this.queryForm.forEach(startProdQuery)
     }
 }

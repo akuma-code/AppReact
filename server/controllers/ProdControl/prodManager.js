@@ -6,17 +6,6 @@ const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: sklad
 
 
 
-const SetSkladQuant = async (query) => {
-    // if (!query.dataValues) return console.log("QUERY ERROR", query);
-    const { skladId, quant } = query
-    getQuant(skladId)
-        .then(prev => Number(prev) + Number(quant))
-        .then(newQuant => SkladMain.update({ quant: newQuant }, { where: { id: skladId } }))
-
-    // Production.update({ isReady: true }, { where: { id: prodId } })
-}
-
-
 const QuantInc = async (skladId, value) => {
     const item = await SkladMain.findOne({ where: { id: skladId } })
     item.increment('quant', { by: value })
@@ -27,21 +16,21 @@ const QuantDec = async (skladId, value) => {
     item.decrement('quant', { by: value })
     return item
 }
-const createTask = async ({ skladId, quant, dateReady, isReady }) => {
-    const ptask = await Production.create({ skladId, quant, dateReady, isReady })
-    const pq = await ProdQuery.create({ prodId: ptask.id, skladId: skladId, quant: quant })
+const createTask = async ({ skladId, number, dateReady, isReady }) => {
+    const ptask = await Production.create({ skladId, number, dateReady, isReady })
+    const pq = await ProdQuery.create({ prodId: ptask.id, skladId: skladId })
     return ptask
 }
 
 class ProductionManager {
 
-    async startTask(skladId, quant, isReady = false, dateReady) {
+    async startTask(skladId, number, isReady = false, dateReady) {
         // quant *= -1
         // const skladQuant = await getQuant(skladId).then(prev => prev - quant)
 
         try {
-            const PTask = await createTask({ skladId, quant, dateReady, isReady })
-                .then(data => QuantDec(skladId, quant))
+            const PTask = await createTask({ skladId, number, dateReady, isReady })
+                .then(data => QuantDec(skladId, number))
             // SetSkladQuant({ skladId, quant })
             return PTask
         } catch (error) {
@@ -52,17 +41,17 @@ class ProductionManager {
 
 
     async finishProdTask(prodId) {
-        const prodUnit = await Production.findOne({ where: { id: prodId }, attributes: ['isReady', 'quant'], include: [{ all: true, nested: true }] })
+        const prodUnit = await Production.findOne({ where: { id: prodId }, attributes: ['isReady', 'number'], include: [{ all: true, nested: true }] })
         const finished = await prodUnit.getDataValue('isReady') === true
 
         if (finished) return console.log("Task Already Finished!");
 
         const skladId = await ProdQuery.findOne({ where: { prodId: prodId } })
             .then(data => data.getDataValue('skladId'))
-        const quant = await prodUnit.getDataValue('quant')
+        const number = await prodUnit.getDataValue('number')
 
         Production.update({ isReady: true }, { where: { id: prodId } })
-            .then(data => QuantInc(skladId, quant))
+            .then(data => QuantInc(skladId, number))
         return prodUnit
     }
 

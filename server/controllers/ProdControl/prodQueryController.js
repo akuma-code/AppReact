@@ -26,12 +26,12 @@ class ProdQueryController {
     }
 
     async start(req, res, next) {
-        const { skladId, quant, isReady = false, dateReady } = req.body
+        const { skladId, number, isReady = false, dateReady } = req.body
 
         // const skladQuant = await getQuant(skladId).then(prev => prev - quant)
 
         try {
-            const ptask = await ProductionManager.startTask(skladId, quant, isReady, dateReady)
+            const ptask = await ProductionManager.startTask(skladId, number, isReady, dateReady)
             //     const ptask = await Production.create({ skladId, quant, dateReady, isReady })
             //     await ProdQuery.create({ prodId: ptask.id, skladId: skladId, quant: quant })
             //     await SkladMain.update({ quant: skladQuant }, { where: { id: skladId } })

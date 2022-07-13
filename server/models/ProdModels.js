@@ -10,7 +10,7 @@ const SkladMain = sequelize.define('sklad', {
 
 const Production = sequelize.define('prod', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    quant: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+    number: { type: DataTypes.INTEGER, allowNull: false },
     dateReady: { type: DataTypes.STRING, allowNull: false },
     isReady: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }
 }, { freezeTableName: true, timestamps: false })
@@ -42,7 +42,6 @@ const Shop = sequelize.define('shop', {
 
 const ProdQuery = sequelize.define('prodQuery', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    quant: { type: DataTypes.INTEGER, allowNull: true },
 }, { freezeTableName: true, timestamps: false })
 
 

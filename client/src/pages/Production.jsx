@@ -62,11 +62,11 @@ const Production = () => {
         prod.setQuery(prod.query.map(task => task.skladId === id ? { ...task, [key]: value } : task))
         prod.changeNumber(value, id)
     }
-    const makeForm = ({ skladId, quant, dateReady }) => {
+    const makeForm = ({ skladId, number, dateReady }) => {
         const form = new FormData();
         form.append('dateReady', dateReady)
         form.append('skladId', skladId)
-        form.append('quant', quant)
+        form.append('number', number)
         form.append('isReady', false)
         return form
     }
@@ -204,7 +204,7 @@ const Production = () => {
                                 <th>Prod ID</th>
                                 <th>Sklad Id</th>
                                 <th>Type</th>
-                                <th>quant</th>
+                                <th>number</th>
                                 <th>DateReady</th>
                                 <th>isReady</th>
                                 <th>Finish</th>
@@ -217,7 +217,7 @@ const Production = () => {
                                     <td>{ p.id }</td>
                                     <td>{ p?.sklads[0]?.id }</td>
                                     <td>{ p?.sklads[0]?.type.name }</td>
-                                    <td>{ p?.quant }</td>
+                                    <td>{ p?.number }</td>
                                     <td>{ p?.dateReady }</td>
                                     <td>{ p?.isReady ? "DONE!" : "Working" }</td>
                                     <td><Button onClick={ () => EndTask(p.id) }>FIN</Button></td>
