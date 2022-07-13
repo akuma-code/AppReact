@@ -48,8 +48,8 @@ const ProductionModal = ({ show, onHide }) => {
     }, [itemsQuery])
     return (
         <Modal
-            show={ show }
-            onHide={ onHide }
+            show={show}
+            onHide={onHide}
             centered
             size='lg'
         >
@@ -57,34 +57,36 @@ const ProductionModal = ({ show, onHide }) => {
 
             >
 
-                <Form onSubmit={ handleSubmit }>
-                    <Row md={ 2 }>
+                <Form onSubmit={handleSubmit}>
+                    <Row md={2}>
                         <FloatingLabel
                             label="Готовность на дату:"
                         >
                             <Form.Control
                                 type="date"
-                                value={ dateReady }
-                                onChange={ (e) => setDateReady(e.target.value) }
+                                value={dateReady}
+                                onChange={(e) => setDateReady(e.target.value)}
                             />
                         </FloatingLabel>
                         <Button type='submit' >submit</Button>
                     </Row>
                     <Row
-                        md={ 5 }
+                        md={5}
                         className='bg-success'
                     >
 
-                        { itemsQuery.map(iq =>
-                            <Form.Group key={ iq.id }
+                        {itemsQuery.map(iq =>
+                            <Form.Group key={iq.id}
                                 className="d-flex flex-row"
                             >
 
                                 <div
                                     className="d-flex flex-column justify-content-between pos">
 
-                                    <MockCard
+                                    <TypeCard
                                         className="w-100"
+                                        type={iq.type}
+                                        key={iq.id}
                                     // style={{ zIndex: 2 }}
                                     />
 
@@ -93,33 +95,33 @@ const ProductionModal = ({ show, onHide }) => {
                                         type='number'
                                         className='w-100'
                                         placeholder='кол-во'
-                                        value={ iq.number }
-                                        onChange={ (e) => prod.changeNumber(e.target.value, iq.id) }
+                                        value={iq.number}
+                                        onChange={(e) => prod.changeNumber(e.target.value, iq.id)}
                                     />
                                     <CloseButton
-                                        style={ { zIndex: 1, position: "absolute", alignSelf: "flex-end" } }
+                                        style={{ zIndex: 1, position: "absolute", alignSelf: "flex-end" }}
                                         className="ml-2 bg-danger float-right"
 
-                                        onClick={ () => remove(iq) }
+                                        onClick={() => remove(iq)}
 
                                     /></div>
                             </Form.Group>
 
-                        ) }
+                        )}
                     </Row>
                 </Form>
 
                 <Col className='d-flex flex-row'>
-                    <Row md={ 5 }>
+                    <Row md={5}>
 
-                        { sklads.map(sitem =>
+                        {sklads.map(sitem =>
                             <TypeCard
-                                type={ sitem.type }
-                                key={ sitem.id }
-                                onClick={ () => select(sitem) }
+                                type={sitem.type}
+                                key={sitem.id}
+                                onClick={() => select(sitem)}
                                 className="mx-3 my-3"
                             // style={{ height: "150px" }}
-                            />) }
+                            />)}
 
 
 
