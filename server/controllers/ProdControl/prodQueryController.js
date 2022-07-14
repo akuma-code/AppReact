@@ -4,16 +4,16 @@ const { Production, ProdQuery, SkladMain, Shop } = require("../../models/ProdMod
 const prodManager = require("./prodManager.js")
 const { ProductionTask, QueryTask, PTQuery } = require("../../models/Tasks")
 const { Op } = require("sequelize")
-const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
-    .then(data => data.getDataValue('quant'))
-const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
-    .then(data => data.update({ quant: data.quant + quantPROD }, { where: { id: skladId } }))
-    .then(data => data.toJSON())
-const QuantInc = async (skladId, value) => {
-    const item = await SkladMain.findOne({ where: { id: skladId } })
-    await item.increment('quant', { by: value })
-    return item
-}
+// const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
+//     .then(data => data.getDataValue('quant'))
+// const setQuant = async (skladId, quantPROD) => await SkladMain.findOne({ where: { id: skladId }, attributes: ['quant'] })
+//     .then(data => data.update({ quant: data.quant + quantPROD }, { where: { id: skladId } }))
+//     .then(data => data.toJSON())
+// const QuantInc = async (skladId, value) => {
+//     const item = await SkladMain.findOne({ where: { id: skladId } })
+//     await item.increment('quant', { by: value })
+//     return item
+// }
 class ProdQueryController {
     async getTest(req, res, next) {
         // const { skladId, quant, isReady = false, dateReady } = { skladId: 2, quant: 3, isReady: false, dateReady: "2022-07-01" }

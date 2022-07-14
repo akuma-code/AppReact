@@ -12,7 +12,7 @@ import { SRCimg } from "../utils/consts";
 
 
 
-const Production = () => {
+const Production = observer(() => {
 
     const { prod } = useContext(Context);
     const [queryForm, setQueryForm] = useState([]);
@@ -27,6 +27,13 @@ const Production = () => {
     const [ADD, REM, START] = useTaskForm(setQueryForm);
     const [taskState, setTaskState] = useState([]);
 
+    const updateWorking = () => {
+        getProdWorking()
+            .then(prod => setWorking(prod))
+    }
+    const reset = () => clearProdQuery()
+
+    const EndTask = async (taskId) => await finishTask(taskId).then(updateWorking)
 
 
     useEffect(() => {
@@ -34,166 +41,18 @@ const Production = () => {
             .then(data => setSklads(data))
         getProdQuery('nested')
             .then(data => setQuery(data))
-        getProdWorking()
-            .then(prod => setWorking(prod))
+        updateWorking()
     }, [])
-    const selectProd = item => {
-        setShowDate(true)
-        setShowSklads(false)
-        // prod.setTask(item)
-        prod.addTaskToQuery(item, date)
-        setFormList([...formList, { quant: "", unit: item }])
-    }
-    const selectSI = skladItem => {
-        // setTask([...task, skladItem])
-        setShowDate(true)
-        setShowSklads(false)
-        setTaskState([...taskState, { skladId: skladItem.id, number: '' }])
-        setFormList([...formList, { quant: "", unit: skladItem }])
-        setSklads(sklads.filter(s => s.id !== skladItem.id))
-        ADD(skladItem, date)
-        // prod.addTaskToQuery(skladItem, 5, date)
-        // setTask(task.map(t => t.skladId === skladItem.id ? { ...t, skladId: skladItem.id } : t))
-    }
 
-    const changeValue = (key, value, id) => {
-        setFormList(formList.map(fl => fl.unit.id === id ? { ...fl, [key]: value } : fl))
-        setTaskState(taskState.map(t => t.id === id ? { ...t, [key]: value } : t))
-        prod.setQuery(prod.query.map(task => task.skladId === id ? { ...task, [key]: value } : task))
-        prod.changeNumber(value, id)
-    }
-    const makeForm = ({ skladId, number, dateReady }) => {
-        const form = new FormData();
-        form.append('dateReady', dateReady)
-        form.append('skladId', skladId)
-        form.append('number', number)
-        form.append('isReady', false)
-        return form
-    }
-
-    const handleSubmit = (e) => {
-        e && e.preventDefault()
-        const tasks = task.map(t => makeForm(t))
-
-        tasks.forEach(t => startProdQuery(t))
-        setFormList([])
-        console.log("USE TASK HOOK", queryForm);
-        setTimeout(() => setShowDate(false), 1000)
-        // const tq = formList.map(fl => fl.unit)
-        // prod.addTaskToQuery(tq)
-    }
     useEffect(() => {
-        setTask(formList.map(fl => ({ skladId: fl.unit.id, quant: fl.quant, dateReady: date })))
+        updateWorking()
+    }, [prod.query]);
 
-    }, [formList]);
-    const reset = () => clearProdQuery()
-
-    const EndTask = async (taskId) => await finishTask(taskId)
     return (
         <Container bg="secondary" fluid>
             <Row>
                 <Col>
-                    <Container className="my-2 border">
-                        <Row >
-                            <Col sm={ 7 }>
-                                <h2 className="d-block">Запуск в производство</h2>
-                            </Col>
-                            <Col sm={ 5 }>
-                                <Button variant="success" className="h-100 w-100"
-                                    onClick={ () => setShowSklads(!showSklads) }>Добавить</Button>
-                            </Col>
 
-
-                        </Row>
-                    </Container>
-
-
-                    <Offcanvas show={ showSklads } onHide={ () => setShowSklads(false) } placement="start">
-                        <Offcanvas.Header closeButton>
-                            <Offcanvas.Title>OKNO</Offcanvas.Title>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            { sklads.map(s =>
-
-                                <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
-                                    bg={ "light" }
-                                    onClick={ () => selectProd(s) }>
-                                    <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
-                                        <span>Тип:</span> { s.type.name }
-                                    </Card.Text>
-                                    <Row >
-                                        <Col>
-                                            <Card.Img
-                                                src={ `${SRCimg}${s.type.img || "noimage.jpg"}` }
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Остаток: </span>{ s.quant } шт.
-                                            </Card.Text>
-                                        </Col>
-                                    </Row>
-                                </Card>
-
-                            ) }
-                        </Offcanvas.Body>
-                    </Offcanvas>
-                    <Form onSubmit={ handleSubmit }>
-                        <Row>
-                            {/* <Col sm={ 4 }>
-                                <Button variant="success" className="h-100"
-                                    onClick={ () => setShowSklads(!showSklads) }
-                                >Добавить изделие в очередь
-                                </Button>
-                            </Col> */}
-
-                            <Col md={ 4 } >
-                                <Collapse in={ showDate } >
-
-                                    <FloatingLabel
-                                        className=""
-                                        label="Дата готовности">
-                                        <FormControl type='date'
-                                            value={ date }
-                                            onChange={ (e) => setDate(e.target.value) }
-                                        />
-
-                                    </FloatingLabel>
-                                </Collapse>
-                            </Col>
-                            <Col>
-                                <Collapse in={ showDate }>
-                                    <Button type="submit" size="lg" className="h-100" >Запуск!</Button>
-                                </Collapse>
-                            </Col>
-                        </Row>
-                        <Container>
-                            <Row >
-                                { formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
-
-                                    <Col md={ 3 } key={ t.unit.id }>
-                                        <Card.Img variant="top"
-                                            // style={ { maxHeight: "10rem" } }
-                                            src={ `${SRCimg}${t.unit?.type?.img || "noimage.jpg"}` } />
-                                        <FormGroup md={ 2 } className='mt-2' controlId={ `skladItemQuant_${t.unit.id}` }>
-                                            <FloatingLabel label="Количество" >
-                                                <FormControl
-                                                    type='number'
-                                                    placeholder="Количество"
-                                                    className='text-center'
-
-                                                    value={ t.quant }
-                                                    onChange={ e => changeValue('quant', e.target.value, t.unit.id) }
-
-                                                />
-                                            </FloatingLabel>
-                                        </FormGroup>
-                                    </Col>
-                                ) }
-
-                            </Row>
-                        </Container>
-                    </Form>
                 </Col>
                 <Col>
                     <h1 className="text-center">Production Tasks</h1>
@@ -230,7 +89,7 @@ const Production = () => {
             </Row>
         </Container >
     );
-}
+})
 
 export default Production;
 
@@ -244,4 +103,152 @@ export default Production;
 
 //         const onSubmit = ({ values }) => {
 //     console.log(values, 'submit');
+// }
+
+// <Container className="my-2 border">
+//                         <Row >
+//                             <Col sm={ 7 }>
+//                                 <h2 className="d-block">Запуск в производство</h2>
+//                             </Col>
+//                             <Col sm={ 5 }>
+//                                 <Button variant="success" className="h-100 w-100"
+//                                     onClick={ () => setShowSklads(!showSklads) }>Добавить</Button>
+//                             </Col>
+
+
+//                         </Row>
+//                     </Container>
+
+
+//                     <Offcanvas show={ showSklads } onHide={ () => setShowSklads(false) } placement="start">
+//                         <Offcanvas.Header closeButton>
+//                             <Offcanvas.Title>OKNO</Offcanvas.Title>
+//                         </Offcanvas.Header>
+//                         <Offcanvas.Body>
+//                             { sklads.map(s =>
+
+//                                 <Card key={ s.id } className="gap-4 my-2 " as={ ListGroup.Item } action
+//                                     bg={ "light" }
+//                                     onClick={ () => selectProd(s) }>
+//                                     <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-between'>
+//                                         <span>Тип:</span> { s.type.name }
+//                                     </Card.Text>
+//                                     <Row >
+//                                         <Col>
+//                                             <Card.Img
+//                                                 src={ `${SRCimg}${s.type.img || "noimage.jpg"}` }
+//                                             />
+//                                         </Col>
+//                                         <Col>
+//                                             <Card.Text className='d-flex flex-row justify-content-around'>
+//                                                 <span>Остаток: </span>{ s.quant } шт.
+//                                             </Card.Text>
+//                                         </Col>
+//                                     </Row>
+//                                 </Card>
+
+//                             ) }
+//                         </Offcanvas.Body>
+//                     </Offcanvas>
+//                     <Form onSubmit={ handleSubmit }>
+//                         <Row>
+//                             {/* <Col sm={ 4 }>
+//                                 <Button variant="success" className="h-100"
+//                                     onClick={ () => setShowSklads(!showSklads) }
+//                                 >Добавить изделие в очередь
+//                                 </Button>
+//                             </Col> */}
+
+//                             <Col md={ 4 } >
+//                                 <Collapse in={ showDate } >
+
+//                                     <FloatingLabel
+//                                         className=""
+//                                         label="Дата готовности">
+//                                         <FormControl type='date'
+//                                             value={ date }
+//                                             onChange={ (e) => setDate(e.target.value) }
+//                                         />
+
+//                                     </FloatingLabel>
+//                                 </Collapse>
+//                             </Col>
+//                             <Col>
+//                                 <Collapse in={ showDate }>
+//                                     <Button type="submit" size="lg" className="h-100" >Запуск!</Button>
+//                                 </Collapse>
+//                             </Col>
+//                         </Row>
+//                         <Container>
+//                             <Row >
+//                                 { formList.map(t => //task Item == { quant: '', skladId: skItem.id, unit: skItem }
+
+//                                     <Col md={ 3 } key={ t.unit.id }>
+//                                         <Card.Img variant="top"
+//                                             // style={ { maxHeight: "10rem" } }
+//                                             src={ `${SRCimg}${t.unit?.type?.img || "noimage.jpg"}` } />
+//                                         <FormGroup md={ 2 } className='mt-2' controlId={ `skladItemQuant_${t.unit.id}` }>
+//                                             <FloatingLabel label="Количество" >
+//                                                 <FormControl
+//                                                     type='number'
+//                                                     placeholder="Количество"
+//                                                     className='text-center'
+
+//                                                     value={ t.quant }
+//                                                     onChange={ e => changeValue('quant', e.target.value, t.unit.id) }
+
+//                                                 />
+//                                             </FloatingLabel>
+//                                         </FormGroup>
+//                                     </Col>
+//                                 ) }
+
+//                             </Row>
+//                         </Container>
+//                     </Form>
+
+// const selectProd = item => {
+//     setShowDate(true)
+//     setShowSklads(false)
+//     // prod.setTask(item)
+//     prod.addTaskToQuery(item, date)
+//     setFormList([...formList, { quant: "", unit: item }])
+// }
+// const selectSI = skladItem => {
+//     // setTask([...task, skladItem])
+//     setShowDate(true)
+//     setShowSklads(false)
+//     setTaskState([...taskState, { skladId: skladItem.id, number: '' }])
+//     setFormList([...formList, { quant: "", unit: skladItem }])
+//     setSklads(sklads.filter(s => s.id !== skladItem.id))
+//     ADD(skladItem, date)
+//     // prod.addTaskToQuery(skladItem, 5, date)
+//     // setTask(task.map(t => t.skladId === skladItem.id ? { ...t, skladId: skladItem.id } : t))
+// }
+
+// const changeValue = (key, value, id) => {
+//     setFormList(formList.map(fl => fl.unit.id === id ? { ...fl, [key]: value } : fl))
+//     setTaskState(taskState.map(t => t.id === id ? { ...t, [key]: value } : t))
+//     prod.setQuery(prod.query.map(task => task.skladId === id ? { ...task, [key]: value } : task))
+//     prod.changeNumber(value, id)
+// }
+// const makeForm = ({ skladId, number, dateReady }) => {
+//     const form = new FormData();
+//     form.append('dateReady', dateReady)
+//     form.append('skladId', skladId)
+//     form.append('number', number)
+//     form.append('isReady', false)
+//     return form
+// }
+
+// const handleSubmit = (e) => {
+//     e && e.preventDefault()
+//     const tasks = task.map(t => makeForm(t))
+
+//     tasks.forEach(t => startProdQuery(t))
+//     setFormList([])
+//     console.log("USE TASK HOOK", queryForm);
+//     setTimeout(() => setShowDate(false), 1000)
+//     // const tq = formList.map(fl => fl.unit)
+//     // prod.addTaskToQuery(tq)
 // }

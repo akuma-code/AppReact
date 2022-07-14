@@ -6,7 +6,7 @@ const getQuant = async (skladId) => await SkladMain.findOne({ where: { id: sklad
 
 
 
-const QuantInc = async (skladId, value) => {
+async function QuantInc(skladId, value) {
     const item = await SkladMain.findOne({ where: { id: skladId } })
     item.increment('quant', { by: value })
     return item

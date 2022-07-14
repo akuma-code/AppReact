@@ -4,14 +4,24 @@ import { Context } from "..";
 import MockCard from '../Components/UI/card/MockCard';
 import TypeCard from "../Components/UI/card/TypeCard";
 import { FetchingCenter } from "../hooks/useFetchingCenter";
+import dayjs from "dayjs"
 
-
+const getToday = () => {
+    const now = dayjs().format('DD MM YYYY')
+    console.log(now)
+    return now
+}
+const averageDate = () => {
+    const now = dayjs().format('DD MM YYYY')
+    const avDate = dayjs().add(8, 'day').format('DD MM YYYY')
+    return avDate
+}
 
 const ProductionModal = ({ show, onHide }) => {
     const { prod, sklad } = useContext(Context)
     const [sklads, setSklads] = useState([]);
     const [itemsQuery, setItemsQuery] = useState([]);
-    const [dateReady, setDateReady] = useState("");
+    const [dateReady, setDateReady] = useState(dayjs().add(8, 'day').format('YYYY MM DD'));
 
 
     const select = sitem => {
@@ -42,6 +52,8 @@ const ProductionModal = ({ show, onHide }) => {
     useEffect(() => {
         FetchingCenter.fetchAll('sklad').then(data => setSklads(data))
 
+        setDateReady(dayjs().add(8, 'day').format('YYYY-MM-DD'))
+
     }, []);
 
     useEffect(() => {
@@ -59,31 +71,32 @@ const ProductionModal = ({ show, onHide }) => {
             >
 
                 <Form onSubmit={ handleSubmit }>
-                    <Row md={ 2 }>
+                    <Row md={ 4 }>
                         <FloatingLabel
                             label="Готовность на дату:"
                         >
                             <Form.Control
                                 type="date"
                                 value={ dateReady }
-                                onChange={ (e) => setDateReady(e.target.value) }
+                                onChange={ (e) => setDateReady(dayjs(e.target.value).format('YYYY-MM-DD')) }
                                 required
+
                             />
                         </FloatingLabel>
                         <Button type='submit' >submit</Button>
                     </Row>
                     <Row
                         md={ 5 }
-                        className='bg-success'
+                        className='bg-secondary my-2'
                     >
 
                         { itemsQuery.map(iq =>
                             <Form.Group key={ iq.id }
-                                className="d-flex flex-row"
+                                className="d-flex flex-row my-2"
                             >
 
                                 <div
-                                    className="d-flex flex-column justify-content-between pos">
+                                    className="d-flex flex-column justify-content-between">
 
                                     <TypeCard
                                         className="w-100"
@@ -95,18 +108,19 @@ const ProductionModal = ({ show, onHide }) => {
 
                                     <Form.Control
                                         type='number'
-                                        className='w-100'
+                                        className='w-100 mt-1'
                                         placeholder='кол-во'
                                         value={ iq.number }
                                         onChange={ (e) => prod.changeNumber(e.target.value, iq.id) }
                                     />
                                     <CloseButton
                                         style={ { zIndex: 1, position: "absolute", alignSelf: "flex-end" } }
-                                        className="ml-2 bg-danger float-right"
+                                        className="ml-2 bg-danger"
 
                                         onClick={ () => remove(iq) }
 
-                                    /></div>
+                                    />
+                                </div>
                             </Form.Group>
 
                         ) }
@@ -121,8 +135,8 @@ const ProductionModal = ({ show, onHide }) => {
                                 type={ sitem.type }
                                 key={ sitem.id }
                                 onClick={ () => select(sitem) }
-                                className="mx-3 my-3"
-                            // style={{ height: "150px" }}
+                                className="mx-1 my-2"
+                                style={ { cursor: "pointer" } }
                             />) }
 
 
@@ -136,7 +150,7 @@ const ProductionModal = ({ show, onHide }) => {
 
             </Modal.Body>
 
-        </Modal >
+        </Modal>
     );
 }
 

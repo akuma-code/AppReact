@@ -4,6 +4,7 @@ import { Badge, Button, ButtonGroup, Card, Col, ListGroup, ListGroupItem, Row } 
 import { useConsole } from "../../../hooks/useConsole";
 import { Context } from '../../..';
 import { SRCimg } from '../../../utils/consts';
+import ImgOK from "../ImgOK";
 
 
 
@@ -31,33 +32,32 @@ const ShopCard = ({ shopItem, ...props }) => {
     return (
         <Card className="mt-2 mx-1"
             // style={ { width: '45vh' } }
-            style={{ border: checked ? "3px solid green" : "", width: '25vw' }}
+            style={ { border: checked ? "3px solid green" : "", width: '25vw' } }
         >
 
             <Card.Header className="d-flex justify-content-between"
             >
-                <Card.Text as="h4">{title || type?.name}</Card.Text>
-                <Card.Text as="h4"> {price} руб.</Card.Text>
+                <Card.Text as="h4">{ title || type?.name }</Card.Text>
+                <Card.Text as="h4"> { price } руб.</Card.Text>
             </Card.Header>
             <Card.Body>
                 <Row>
                     <Col>
+                        <ImgOK type={ type } />
 
-                        <Card.Img
-                            src={`${SRCimg}${type?.img || "noimage.jpg"}`} />
                     </Col>
                     <Col>
                         <ListGroup numbered>
 
-                            {type?.info.map(i =>
+                            { type?.info.map(i =>
                                 <ListGroupItem
-                                    as={"li"}
+                                    as={ "li" }
                                     className="mb-1"
                                     action
                                     variant="secondary"
-                                    key={i.id}
+                                    key={ i.id }
                                 >
-                                    {i.desc}
+                                    { i.desc }
                                 </ListGroupItem>
                             )
                             }
@@ -66,26 +66,26 @@ const ShopCard = ({ shopItem, ...props }) => {
                 </Row>
             </Card.Body>
 
-            <Card.Footer as={"h5"}
+            <Card.Footer as={ "h5" }
                 className="d-flex justify-content-around "
             >
                 <ButtonGroup>
                     <Button
-                        variant='outline-success' onClick={() => setChecked(!checked)}
+                        variant='outline-success' onClick={ () => setChecked(!checked) }
                     >
-                        {checked ? "ADDED!" : "Add to query"}
+                        { checked ? "ADDED!" : "Add to query" }
                     </Button>
                     <Button variant='outline-dark' >BTN2</Button>
                 </ButtonGroup>
                 <ListGroupItem className='bg-secondary d-flex flex-row justify-content-between' >
                     <span>НА СКЛАДЕ</span>
                     <Badge
-                        bg={quant <= 2 ? "warning" : "light"}
+                        bg={ quant <= 2 ? "warning" : "light" }
                         text="dark"
                         className="mx-2"
 
                     >
-                        {quant} шт.
+                        { quant } шт.
                     </Badge>
                 </ListGroupItem>
             </Card.Footer>
