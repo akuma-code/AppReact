@@ -24,27 +24,27 @@ const ProductionTab = () => {
     }, [filter])
     return (
         <Container>
-            <Row md={ 4 } className="my-2">
+            <Row md={4} className="my-2">
                 <Form>
-                    <Form.Select value={ filter.sort } placeholder="Фильтровать по" onChange={ (e) => setFilter({ ...filter, sort: e.target.value.toString() }) }
+                    <Form.Select value={filter.sort} placeholder="Фильтровать по" onChange={(e) => setFilter({ ...filter, sort: `${e.target.value}` })}
 
                     >
                         <option disabled>Фильтровать по</option>
-                        <option value={ "id" }>id</option>
-                        <option value={ "dateReady" }>dateReady</option>
+                        <option value={"id"}>id</option>
+                        <option value={"dateReady"}>dateReady</option>
                     </Form.Select>
                 </Form>
             </Row>
             <Row>
-                { query && query.map(item =>
-                    <Card className="my-1" key={ item.id }
+                {query && query.map(item =>
+                    <Card className="my-1" key={item.id}
                     >
                         <Card.Text as='li'
-                            style={ { margin: '5px 5px' } }>
-                            TaskID: { item.id } | SkladID: { item?.sklads.map(s => s.id) } | Quantity: { item.number } | DateReady: { item.dateReady } | { item.isReady ? "DONE" : "Not Ready!" }
+                            style={{ margin: '5px 5px' }}>
+                            TaskID: {item.id} | SkladID: {item?.sklads.map(s => s.id)} | Quantity: {item.number} | DateReady: {item.dateReady} | {item.isReady ? "DONE" : "Not Ready!"}
                         </Card.Text>
                     </Card>
-                ) }
+                )}
             </Row>
 
 
