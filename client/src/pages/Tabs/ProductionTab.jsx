@@ -26,7 +26,10 @@ const ProductionTab = () => {
         <Container>
             <Row md={4} className="my-2">
                 <Form>
-                    <Form.Select value={filter.sort} placeholder="Фильтровать по" onChange={(e) => setFilter({ ...filter, sort: `${e.target.value}` })}
+                    <Form.Select
+                        value={filter.sort}
+                        placeholder="Фильтровать по"
+                        onChange={(e) => setFilter({ ...filter, sort: `${e.target.value}` })}
 
                     >
                         <option disabled>Фильтровать по</option>
