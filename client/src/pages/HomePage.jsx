@@ -42,7 +42,7 @@ const Homepage = observer(() => {
     // }, [ogo.types, sklad.skladItems])
     return (
         <Tabs
-            defaultActiveKey="sklad"
+            defaultActiveKey="prod"
             transition={true}
             className="mb-3 mx-5 bg-secondary"
 
