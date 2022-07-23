@@ -21,11 +21,15 @@ const ProductionTab = () => {
 
 
     useLayoutEffect(() => {
+        setSkItems(...sklad.skladItems.filter(i => i.prods !== null))
         FetchingCenter.fetchAll('prod')
-            .then(data => setQuery(data));
+            .then(data => setQuery(data))
+            .then(() => {
+                console.log(sortedQuery);
+                console.log(skItems);
+            });
         // setSkItems(sklad.skladItems.filter(i => ))
-        console.log(query);
-        console.log(skItems);
+
 
 
     }, [])
@@ -36,7 +40,10 @@ const ProductionTab = () => {
     }, [filter])
 
     useEffect(() => {
-        setQuery([...query].filter(q => q.isReady == isFilterFinished))
+        FetchingCenter.fetchAll('prod')
+            .then(data => setQuery(query.filter(q => q.isReady == isFilterFinished)))
+        // .then(data => setQuery(query.filter(q => q.isReady == isFilterFinished)))
+        // setQuery(sortedQuery.filter(q => q.isReady == isFilterFinished))
 
     }, [isFilterFinished]);
     return (
