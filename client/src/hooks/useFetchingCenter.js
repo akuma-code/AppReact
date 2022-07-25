@@ -3,7 +3,6 @@ import { $host, $authHost } from "../http/index"
 
 export class FetchingCenter {
 
-
     static async fetchAll(path = "type") {
         const { data } = await $host.get(`api/${path}`)
         return data.rows

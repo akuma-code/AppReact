@@ -19,68 +19,68 @@ const EndTask = async (taskId) => await finishTask(taskId)
 const QueryCard = ({ typeInf, queryItem }) => {
     const { id, number, dateReady, isReady, sklads: [{ id: skladId, typeId }] } = queryItem
     const { ogo, sklad } = useContext(Context);
-    const [type, setType] = useState({ name: "", img: "" });
     const [isOpen, setIsOpen] = useState(false);
-    const [skInfo, setSkInfo] = useState([{}]);
-    const [itemInfo, setItemInfo] = useState({ qId: "", isReady: false, typeName: "" });
+    const [type, setType] = useState({ name: "", img: "" });
+    // const [skInfo, setSkInfo] = useState([{}]);
+    const [itemInfo, setItemInfo] = useState({ qId: "", isReady, typeName: "" });
     const [clientInfo, setClientInfo] = useState([]);
 
 
     useLayoutEffect(() => {
+        setType(typeInf)
         setItemInfo({ ...itemInfo, qId: id, isReady })
         setClientInfo((Object.entries(mockClient)).map(([key, value]) => ({ key, value })))
-        setType({ ...type, ...typeInf })
-        setSkInfo((sklad.skladItems.filter(s => s.id === skladId)))
+        // setSkInfo((sklad.skladItems.filter(s => s.id === skladId)))
     }, [])
     useLayoutEffect(() => {
-        setType(...ogo.types.filter(t => t.id === typeId))
-        setItemInfo({ ...itemInfo, qId: id, isReady, typeName: typeInf[0]?.name })
+        // setType(...ogo.types.filter(t => t.id === typeId))
+        setItemInfo({ ...itemInfo, qId: id, isReady: isReady, typeName: typeInf?.name })
     }, [isOpen, typeInf]);
     return (
         <Card >
             <Row className='border-bottom d-flex flex-row align-items-center'>
-                <Col>{typeInf[0]?.name || "no"}</Col>
-                <Col>numb: {number}</Col>
-                <Col>{isReady ? "DONE!" : "IN PRODUCTION!"}</Col>
-                <Col md={1}>
+                <Col>{ type?.name || "no" }</Col>
+                <Col>Кол-во: { number }</Col>
+                <Col>Статус: { isReady ? "DONE!" : "IN PRODUCTION!" }</Col>
+                <Col md={ 1 }>
                     <Dropdown>
-                        <Badge as={Dropdown.Toggle}
+                        <Badge as={ Dropdown.Toggle }
                             bg="secondary"
                             text="dark"
                             className='w-100'
                         >
                             &#9881;
                         </Badge>
-                        <Badge as={Dropdown.Item}
+                        <Badge as={ Dropdown.Item }
                             bg="dark"
                             text=""
-                            onClick={() => setIsOpen(!isOpen)}
+                            onClick={ () => setIsOpen(!isOpen) }
                         >
                             &#9660;
                         </Badge>
                         <Dropdown.Menu>
-                            {!isReady && <Dropdown.Item
-                                onClick={() => EndTask(id)}>
+                            { !isReady && <Dropdown.Item
+                                onClick={ () => EndTask(id) }>
                                 Finish Task
-                            </Dropdown.Item>}
+                            </Dropdown.Item> }
                         </Dropdown.Menu>
                     </Dropdown>
                 </Col>
 
             </Row>
             <Row>
-                <Collapse in={isOpen}>
+                <Collapse in={ isOpen }>
                     <Container className='my-1' fluid>
-                        <Row md={6} >
+                        <Row md={ 6 } >
 
                             <Col
-                                md={3}>
+                                md={ 3 }>
                                 <Card.Img
-                                    src={`${SRCimg}${type?.img}`}
+                                    src={ `${SRCimg}${type?.img}` }
                                 />
                             </Col>
                             <Col className=' d-flex flex-row justify-content-between gap-3'
-                                md={{ offset: 0, span: 7 }}
+                                md={ { offset: 0, span: 7 } }
 
 
                             >
@@ -88,7 +88,7 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                     <Card.Body>
                                         <Table striped bordered hover>
                                             <thead className='fw-bold'>
-                                                <tr><td colSpan={2}>
+                                                <tr><td colSpan={ 2 }>
                                                     Item Info
                                                 </td></tr>
                                             </thead>
@@ -98,7 +98,7 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                                         type:
                                                     </td>
                                                     <td>
-                                                        {type?.name}
+                                                        { type?.name }
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -106,7 +106,7 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                                         numb:
                                                     </td>
                                                     <td>
-                                                        {number}
+                                                        { number }
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -114,7 +114,7 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                                         Date Finish:
                                                     </td>
                                                     <td>
-                                                        {dateReady}
+                                                        { dateReady }
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -122,7 +122,7 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                                         query ID:
                                                     </td>
                                                     <td>
-                                                        {id}
+                                                        { id }
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -135,17 +135,17 @@ const QueryCard = ({ typeInf, queryItem }) => {
                                         <Table striped hover>
                                             <thead className='fw-bold'>
                                                 <tr>
-                                                    <td colSpan={2}>
+                                                    <td colSpan={ 2 }>
                                                         Client Info
                                                     </td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {clientInfo.map(c =>
-                                                (<tr key={Math.random()}>
-                                                    <td>{c.key}</td>
-                                                    <td>{c.value}</td>
-                                                </tr>))}
+                                                { clientInfo.map(c =>
+                                                (<tr key={ Math.random() }>
+                                                    <td>{ c.key }</td>
+                                                    <td>{ c.value }</td>
+                                                </tr>)) }
                                             </tbody>
                                         </Table>
 

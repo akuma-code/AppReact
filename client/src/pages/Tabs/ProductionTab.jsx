@@ -15,72 +15,65 @@ const ProductionTab = () => {
     const [query, setQuery] = useState([])
     const [filter, setFilter] = useState({ sort: '' })
     const [skItems, setSkItems] = useState({})
-    const [isFilterFinished, setIsFilterFinished] = useState(true);
+    const [isFilterFinished, setIsFilterFinished] = useState(false);
     const sortedQuery = useSortedQuery(query, filter.sort)
-
+    const filteredType = item => ogo.types.filter(t => t.id === item.sklads[0].typeId)[0]
 
 
     useLayoutEffect(() => {
         setSkItems(...sklad.skladItems.filter(i => i.prods !== null))
         FetchingCenter.fetchAll('prod')
             .then(data => setQuery(data))
-            .then(() => {
-                console.log(sortedQuery);
-                console.log(skItems);
-            });
-        // setSkItems(sklad.skladItems.filter(i => ))
-
-
-
     }, [])
+
     useEffect(() => {
         console.log("sort by ", filter.sort);
         setQuery(sortedQuery)
         setSkItems(sklad.skladItems.filter(i => i.prods !== null))
     }, [filter])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         FetchingCenter.fetchAll('prod')
-            .then(data => setQuery(query.filter(q => q.isReady == isFilterFinished)))
-        // .then(data => setQuery(query.filter(q => q.isReady == isFilterFinished)))
-        // setQuery(sortedQuery.filter(q => q.isReady == isFilterFinished))
+            .then(data => setQuery(data.filter(q => q.isReady == isFilterFinished)))
 
     }, [isFilterFinished]);
     return (
         <Container>
-            <Row md={3} className="my-2">
-                <Form className="d-flex flex-row gap-3 align-items-center">
+            <Row md={ 3 } className="my-2">
+                <Form className="d-flex flex-row gap-3 align-items-start">
                     <Form.Select
-                        value={filter.sort}
+                        value={ filter.sort }
                         placeholder="Фильтровать по"
-                        onChange={(e) => setFilter({ ...filter, sort: `${e.target.value}` })}
+                        className=" mt-1"
+                        onChange={ (e) => setFilter({ ...filter, sort: `${e.target.value}` }) }
 
                     >
                         <option disabled>Фильтровать по</option>
-                        <option value={"id"}>query ID</option>
-                        <option value={"dateReady"}>dateReady</option>
-                        <option value={"number"}>Quantity</option>
+                        <option value={ "id" }>query ID</option>
+                        <option value={ "dateReady" }>dateReady</option>
+                        <option value={ "number" }>Quantity</option>
                     </Form.Select>
 
                     <Form.Check
                         type="switch"
-                        label="Finished"
-                        value={isFilterFinished}
+                        label="Показывать завершенные"
+                        value={ isFilterFinished }
                         id="custom-switch"
-                        onChange={() => setIsFilterFinished(!isFilterFinished)} />
+                        className="h-100"
+                        onChange={ () => setIsFilterFinished(!isFilterFinished) } />
 
 
                 </Form>
             </Row>
-            <Row md={1} className="w-100">
-                {sortedQuery && sortedQuery.map(item =>
+            <Row md={ 1 } className="w-100">
+                { sortedQuery && sortedQuery.map(item =>
 
                     <QueryCard
-                        queryItem={item}
-                        typeInf={ogo.types.filter(t => t.id === item.sklads[0].typeId)}
-                        key={item.id}
+                        queryItem={ item }
+                        typeInf={ filteredType(item) }
+                        key={ item.id }
                     />
-                )}
+                ) }
             </Row>
 
 
