@@ -4,6 +4,7 @@ import { Card, Container, Form, Row } from 'react-bootstrap';
 import { Context } from '../..';
 import BigTaskCard from '../../Components/UI/card/BigTaskCard';
 import QueryCard from '../../Components/UI/card/QueryCard';
+import { useCombineProdQuery, useCombineSklad } from "../../hooks/useCombineData";
 import { FetchingCenter } from "../../hooks/useFetchingCenter";
 import { useSortedQuery } from "../../hooks/useSortedQuery";
 
@@ -12,31 +13,41 @@ import { useSortedQuery } from "../../hooks/useSortedQuery";
 const ProductionTab = () => {
 
     const { sklad, ogo } = useContext(Context)
-    const [query, setQuery] = useState([])
+    const [prodquery, setProdquery] = useState([])
     const [filter, setFilter] = useState({ sort: '' })
-    const [skItems, setSkItems] = useState({})
+    const [skItems, setSkItems] = useState([])
     const [isFilterFinished, setIsFilterFinished] = useState(false);
-    const sortedQuery = useSortedQuery(query, filter.sort)
-    const filteredType = item => ogo.types.filter(t => t.id === item.sklads[0].typeId)[0]
+    const [qItems, setQItems] = useState([]);
+    const sortedQuery = useSortedQuery(prodquery, filter.sort)
+    const filteredType = item => ogo.types.find(t => t.id === item.typeId)
+    const sklads = () => useCombineSklad(prodquery, skItems)
 
 
     useLayoutEffect(() => {
-        setSkItems(...sklad.skladItems.filter(i => i.prods !== null))
-        FetchingCenter.fetchAll('prod')
-            .then(data => setQuery(data))
+        FetchingCenter.fetchAll('prod/query')
+            .then(data => setProdquery(data))
+        FetchingCenter.fetchAll('sklad')
+            .then(data => setSkItems(data))
+
+
     }, [])
 
-    useEffect(() => {
-        console.log("sort by ", filter.sort);
-        setQuery(sortedQuery)
-        setSkItems(sklad.skladItems.filter(i => i.prods !== null))
-    }, [filter])
+    // useEffect(() => {
+
+    //     setProdquery(sklads());
+    //     // setSkItems(sklad.skladItems.filter(i => i.prods !== null))
+    // }, [filter])
 
     useLayoutEffect(() => {
-        FetchingCenter.fetchAll('prod')
-            .then(data => setQuery(data.filter(q => q.isReady == isFilterFinished)))
-
+        FetchingCenter.fetchAll('prod/query')
+            .then(data => setProdquery(data))
+        const items = sklads()
+        setQItems(items)
     }, [isFilterFinished]);
+
+    useEffect(() => {
+
+    }, [])
     return (
         <Container>
             <Row md={ 3 } className="my-2">
@@ -52,6 +63,7 @@ const ProductionTab = () => {
                         <option value={ "id" }>query ID</option>
                         <option value={ "dateReady" }>dateReady</option>
                         <option value={ "number" }>Quantity</option>
+                        <option value={ "typeId" }>Type</option>
                     </Form.Select>
 
                     <Form.Check
@@ -70,7 +82,6 @@ const ProductionTab = () => {
 
                     <QueryCard
                         queryItem={ item }
-                        typeInf={ filteredType(item) }
                         key={ item.id }
                     />
                 ) }

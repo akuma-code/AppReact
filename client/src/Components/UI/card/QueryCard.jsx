@@ -14,28 +14,28 @@ const mockClient = {
     dogovor: "22/07/21-30П"
 }
 const EndTask = async (taskId) => await finishTask(taskId)
+// const getType = (types = [], typeId = "") => (types.map(type => type.id === typeId ? type : null)[0])
 
-
-const QueryCard = ({ typeInf, queryItem }) => {
-    const { id, number, dateReady, isReady, sklads: [{ id: skladId, typeId }] } = queryItem
+const QueryCard = ({ queryItem }) => {
+    const { id, number, dateReady, isReady, typeId } = queryItem;
     const { ogo, sklad } = useContext(Context);
+    const getType = (typeId = "") => ogo.types.find(type => type.id === typeId) || {}
     const [isOpen, setIsOpen] = useState(false);
-    const [type, setType] = useState({ name: "", img: "" });
+    const [type, setType] = useState({});
     // const [skInfo, setSkInfo] = useState([{}]);
-    const [itemInfo, setItemInfo] = useState({ qId: "", isReady, typeName: "" });
+    // const [itemInfo, setItemInfo] = useState({ qId: "", isReady, typeName: "" });
     const [clientInfo, setClientInfo] = useState([]);
+    const T = getType(typeId)
 
-
-    useLayoutEffect(() => {
-        setType(typeInf)
-        setItemInfo({ ...itemInfo, qId: id, isReady })
-        setClientInfo((Object.entries(mockClient)).map(([key, value]) => ({ key, value })))
-        // setSkInfo((sklad.skladItems.filter(s => s.id === skladId)))
+    useEffect(() => {
+        setType(T);
+        // setItemInfo({ ...itemInfo, qId: id, isReady });
+        setClientInfo((Object.entries(mockClient)).map(([key, value]) => ({ key, value })));
     }, [])
     useLayoutEffect(() => {
         // setType(...ogo.types.filter(t => t.id === typeId))
-        setItemInfo({ ...itemInfo, qId: id, isReady: isReady, typeName: typeInf?.name })
-    }, [isOpen, typeInf]);
+        // setItemInfo({ ...itemInfo, qId: id, isReady: isReady })
+    }, [isOpen]);
     return (
         <Card >
             <Row className='border-bottom d-flex flex-row align-items-center'>
