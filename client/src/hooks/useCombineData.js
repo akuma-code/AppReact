@@ -57,23 +57,30 @@ export const useCombineProdQuery = (prodData = [], condition = null) => {
 }
 
 export const useCombineSklad = (query = [], skladData = []) => {
-    const skMap = new Map()
+    const skMap = new Map();
+    const qMap = new Map();
     const sklads = skladData?.map(s => ({ skladId: s.id, type: s.type, shop: s.shop }))
-    sklads.map(sklad => skMap.set(sklad.skladId, { type: sklad.type, shop: sklad.shop }))
-    console.log('skMap', Object.fromEntries(skMap))
+
+
+    sklads.forEach(sklad => skMap.set(sklad.skladId, { type: sklad.type, shop: sklad.shop }))
+    query.forEach(q => qMap.set(q.id, { prodId: q.prodId, skladId: q.skladId }))
+
+
     try {
         const combined = query.map(qu => ({
             ...qu,
-            sklad: sklads.find(s => s.skladId === qu.skladId)
+            sklad: Object.fromEntries(skMap)[qu.skladId],
+            type: Object.fromEntries(skMap)[qu.skladId].type,
+            shop: Object.fromEntries(skMap)[qu.skladId].shop,
         }))
 
 
         console.log('skladCombined', combined)
-        return combined.map(item => ({ ...item, type: item.sklad.type }))
+        return combined
     } catch (error) {
         console.log(error)
     }
-    console.log(sklads);
+
     return sklads
 
 }
