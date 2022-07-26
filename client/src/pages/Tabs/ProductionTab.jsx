@@ -7,6 +7,7 @@ import QueryCard from '../../Components/UI/card/QueryCard';
 import { useCombineProdQuery, useCombineSklad } from "../../hooks/useCombineData";
 import { FetchingCenter } from "../../hooks/useFetchingCenter";
 import { useSortedQuery } from "../../hooks/useSortedQuery";
+import { useStateMapper } from '../../hooks/useStateMapper';
 
 
 
@@ -14,21 +15,32 @@ const ProductionTab = () => {
 
     const { sklad, ogo } = useContext(Context)
     const [prodquery, setProdquery] = useState([])
-    const [filter, setFilter] = useState({ sort: '' })
+    const [prod, setProd] = useState([])
     const [skItems, setSkItems] = useState([])
     const [isFilterFinished, setIsFilterFinished] = useState(false);
     const [qItems, setQItems] = useState([]);
-    const sortedQuery = useSortedQuery(prodquery, filter.sort)
-    const filteredType = item => ogo.types.find(t => t.id === item.typeId)
-    const sklads = () => useCombineSklad(prodquery, skItems)
-
+    const [filter, setFilter] = useState({ sort: '' })
+    const SKLADS = useStateMapper(skItems)
+    const PRODS = useStateMapper(prod)
+    const QUERYS = useStateMapper(prodquery)
+    const sortedQuery = useSortedQuery(prod, filter.sort)
+    const TYPE = (item) => {
+        console.log('item', item)
+        const tmp = SKLADS(item.skladId)
+        console.log('type', tmp?.type)
+        if (!tmp) return console.log('item error', item)
+        return tmp
+    };
+    // const sklads = () => useCombineSklad(prodquery, skItems)
 
     useLayoutEffect(() => {
+        FetchingCenter.fetchAll('sklad')
+            .then(data => setSkItems(data.map(d => ({ ...d, id: d.id, ...d.type }))))
         FetchingCenter.fetchAll('prod/query')
             .then(data => setProdquery(data))
-        FetchingCenter.fetchAll('sklad')
-            .then(data => setSkItems(data))
-
+        // .then()
+        FetchingCenter.fetchAll('prod')
+            .then(data => setProd(data))
 
     }, [])
 
@@ -39,15 +51,17 @@ const ProductionTab = () => {
     // }, [filter])
 
     useLayoutEffect(() => {
-        FetchingCenter.fetchAll('prod/query')
-            .then(data => setProdquery(data))
-        const items = sklads()
-        setQItems(items)
-    }, [isFilterFinished]);
+        setProd(prodquery.map(p => ({ ...p, sklad: SKLADS(p.skladId), production: PRODS(p.prodId) })))
+
+        // const items = sklads()
+        // setQItems(prodquery.map((item) => { SKLAD(item.skladId) }))
+        // setProdquery(items)
+        // setSkItems(pr.map(item => SKLAD(item.id)))
+    }, []);
 
     useEffect(() => {
-
-    }, [])
+        setProd(prodquery.map(p => ({ ...p, sklad: SKLADS(p.skladId), production: PRODS(p.prodId) })))
+    }, [isFilterFinished])
     return (
         <Container>
             <Row md={ 3 } className="my-2">

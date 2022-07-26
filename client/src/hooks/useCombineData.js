@@ -59,23 +59,38 @@ export const useCombineProdQuery = (prodData = [], condition = null) => {
 export const useCombineSklad = (query = [], skladData = []) => {
     const skMap = new Map();
     const qMap = new Map();
+    const idMap = new Map();
+    skladData.forEach(item => {
+        const id = item.id
+        // delete item.id
+        idMap.set(id, item)
+        return { type: item.type, shop: item.shop, rest: item.quant }
+    })
+
+
     const sklads = skladData?.map(s => ({ skladId: s.id, type: s.type, shop: s.shop }))
 
 
     sklads.forEach(sklad => skMap.set(sklad.skladId, { type: sklad.type, shop: sklad.shop }))
-    query.forEach(q => qMap.set(q.id, { prodId: q.prodId, skladId: q.skladId }))
+    query.forEach(q => qMap.set(q.id, { skladId: q.skladId }))
 
 
     try {
-        const combined = query.map(qu => ({
-            ...qu,
-            sklad: Object.fromEntries(skMap)[qu.skladId],
-            type: Object.fromEntries(skMap)[qu.skladId].type,
-            shop: Object.fromEntries(skMap)[qu.skladId].shop,
-        }))
+        const ofe = Object.fromEntries(idMap);
+        const combined = query.map(qu => {
+
+            return {
+                ...qu,
+                queryId: qu.id,
+                sklad: ofe[qu.skladId],
+                type: ofe[qu.skladId].type,
+                shop: ofe[qu.skladId].shop,
+            }
+        })
 
 
         console.log('skladCombined', combined)
+        // combined.map((c) => delete c.id)
         return combined
     } catch (error) {
         console.log(error)
