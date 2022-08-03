@@ -14,8 +14,8 @@ router.use('/shop', shopRouter)
 router.use('/type', typeRouter)
 router.use('/sklad', skladRouter)
 router.use('/prod', pQueryRouter)
-// router.use('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// })
+router.use('/nets', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+})
 
 module.exports = router
