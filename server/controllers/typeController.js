@@ -2,7 +2,6 @@ const { v4 } = require('uuid')
 const { OkType, OkTypeInfo, Shop } = require('../models/prodModels')
 const path = require('path')
 const ApiError = require('../Error/ApiError');
-const { title } = require('process');
 
 class TypeController {
     async create(req, res, next) {

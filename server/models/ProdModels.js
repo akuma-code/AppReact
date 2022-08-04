@@ -19,6 +19,8 @@ const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, },
     password: { type: DataTypes.STRING },
+    email: { type: DataTypes.STRING, unique: true, allowNull: true },
+    tel: { type: DataTypes.STRING, allowNull: true },
     role: { type: DataTypes.STRING, defaultValue: "USER" },
 },
     { timestamps: false }
@@ -59,8 +61,7 @@ const Basket = sequelize.define('basket', {
 
 OkType.hasOne(SkladMain)
 SkladMain.belongsTo(OkType)
-// OkType.belongsTo(Shop)
-// Shop.belongsTo(OkType)
+
 
 SkladMain.hasOne(Shop)
 Shop.belongsTo(SkladMain)
@@ -70,9 +71,7 @@ OkType.hasMany(OkTypeInfo, { as: 'info' })
 OkTypeInfo.belongsTo(OkType)
 
 Production.belongsToMany(SkladMain, { through: ProdQuery });
-SkladMain.belongsToMany(Production, {
-    through: ProdQuery
-});
+SkladMain.belongsToMany(Production, { through: ProdQuery });
 
 
 

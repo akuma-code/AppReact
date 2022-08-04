@@ -20,14 +20,13 @@ const ShopCard = ({ shopItem, ...props }) => {
     const { prod } = useContext(Context)
 
 
-    const addToProd = () => {
+    const toggle = () => {
 
-        setChecked(!checked)
+        setChecked(prev => !prev)
     }
     useEffect(() => {
         checked ? props?.add(shopItem) : props?.rem(shopItem)
-        return () => {
-        };
+
     }, [checked]);
     return (
         <Card className="mt-2 mx-1"
@@ -71,11 +70,16 @@ const ShopCard = ({ shopItem, ...props }) => {
             >
                 <ButtonGroup>
                     <Button
-                        variant='outline-success' onClick={ () => setChecked(!checked) }
+                        variant='outline-success' onClick={ toggle }
                     >
-                        { checked ? "ADDED!" : "Add to query" }
+                        { checked ?
+                            <span className="material-icons">done</span>
+                            :
+                            <span className="material-icons">add_chart</span> }
                     </Button>
-                    <Button variant='outline-dark' >BTN2</Button>
+                    <Button variant='outline-danger' >
+                        <span className="material-icons">bookmark_add</span>
+                    </Button>
                 </ButtonGroup>
                 <ListGroupItem className='bg-secondary d-flex flex-row justify-content-between' >
                     <span>НА СКЛАДЕ</span>
@@ -94,25 +98,3 @@ const ShopCard = ({ shopItem, ...props }) => {
 }
 
 export default ShopCard;
-
-
-/* <Card.Body
-               className='d-flex flex-column justify-content-between'
-           >
-               <Card.Title as="h5"
-                   style={{ fontSize: 19 }}
-               > {title}
-                   <hr />
-               </Card.Title>
-               <p className='d-flex flex-column'
-                   style={{ fontSize: 16 }}>
-                   <span>Price: {price} руб.</span>
-                   <span>Id: {id}</span>
-                   <span>SkladId:{skladId}</span>
-               </p>
-           </Card.Body>
-           <Card.Footer className="d-flex justify-content-between"
-           >
-
-           </Card.Footer> */
-

@@ -7,18 +7,7 @@ import { useStoreRefresh } from "../hooks/useStoreRefresh"
 import ShopCard from "../Components/UI/card/ShopCard"
 import { SRCimg } from '../utils/consts'
 import { useTaskForm } from '../hooks/useQueryTask'
-// id: 4,
-//  price: 6000,
-//  title: "okno10",
-//  skladId: 4};
-//     sklad: {
-//        id: 4,
-//        quant: 8,
-//        typeId: 4,
-//            type: {
-//            id: 4,
-//            "name": "ОК - 10",
-//            img: "6897179e-2db7 - 43c5 - 8e77 - 7a69315d34f0.jpg",
+import "./pageStyles.scss"
 
 const Shop = () => {
 
@@ -49,29 +38,24 @@ const Shop = () => {
         rem(shopItem)
     }
     const changeQuant = (value, keyID) => {
-        setQuant(quant.map(pq => pq.id === keyID ? [...pq, { value, id }] : pq))
+        setQuant(quant.map(pq => pq.id === keyID ? [...pq, value] : pq))
     }
 
     return (
-        <Col md >
+        <Col md={ 12 } as={ Container }>
             <Row >
-                <Button className="my-1"
-                    onClick={() => setAddProdVisible(true)}
+                <Button className="my-1 my-btn"
+                    onClick={ () => setAddProdVisible(true) }
                 >
                     Start Production Query
                 </Button>
 
-                {shopItems.map(s =>
-                    <ShopCard shopItem={s} key={s.id} add={toProd} rem={fromProd}></ShopCard>
-                )}
-
-
-
-
-
+                { shopItems.map(s =>
+                    <ShopCard shopItem={ s } key={ s.id } add={ toProd } rem={ fromProd }></ShopCard>
+                ) }
             </Row>
-            <Offcanvas show={addProdVisible}
-                onHide={() => setAddProdVisible(false)}
+            <Offcanvas show={ addProdVisible }
+                onHide={ () => setAddProdVisible(false) }
                 placement='bottom'
             >
                 <OffcanvasHeader>
@@ -80,33 +64,33 @@ const Shop = () => {
                 <OffcanvasBody>
                     <Row>
 
-                        {prodQuery.map((pq, idx) =>
-                            <Col key={idx} sm={2}>
+                        { prodQuery.map((pq, idx) =>
+                            <Col key={ idx } sm={ 2 }>
 
-                                <Card className="gap-4 mx-2 " as={ListGroup.Item} action
-                                    bg={"light"}
+                                <Card className="gap-4 mx-2 " as={ ListGroup.Item } action
+                                    bg={ "light" }
                                 // onClick={}
                                 >
-                                    <Card.Text as={Card.Title} className='d-flex flex-row justify-content-center'>
-                                        {pq.title}
+                                    <Card.Text as={ Card.Title } className='d-flex flex-row justify-content-center'>
+                                        { pq.title }
                                     </Card.Text>
                                     <Row >
                                         <Col>
                                             <Card.Img
-                                                src={`${SRCimg}${pq.sklad.type?.img || "noimage.jpg"}`}
+                                                src={ `${SRCimg}${pq.sklad.type?.img || "noimage.jpg"}` }
                                             />
                                         </Col>
                                         <Col>
                                             <Card.Text className='d-flex flex-row justify-content-around'>
-                                                <span>Остаток: </span>{pq.sklad.quant} шт.
+                                                <span>Остаток: </span>{ pq.sklad.quant } шт.
                                             </Card.Text>
-                                            <FormControl type='number' onChange={(e) => changeQuant(e.target.value, pq.id)}
-                                                value={pq.quant} />
+                                            <FormControl type='number' onChange={ (e) => changeQuant(e.target.value, pq.id) }
+                                                value={ pq.quant } />
                                         </Col>
                                     </Row>
                                 </Card>
                             </Col>
-                        )}
+                        ) }
                     </Row>
                 </OffcanvasBody>
             </Offcanvas>

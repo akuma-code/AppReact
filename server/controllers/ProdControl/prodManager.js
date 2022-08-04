@@ -58,27 +58,3 @@ class ProductionManager {
 }
 
 module.exports = new ProductionManager()
-
-
-//    async endTask(prodId) {
-//         const prodUnit = await Production.findOne({ where: { id: prodId }, attributes: ['isReady'] })
-
-//         const finished = await prodUnit.getDataValue('isReady') === true
-
-//         if (!finished) {
-//             await ProdQuery.findOne({ where: { prodId: prodId }, includes: [{ all: true, nested: true }] })
-//                 .then(SetSkladQuant)
-//             await Production.update({ isReady: true }, { where: { id: prodId } })
-//         }
-//         else {
-//             console.log("Task Already Finished!");
-//         }
-//         return prodUnit
-//     }
-
-// const setQuant = async (skladId, current) => {
-
-//     await getQuant(skladId)
-//         .then(prev => Number(prev) + Number(current))
-//         .then(newQuant => SkladMain.update({ quant: newQuant }, { where: { id: skladId } }))
-// }
