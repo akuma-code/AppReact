@@ -1,28 +1,30 @@
 import React, { useState, useLayoutEffect } from 'react'
-import { Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
+import { Button, ButtonGroup, Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import { FetchingCenter } from "../../hooks/useFetchingCenter"
 
 
-const initialVal = [{ items: [{ name: "OK1" }, { name: "OK2" }], count: "", number: Date.now() }]
-const skladInit = () => FetchingCenter.fetchAll('sklad')
 
 const NewOffer = ({ show, onHide }) => {
     const [offItems, setOffItems] = useState([])
     const [skItems, setSkItems] = useState([])
+    const fork_data = (data) => {
+        setSkItems(data)
+        // setOffItems(prevState => prevState.map(item => ({ ...item, items: data })))
+    }
+    const change = (key, value, number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, [key]: value } : it))
+    const INC = (number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) + 1 } : it))
+    const DEC = (number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) - 1 } : it))
+    const selectItem = (value, number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, selected: value } : it))
+    const remove = (number) => setOffItems(prev => prev.filter(i => i.number !== number))
+
 
     useLayoutEffect(() => {
         FetchingCenter.fetchAll('sklad')
-            .then(data => setSkItems(data))
-
-        // setOffItems([{ items: skItems, count: "", number: Date.now() }])
-
-    }, [])
-    useLayoutEffect(() => {
-        setOffItems(prev => [...prev, { items: skItems, count: "", number: Date.now() }])
-
+            .then(fork_data)
     }, [])
 
-    const addItem = () => setOffItems([...offItems, { count: "", number: Date.now() }])
+
+    const addItem = () => setOffItems(prev => [...prev, { selected: "CHOOSE", count: "", number: Date.now() }])
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("Form submit!")
@@ -105,27 +107,38 @@ const NewOffer = ({ show, onHide }) => {
                                 <Button className="d-flex align-items-center"
                                     variant="danger"
                                     size="sm"
+                                    onClick={ () => remove(item.number) }
                                 ><span className="material-icons">highlight_off</span>
                                 </Button>
-                                <Form.Select >
-                                    { item?.items?.map((i, idx) =>
-                                        (<option value={ i.type.name } key={ idx }>{ i.type.name }</option>)) }
+                                <Form.Select
+                                    value={ item.selected }
+                                    onChange={ e => selectItem(e.target.value, item.number) }>
+                                    <option disabled>позиция...</option>
+                                    { skItems?.map(i =>
+                                        (<option value={ i.type.name } key={ i.id }>{ i.type.name }</option>)) }
                                 </Form.Select>
-                                <Button className="d-flex align-items-center"><span className="material-icons">add_circle_outline</span></Button>
+                                <Button className="d-flex align-items-center"
+                                    onClick={ () => INC(item.number) }
+                                ><span className="material-icons">add_circle_outline</span></Button>
                                 <Form.Control type="text"
                                     style={ { width: "3rem" } }
+                                    value={ item.count }
+                                    onChange={ (e) => change('count', e.target.value, item.number) }
                                 />
-                                <Button className="d-flex align-items-center"><span className="material-icons">remove_circle_outline</span></Button>
+                                <Button className="d-flex align-items-center"
+                                    onClick={ () => DEC(item.number) }><span className="material-icons">remove_circle_outline</span></Button>
                             </Form.Group>
                         ) }
                     </Col>
                 </Row>
 
             </Modal.Body>
-            <Modal.Footer>
-                <Button type="submit" form="new-offer-form">Применить</Button>
-                <Button type="reset" form="new-offer-form">Очистить</Button>
-                <Button onClick={ onHide }>Отмена</Button>
+            <Modal.Footer className="d-flex flex-row justify-content-between gap-1">
+                <Button type="reset" form="new-offer-form">Очистить форму</Button>
+                <ButtonGroup className='gap-1'>
+                    <Button type="submit" form="new-offer-form">Применить</Button>
+                    <Button onClick={ onHide }>Отмена</Button>
+                </ButtonGroup>
             </Modal.Footer>
         </Modal>
     )
