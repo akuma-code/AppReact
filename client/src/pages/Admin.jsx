@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Container } from "react-bootstrap"
 import { useHistory } from 'react-router-dom'
 import CreateType from "../Components/modals/CreateType"
-import { DB_ROUTE } from '../utils/consts'
+import { DB_ROUTE, OFFERS_ROUTE } from '../utils/consts'
 
 
 const Admin = () => {
@@ -14,16 +14,17 @@ const Admin = () => {
 
             <Button
                 className="btn btn-danger mt-2"
-                variant={"outline-dark"}
-                onClick={() => history.push(DB_ROUTE)}
+                variant={ "outline-dark" }
+                onClick={ () => history.push(DB_ROUTE) }
             >
                 Работа с БД
             </Button>
-            <Button disabled
+            <Button
                 className="btn btn-secondary mt-2"
-                variant={"outline-dark"}
+                variant={ "outline-dark" }
+                onClick={ () => history.push(OFFERS_ROUTE) }
             >
-                Production Service
+                Работа с заявками
             </Button>
 
         </Container>

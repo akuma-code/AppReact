@@ -11,5 +11,6 @@ export const SKLAD_ROUTE = '/sklad';
 export const PROD_ROUTE = '/prod';
 export const HOMEPAGE_ROUTE = '/'
 export const SRCimg = process.env.REACT_APP_API_URL + '/'
+export const OFFERS_ROUTE = '/offer'
 
 

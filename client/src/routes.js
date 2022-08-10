@@ -3,13 +3,15 @@ import Auth from "./pages/Auth"
 import Basket from "./pages/Basket"
 import Shop from "./pages/Shop"
 import Login from "./pages/Login"
-import { ADMIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, AUTH_ROUTE, LOGIN_ROUTE, REG_ROUTE, OKNO_ROUTE, TYPE_ROUTE, DB_ROUTE, PROD_ROUTE, SKLAD_ROUTE, HOMEPAGE_ROUTE } from "./utils/consts"
+import { ADMIN_ROUTE, SHOP_ROUTE, BASKET_ROUTE, AUTH_ROUTE, LOGIN_ROUTE, REG_ROUTE, OKNO_ROUTE, TYPE_ROUTE, DB_ROUTE, PROD_ROUTE, SKLAD_ROUTE, HOMEPAGE_ROUTE, OFFERS_ROUTE } from "./utils/consts"
 import OknoPage from "./pages/OknoPage"
 import Types from "./pages/Types"
 import DBPage from "./pages/DBPage"
 import Store from './pages/Store'
 import Prod from './pages/Production'
 import Homepage from "./pages/HomePage"
+import { OffersPage } from "./pages/OffersPage"
+
 export const authRoutes = [
     {
         path: ADMIN_ROUTE,
@@ -22,6 +24,10 @@ export const authRoutes = [
     {
         path: BASKET_ROUTE,
         Component: Basket
+    },
+    {
+        path: OFFERS_ROUTE,
+        Component: OffersPage
     },
 ]
 export const publicRoutes = [
