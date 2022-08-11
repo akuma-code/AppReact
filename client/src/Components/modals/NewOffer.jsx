@@ -4,9 +4,11 @@ import { FetchingCenter } from "../../hooks/useFetchingCenter"
 
 
 
-const NewOffer = ({ show, onHide }) => {
+const NewOffer = ({ show, onHide, preSelect = [], onConfirm }) => {
     const [offItems, setOffItems] = useState([])
     const [skItems, setSkItems] = useState([])
+    const [clientInfo, setClientInfo] = useState({ fio: "", tel: "", bpm: "", destin: "", date: "" })
+    const [saved, setSaved] = useState([])
     const fork_data = (data) => {
         setSkItems(data)
         // setOffItems(prevState => prevState.map(item => ({ ...item, items: data })))
@@ -19,15 +21,18 @@ const NewOffer = ({ show, onHide }) => {
 
 
     useLayoutEffect(() => {
+        if (preSelect) setOffItems(preSelect.map(s => ({ selected: s.type.name || "", number: Date.now() })))
         FetchingCenter.fetchAll('sklad')
             .then(fork_data)
     }, [])
 
 
-    const addItem = () => setOffItems(prev => [...prev, { selected: "CHOOSE", count: "", number: Date.now() }])
+    const addItem = () => setOffItems(prev => [...prev, { count: "", number: Date.now() }])
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Form submit!")
+        setSaved(prev => [...prev, { client: clientInfo, selectedItems: offItems }])
+        onConfirm({ client: clientInfo, selectedItems: offItems })
+        setOffItems([])
         onHide()
     }
 
@@ -55,6 +60,8 @@ const NewOffer = ({ show, onHide }) => {
                                     </InputGroup.Text>
                                     <Form.Control type="text"
                                         placeholder="ФИО Клиента"
+                                        // value={ clientInfo.fio }
+                                        onChange={ e => setClientInfo(prev => ({ ...prev, fio: e.target.value })) }
                                         required
                                     />
                                 </InputGroup>
@@ -65,12 +72,16 @@ const NewOffer = ({ show, onHide }) => {
                                         </InputGroup.Text>
                                         <Form.Control type="text"
                                             placeholder="Телефон"
+                                            // value={ clientInfo.tel }
+                                            onChange={ e => setClientInfo(prev => ({ ...prev, tel: e.target.value })) }
                                         />
                                     </InputGroup>
                                     <InputGroup>
                                         <InputGroup.Text >БПМ: </InputGroup.Text>
                                         <Form.Control type="text"
                                             placeholder="номер заявки в БПМ"
+                                            // value={ clientInfo.bpm }
+                                            onChange={ e => setClientInfo(prev => ({ ...prev, bpm: e.target.value })) }
                                             required
                                         />
                                     </InputGroup>
@@ -79,6 +90,8 @@ const NewOffer = ({ show, onHide }) => {
                                     <InputGroup.Text >Дата доставки </InputGroup.Text>
                                     <Form.Control type="date"
                                         placeholder="доставка на дату"
+                                        // value={ clientInfo.date }
+                                        onChange={ e => setClientInfo(prev => ({ ...prev, date: e.target.value })) }
 
                                     />
                                 </InputGroup>
@@ -86,6 +99,8 @@ const NewOffer = ({ show, onHide }) => {
                                     <InputGroup.Text >Адрес доставки: </InputGroup.Text>
                                     <Form.Control as={ "textarea" }
                                         rows={ 3 }
+                                        // value={ clientInfo.destin }
+                                        onChange={ e => setClientInfo(prev => ({ ...prev, destin: e.target.value })) }
                                     />
                                 </InputGroup>
 
@@ -112,10 +127,11 @@ const NewOffer = ({ show, onHide }) => {
                                 </Button>
                                 <Form.Select
                                     value={ item.selected }
+                                    onClick={ e => selectItem(e.target.value, item.number) }
                                     onChange={ e => selectItem(e.target.value, item.number) }>
                                     <option disabled>позиция...</option>
-                                    { skItems?.map(i =>
-                                        (<option value={ i.type.name } key={ i.id }>{ i.type.name }</option>)) }
+                                    { skItems.map(i =>
+                                        (<option value={ i.type.name } key={ i.id }>ТИП: { i.type.name }</option>)) }
                                 </Form.Select>
                                 <Button className="d-flex align-items-center"
                                     onClick={ () => INC(item.number) }
