@@ -14,10 +14,14 @@ const NewOffer = ({ show, onHide, preSelect = [], onConfirm }) => {
         // setOffItems(prevState => prevState.map(item => ({ ...item, items: data })))
     }
     const change = (key, value, number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, [key]: value } : it))
-    const INC = (number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) + 1 } : it))
-    const DEC = (number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) - 1 } : it))
-    const selectItem = (value, number) => setOffItems(prev => prev.map(it => it.number === number ? { ...it, selected: value } : it))
-    const remove = (number) => setOffItems(prev => prev.filter(i => i.number !== number))
+    const INC = (number) =>
+        setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) + 1 } : it))
+    const DEC = (number) =>
+        setOffItems(prev => prev.map(it => it.number === number ? { ...it, count: parseInt(it.count || '0', 10) - 1 } : it))
+    const selectItem = (value, number) =>
+        setOffItems(prev => prev.map(it => it.number === number ? { ...it, selected: value } : it))
+    const remove = (number) =>
+        setOffItems(prev => prev.filter(i => i.number !== number))
 
 
     useLayoutEffect(() => {

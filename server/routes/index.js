@@ -9,9 +9,9 @@ const shopRouter = require('./shopRouter')
 const pQueryRouter = require('./pQueryRouter')
 const OfferRouter = require('./OfferRouter')
 
-router.use('/nets', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-})
+// router.use('/nets', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// })
 router.use('/user', userRouter)
 router.use('/shop', shopRouter)
 router.use('/type', typeRouter)

@@ -22,6 +22,11 @@ App.use(fileUpload({}))
 App.use('/api', router)
 
 
+App.use('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+})
+
+
 App.use(errHandler)
 
 
