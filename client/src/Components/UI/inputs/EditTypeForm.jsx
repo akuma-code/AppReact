@@ -15,8 +15,8 @@ const EditTypeForm = observer(({ type }) => {
     const [showForm, setShowForm] = useState(true);
     const [name, setName] = useState("")
     const [img, setImg] = useState("")
-    const [imgNew, setImgNew] = useState("")
-    const [secondaryImg, setSecondaryImg] = useState("")
+    const [imgNew, setImgNew] = useState({})
+    const [secondaryImg, setSecondaryImg] = useState({})
     const [info, setInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [savedInfo, setSavedInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [isChanged, setIsChanged] = useState(false)
@@ -50,7 +50,7 @@ const EditTypeForm = observer(({ type }) => {
     }
 
     const updateType = () => {
-        saveForm(type.id, name, img, savedInfo)
+        saveForm(type.id, name, img, savedInfo, secondaryImg)
         // ogo.setSelectedType(type)
         setIsChanged(false)
         // .then(data => setInfo(savedInfo.filter(i => !i.del)))
