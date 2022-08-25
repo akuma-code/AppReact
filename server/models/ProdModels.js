@@ -31,6 +31,7 @@ const OkType = sequelize.define('type', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, unique: true, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: false, defaultValue: "noimage" },
+    secondaryImg: { type: DataTypes.STRING, allowNull: true, defaultValue: "noimage" },
 },
     { timestamps: false })
 
