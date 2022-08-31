@@ -38,7 +38,7 @@ class TypeController {
 
     async edit(req, res, next) {
 
-        let { typeId, name, info, imgSrc } = req.body
+        let { typeId, name, info, imgSrc, secondImg } = req.body
 
         try {
             let filename = (req.files) ? v4() + ".jpg" : imgSrc;
@@ -66,6 +66,26 @@ class TypeController {
                 return res.status(200).json(parsedInfo)
             } catch (error) {
                 console.log("##### updateINFO ERROR: ", error.message)
+                next(ApiError.badRequest(error.message))
+            }
+        }
+
+        if (secondImg) {
+            let { secondaryImg } = req.body
+
+            try {
+                const TYPENAME = await OkType.findOne(typeId).getDataValue('name') || "NONONO"
+                console.log("55555555555555555555555555555555555555555555", TYPENAME);
+                let filename = (req.files) ? secondaryImg : "";
+                if (req.files) {
+                    const { img } = req.files;
+
+                    img.mv(path.resolve(__dirname, '..', 'static', secondaryImg));
+                }
+                await OkType.update({ typeId: typeId, name: name, img: filename, secondaryImg: secondImg }, { where: { id: typeId } })
+
+            } catch (error) {
+                console.log('####### EDIT ERROR: ', error.message)
                 next(ApiError.badRequest(error.message))
             }
         }

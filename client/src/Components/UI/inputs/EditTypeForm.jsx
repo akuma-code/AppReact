@@ -16,6 +16,7 @@ const EditTypeForm = observer(({ type }) => {
     const [name, setName] = useState("")
     const [img, setImg] = useState("")
     const [imgNew, setImgNew] = useState({})
+    const [secondaryImg, setSecondaryImg] = useState({})
     const [info, setInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [savedInfo, setSavedInfo] = useState([{ desc: '', number: '', typeId: type.id }])
     const [isChanged, setIsChanged] = useState(false)
@@ -33,7 +34,7 @@ const EditTypeForm = observer(({ type }) => {
         form.append("imgSrc", img)
         form.append("img", imgNew)
         form.append("info", JSON.stringify(info))
-
+        form.append("secondaryImg", secondaryImg)
         editType(form, typeId).then(data => ogo.setSelectedType(type))
     }
 
@@ -49,7 +50,7 @@ const EditTypeForm = observer(({ type }) => {
     }
 
     const updateType = () => {
-        saveForm(type.id, name, img, savedInfo)
+        saveForm(type.id, name, img, savedInfo, secondaryImg)
         // ogo.setSelectedType(type)
         setIsChanged(false)
         // .then(data => setInfo(savedInfo.filter(i => !i.del)))
@@ -82,6 +83,11 @@ const EditTypeForm = observer(({ type }) => {
 
     const selectFile = e => {
         setImgNew(e.target.files[0])
+
+        setIsChanged(true)
+    }
+    const selectSecFile = e => {
+        setSecondaryImg(e.target.files[0])
         setIsChanged(true)
     }
 
@@ -93,7 +99,7 @@ const EditTypeForm = observer(({ type }) => {
         setName(type.name)
         setInfo(type.info)
         setSavedInfo(type.info)
-
+        setSecondaryImg(type.secondaryImg)
         // return () => setShowForm(false)
     }, [type.id, type.info])
 
@@ -101,46 +107,52 @@ const EditTypeForm = observer(({ type }) => {
     return (
         <Form className="d-flex flex-column justify-content-between">
 
-            {showForm && <Button
+            { showForm && <Button
                 className='mb-2'
-                variant={isChanged ? "danger" : "secondary"}
-                disabled={isChanged ? false : true}
+                variant={ isChanged ? "danger" : "secondary" }
+                disabled={ isChanged ? false : true }
                 // style={ { visibility: `${isChanged ? "visible" : "hidden"}` } }
                 active
                 size='lg'
-                onClick={() => updateType()}>
-                {isChanged ? "Сохранить изменения" : "Параметры типа"}
+                onClick={ () => updateType() }>
+                { isChanged ? "Сохранить изменения" : "Параметры типа" }
 
             </Button>
             }
-            {showForm && <Form.Group as={Row} className="mb-2 mt-2" controlId="name">
+            { showForm && <Form.Group as={ Row } className="mb-2 mt-2" controlId="name">
                 <InputGroup>
 
                     <InputGroup.Text
                     >Изменить имя
                     </InputGroup.Text>
-                    <Form.Control type="text" placeholder={type.name} value={name}
-                        onChange={(e) => changeName(e.target.value)}
+                    <Form.Control type="text" placeholder={ type.name } value={ name }
+                        onChange={ (e) => changeName(e.target.value) }
                     />
 
                 </InputGroup>
             </Form.Group>
             }
             {
-                showForm && <Form.Group as={Row} className="mb-3" controlId="img">
+                showForm && <Form.Group as={ Row } className="mb-3" controlId="img">
                     <Col>
 
 
                         <Form.Control type="file"
-                            onChange={(e) => selectFile(e)}
-                            placeholder={"Изменить картинку"}
-
+                            onChange={ (e) => selectFile(e) }
+                            placeholder={ "Изменить картинку" }
                         />
                         <Form.Label column className='w-100 text-center bd-secondary mt-1'>
                             Изменить картинку
                         </Form.Label>
-                        {/* </Col> */}
-                        {/* <Col sm="2"> */}
+                        <Form.Control type="file"
+                            onChange={ (e) => selectSecFile(e) }
+                            placeholder={ "добавить изображение" }
+                        />
+                        <Form.Label column className='w-100 text-center bd-secondary mt-1'>
+                            Дополнительное изображение
+                        </Form.Label>
+                        {/* </Col> */ }
+                        {/* <Col sm="2"> */ }
 
 
                     </Col>
@@ -150,13 +162,13 @@ const EditTypeForm = observer(({ type }) => {
 
             {
                 showForm && info?.map((i, idx) =>
-                    <InputGroup className="mb-3 mt-2" key={idx}>
+                    <InputGroup className="mb-3 mt-2" key={ idx }>
 
-                        <Form.Control type="text" value={i.desc} onChange={(e) => changeInfo('desc', e.target.value, i.id)} />
+                        <Form.Control type="text" value={ i.desc } onChange={ (e) => changeInfo('desc', e.target.value, i.id) } />
 
-                        <InputGroup.Text as={Button}
-                            onClick={() => removeInfo(i)}
-                            variant={"outline-danger"}
+                        <InputGroup.Text as={ Button }
+                            onClick={ () => removeInfo(i) }
+                            variant={ "outline-danger" }
                         >
                             Удалить
                         </InputGroup.Text>
@@ -166,7 +178,7 @@ const EditTypeForm = observer(({ type }) => {
             }
             {
                 showForm && <Button
-                    onClick={() => addInfo()}
+                    onClick={ () => addInfo() }
                 >
                     Добавить характеристику
                 </Button>
