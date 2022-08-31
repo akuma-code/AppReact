@@ -2,4 +2,5 @@
 /server/node_modules
 node_modules
 server/static
+server/build
 .env
