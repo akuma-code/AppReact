@@ -7,8 +7,8 @@ const skladRouter = require('./skladRouter')
 const typeRouter = require('./typeRouter')
 const shopRouter = require('./shopRouter')
 const pQueryRouter = require('./pQueryRouter')
-const OfferRouter = require('./OfferRouter')
-
+const OfferRouter = require('./OfferRouter');
+const fullEditRouter = require('./fullEditRouter')
 // router.use('/nets', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // })
@@ -18,6 +18,7 @@ router.use('/type', typeRouter)
 router.use('/sklad', skladRouter)
 router.use('/prod', pQueryRouter)
 router.use('/offer', OfferRouter)
+router.use('/fulledit', fullEditRouter)
 
 
 module.exports = router
