@@ -16,6 +16,7 @@ router.get('/:id', skladController.getOne)
 router.delete('/:id', skladController.delete)
 router.delete('/', skladController.clearALL)
 router.put('/:id', skladController.update)
+router.put('/:id/s', skladController.editSec)
 
 
 module.exports = router
