@@ -39,11 +39,10 @@ class WarehouseController {
 
         try {
             const sklad = await SkladMain.findOne({ where: { id: skladId }, include: [{ all: true, nested: true }] })
-            console.log('sklad', sklad.dataValues)
             const { quant, shop, type: { img, secondaryImg, name } } = sklad.dataValues
-            const { price } = shop
+            const price = (shop) ? shop.price : "0"
             const typename = name
-            const WhItem = await Warehouse.create({ quant, img_main: img, img_sec: secondaryImg, price, typename, price, })
+            const WhItem = await Warehouse.create({ quant, img_main: img, img_sec: secondaryImg, price: price, typename, price, })
             console.log("Copyied Warehouse: ", WhItem.dataValues);
 
             return res.json(WhItem)
