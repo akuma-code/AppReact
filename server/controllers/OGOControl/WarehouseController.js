@@ -62,8 +62,8 @@ class WarehouseController {
 
             WhItem.update({ quant: quant, img_main: img_main, img_sec: img_sec, price: price, typename: typename }, { where: { id } })
             if (req.files) {
-                let filename_main = "main_" + typename + ".jpg"
-                let filename_sec = "secondary_" + typename + ".jpg"
+                let filename_main = (req.files) ? "main_" + typename + ".jpg" : img_main
+                let filename_sec = (req.files) ? "secondary_" + typename + ".jpg" : img_sec
                 const { file_main, file_sec } = req.files
 
                 file_main && file_main.mv(path.resolve(__dirname, '../..', 'static', filename_main));
