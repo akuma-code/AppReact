@@ -1,6 +1,6 @@
 const { v4 } = require("uuid")
 const ApiError = require("../../Error/ApiError")
-const { SkladMain, OkTypeInfo } = require('../../models/ProdModels')
+const { SkladMain } = require('../../models/ProdModels')
 const { Warehouse } = require("../../models/WarehouseModel")
 const path = require('path')
 
@@ -40,11 +40,11 @@ class WarehouseController {
         try {
             const sklad = await SkladMain.findOne({ where: { id: skladId }, include: [{ all: true, nested: true }] })
             console.log('sklad', sklad.dataValues)
-            const { quant, img, secondaryImg, shop, type } = sklad.dataValues
+            const { quant, shop, type: { img, secondaryImg, name } } = sklad.dataValues
             const { price } = shop
-            const typename = type.name
+            const typename = name
             const WhItem = await Warehouse.create({ quant, img_main: img, img_sec: secondaryImg, price, typename, price, })
-            console.log("Copyied Warehouse: ", WhItem);
+            console.log("Copyied Warehouse: ", WhItem.dataValues);
 
             return res.json(WhItem)
 
@@ -96,6 +96,17 @@ class WarehouseController {
             item.destroy()
             return res.json(item)
         } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+    }
+
+    async deleteAll(req, res, next) {
+
+        try {
+            await Warehouse.destroy({ truncate: true, cascade: true })
+            console.log("Warehouse cleared!");
+        } catch (error) {
+            console.log('#######', error.message)
             next(ApiError.badRequest(error.message))
         }
     }
