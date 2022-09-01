@@ -35,7 +35,30 @@ class TypeController {
         }
 
     }
+    async editSec(req, res, next) {
+        try {
+            const b = req.body
+            let { typeId, name, img, secondaryImg, file_main, fail_second } = b
+            let filename = (req.files) ? v4() + ".jpg" : img
+            let filenameSec = (req.files) ? "secondary_" + v4() + ".jpg" : secondaryImg
+            console.log(b);
+            if (req.files) {
+                const { file_main, file_second } = req.files;
 
+                file_main && file_main.mv(path.resolve(__dirname, '..', 'static', filenameSec));
+                file_second && file_second.mv(path.resolve(__dirname, '..', 'static', filename));
+            }
+            await OkType.update({ typeId: typeId, name: name, img: filename, secondaryImg: filenameSec }, { where: { id: typeId } })
+
+        } catch (error) {
+            console.log('####### EDITSEC ERROR: ', error.message)
+            next(ApiError.badRequest(error.message))
+        }
+
+
+
+
+    }
     async edit(req, res, next) {
 
         let { typeId, name, info, imgSrc, secondImg } = req.body

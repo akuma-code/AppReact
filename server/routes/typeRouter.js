@@ -11,5 +11,6 @@ router.get('/:id', TypeController.getOne)
 router.delete('/:id', TypeController.delete)
 router.delete('/', TypeController.deleteAll)
 router.put('/:id', TypeController.edit)
+router.put('/:id/s', TypeController.editSec)
 
 module.exports = router

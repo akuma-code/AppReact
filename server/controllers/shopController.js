@@ -85,6 +85,21 @@ class ShopController {
             next(ApiError.badRequest(error.message))
         }
     }
+
+    async editSec(req, res, next) {
+        const { skladId, shopId, price } = req.body;
+
+        try {
+            const shop = await Shop.findOne({ where: { id: skladId } })
+            const sklad = await SkladMain.findOne({ where: { id: skladId } })
+            shop.update({ price: price }, { where: { id: shopId } })
+            sklad.update({ shopId: shop.id }, { where: { id: skladId } })
+
+            return res.json(shop)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+    }
 }
 
 module.exports = new ShopController()
