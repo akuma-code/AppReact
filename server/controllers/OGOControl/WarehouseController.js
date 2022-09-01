@@ -56,7 +56,7 @@ class WarehouseController {
     async edit(req, res, next) {
         const { id } = req.params
         const WhItem = await Warehouse.findOne({ where: { id } })
-        const { quant, img_main, img_sec, price, typename, } = req.body
+        const { quant, img_main, img_sec, price, typename } = req.body
         try {
 
 
@@ -66,8 +66,8 @@ class WarehouseController {
                 let filename_sec = "secondary_" + v4() + ".jpg"
                 const { file_main, file_sec } = req.files
 
-                file_main.mv(path.resolve(__dirname, '..', 'static', filename_main));
-                file_sec && file_sec.mv(path.resolve(__dirname, '..', 'static', filename_sec));
+                file_main.mv(path.resolve(__dirname, '../..', 'static', filename_main));
+                file_sec && file_sec.mv(path.resolve(__dirname, '../..', 'static', filename_sec));
                 await WhItem.update({ img_main: filename_main, img_sec: filename_sec }, { where: { id } })
 
             }
