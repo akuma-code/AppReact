@@ -9,17 +9,17 @@ class WarehouseController {
         try {
 
             const { quant, price, typename } = req.body
-            let filename_main = v4() + ".jpg"
-            let filename_sec = "secondary_" + v4() + ".jpg"
             const WhItem = await Warehouse.create({ quant, typename, price })
-            console.log("Created Warehouse: ", WhItem);
+            let filename_main = v4() + ".jpg"
+            let filename_sec = "secondary_" + filename_main
+            console.log("Created Warehouse: ", WhItem.dataValues);
             if (req.files) {
 
                 const { file_main, file_sec } = req.files
 
 
-                file_main && file_main.mv(path.resolve(__dirname, '..', 'static', filename_main));
-                file_sec && file_sec.mv(path.resolve(__dirname, '..', 'static', filename_sec));
+                file_main && file_main.mv(path.resolve(__dirname, '../..', 'static', filename_main));
+                file_sec && file_sec.mv(path.resolve(__dirname, '../..', 'static', filename_sec));
                 await WhItem.update({ img_main: filename_main, img_sec: filename_sec })
                 //    try {
 
