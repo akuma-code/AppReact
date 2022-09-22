@@ -12,7 +12,6 @@ class WarehouseController {
             const WhItem = await Warehouse.create({ quant, typename, price })
             let filename_main = v4() + ".jpg"
             let filename_sec = "secondary_" + filename_main
-            console.log("Created Warehouse: ", WhItem.dataValues);
             if (req.files) {
 
                 const { file_main, file_sec } = req.files
@@ -30,6 +29,7 @@ class WarehouseController {
                 //     }
             }
 
+            console.log("Created Warehouse: ", WhItem.dataValues);
             return res.json(WhItem)
 
         } catch (error) {
