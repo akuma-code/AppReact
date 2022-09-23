@@ -10,6 +10,8 @@ router.delete('/wh/del/', WarehouseController.deleteAll)
 router.delete('/wh/:id/del', WarehouseController.delete)
 router.put('/wh/:id', WarehouseController.edit)
 router.post('/wh/:skladId/copy', WarehouseController.copySklad)
+
+
 router.post('/', skladController.create)
 router.get('/', skladController.getAll)
 router.get('/:id', skladController.getOne)

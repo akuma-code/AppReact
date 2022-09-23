@@ -11,5 +11,14 @@ const Warehouse = sequelize.define('warehouse', {
 
 }, { freezeTableName: true, timestamps: false })
 
+const ProductionInfo = sequelize.define('wh_prod_info', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    count: { type: DataTypes.INTEGER, allowNull: false },
+    dateReady: { type: DataTypes.STRING, allowNull: false },
+    status: { type: DataTypes.STRING, allowNull: false },
+}, { freezeTableName: true, timestamps: false })
 
-module.exports = { Warehouse }
+Warehouse.hasMany(ProductionInfo, { as: 'prod_info' })
+ProductionInfo.belongsTo(Warehouse)
+
+module.exports = { Warehouse, ProductionInfo }
