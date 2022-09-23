@@ -7,7 +7,7 @@ const skladController = require("../controllers/ProdControl/skladController");
 router.get('/wh/', WarehouseController.getAll)
 router.post('/wh/', WarehouseController.create)
 router.delete('/wh/del/', WarehouseController.deleteAll)
-router.delete('/wh/:id', WarehouseController.delete)
+router.delete('/wh/:id/del', WarehouseController.delete)
 router.put('/wh/:id', WarehouseController.edit)
 router.post('/wh/:skladId/copy', WarehouseController.copySklad)
 router.post('/', skladController.create)
