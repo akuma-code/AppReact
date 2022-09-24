@@ -43,8 +43,9 @@ class WhProductionController {
         }
     }
     async finish(req, res, next) {
-        const { id, whId } = req.body
-
+        const { id } = req.params
+        // const {  warehouseId } = req.body
+        console.log(id);
         try {
             const info = await ProductionInfo.update({
                 status: 'Ready'

@@ -1,4 +1,10 @@
 require('dotenv').config()
+require('dayjs/locale/ru')
+const dayjs = require('dayjs')
+dayjs.locale('ru')
+// import 'dayjs/locale/de' // ES 2015 
+
+// dayjs.locale('ru')
 const express = require("express");
 const path = require('path');
 const sequelize = require('./db')
@@ -11,7 +17,7 @@ const router = require('./routes/index')
 const errHandler = require('./middleware/ErrorHandlingMW')
 
 const PORT = process.env.PORT || 5000
-
+const HOST = `http://${process.env.HOST_WORK}:${PORT}`
 const App = express();
 
 App.use(cors());
@@ -39,7 +45,7 @@ async function start() {
 
         console.clear()
         App.listen(PORT, () => {
-            console.log("<<< SERVER STARTED on PORT:", PORT, ">>>");
+            console.log("<<< SERVER STARTED on", HOST, ">>>");
 
         })
     } catch (e) {
