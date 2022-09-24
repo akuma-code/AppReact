@@ -1,3 +1,4 @@
+const ApiError = require("../../Error/ApiError")
 const { ProductionInfo } = require("../../models/WarehouseModel")
 
 
@@ -5,7 +6,7 @@ const { ProductionInfo } = require("../../models/WarehouseModel")
 class WhProductionController {
     async getAll(req, res, next) {
         try {
-            const infos = await ProductionInfo.findAndCountAll({ include: [{ all: true, nested: true }] })
+            const infos = await ProductionInfo.findAndCountAll()
             res.json(infos.rows)
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -49,8 +50,7 @@ class WhProductionController {
         try {
             const info = await ProductionInfo.update({
                 status: 'Ready'
-            },
-                { where: { id } })
+            }, { where: { id } })
 
             res.json(info)
         } catch (error) {
