@@ -1,5 +1,5 @@
 const ApiError = require("../../Error/ApiError")
-const { ProductionInfo } = require("../../models/WarehouseModel")
+const { ProductionInfo, Warehouse } = require("../../models/WarehouseModel")
 
 
 
