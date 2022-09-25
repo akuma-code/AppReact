@@ -20,13 +20,7 @@ class WarehouseController {
                 file_main && file_main.mv(path.resolve(__dirname, '../..', 'static', filename_main));
                 file_sec && file_sec.mv(path.resolve(__dirname, '../..', 'static', filename_sec));
                 await WhItem.update({ img_main: filename_main, img_sec: filename_sec })
-                //    try {
 
-
-                //     } catch (error) {
-                //         console.log('####### create ERROR: ', error.message)
-                //         next(ApiError.badRequest(error.message))
-                //     }
             }
 
             console.log("Created Warehouse: ", WhItem.dataValues);

@@ -16,6 +16,7 @@ const ProductionInfo = sequelize.define('prod_info', {
     count: { type: DataTypes.INTEGER, allowNull: false },
     dateReady: { type: DataTypes.STRING, allowNull: false },
     status: { type: DataTypes.STRING, allowNull: false },
+    isRestored: { type: DataTypes.BOOLEAN, allowNull: true },
 }, { freezeTableName: true, timestamps: false })
 
 Warehouse.hasMany(ProductionInfo, { as: 'prod_info' })

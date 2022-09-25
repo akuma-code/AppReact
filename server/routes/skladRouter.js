@@ -4,8 +4,8 @@ const router = new Router();
 const skladController = require("../controllers/ProdControl/skladController");
 
 
-router.get('/wh/', WarehouseController.getAll)
-router.post('/wh/', WarehouseController.create)
+router.get('/wh', WarehouseController.getAll)
+router.post('/wh', WarehouseController.create)
 router.delete('/wh/del/', WarehouseController.deleteAll)
 router.delete('/wh/:id/del', WarehouseController.delete)
 router.put('/wh/:id', WarehouseController.edit)
