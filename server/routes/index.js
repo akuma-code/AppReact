@@ -1,6 +1,6 @@
 const Router = require('express')
 const router = new Router();
-
+const os = require("os");
 
 const userRouter = require('./userRouter')
 const skladRouter = require('./skladRouter')
@@ -21,6 +21,7 @@ router.use('/prod', pQueryRouter)
 router.use('/offer', OfferRouter)
 router.use('/fulledit', fullEditRouter)
 router.use('/whinfo', WhProdInfoRouter)
+
 
 
 module.exports = router

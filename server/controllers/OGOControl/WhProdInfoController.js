@@ -16,25 +16,7 @@ const QuantDec = async (warehouseId, value) => {
     return item
 }
 
-function autoCheck(infoArray = [], days) {
-    const diff = (date) => dayjs(date).diff(dayjs(), 'days')
-    const passed = (date) => diff(date) < days ? true : false
 
-    const checked = infoArray.map(i => (passed(i.dateReady) ? { ...i, status: "inProduction" } : { ...i, status: "Ready" }))
-    const filtered = infoArray.filter(i => passed(i.dateReady))
-    console.log('filtered', filtered)
-    filtered.forEach(f => EndTaskAndRestoreQuant(f.id))
-
-    // {
-    //     const { id } = i
-
-    //     console.log("left:", diff(i.dateReady), passed(i.dateReady));
-    //     return passed(i.dateReady) ? { ...i, status: "inProduction", left: diff(i.dateReady) } : { ...i, status: "Ready", left: diff(i.dateReady) }
-    // }
-
-
-    return filtered
-}
 
 class WhProductionController {
     async getAll(req, res, next) {
@@ -56,7 +38,7 @@ class WhProductionController {
             const infos = await ProductionInfo.findAndCountAll(
                 { where: { status: "inProduction" } }
             )
-            const ac = autoCheck(infos.rows, days || 1)
+            const ac = autoCheck(infos.rows, days)
             // console.log(ac);
             // console.log(ac.map(a => a.dataValues));
             res.json(ac)
@@ -64,20 +46,7 @@ class WhProductionController {
             next(ApiError.badRequest(error.message))
         }
     }
-    async getByWhitem(req, res, next) {
-        const { id } = req.params
-        if (!id) return console.log("ID NOT FOUND!");
-        try {
-            const infos = await ProductionInfo.findAndCountAll({
-                where: { warehouseId: id },
-                include: [{ all: true }]
-            })
 
-            res.json(infos)
-        } catch (error) {
-            next(ApiError.badRequest(error.message))
-        }
-    }
 
     async start(req, res, next) {
         const { warehouseId, dateReady, count, status } = req.body
@@ -135,6 +104,23 @@ class WhProductionController {
     }
 }
 
+function autoCheck(infoArray = [], days = 0) {
+    const diff = (date) => {
+        const d = dayjs(date).diff(dayjs(), 'days')
+        console.log(`DIFF TODAY(${dayjs()}) AND DATE(${dayjs(date)}) = ${d}`);
+        return d
+    }
+    const passed = (date) => diff(date) <= days ? true : false
+    const filtered = infoArray.filter(i => passed(i.dateReady))
+    console.log(`##### elements <= ${days},  amount:`, filtered.length)
+
+
+    // filtered.forEach(f => EndTaskAndRestoreQuant(f.id))
+
+
+    return filtered
+}
+
 async function EndTaskAndRestoreQuant(id) {
 
     try {
@@ -170,7 +156,7 @@ async function END_TASK(id) {
         console.log("TaskID #", id, " Complete!");
 
     } catch (error) {
-        console.log("TASKID NOT FOUND #", id,);
+        console.log("TASKID NOT FOUND, #", id,);
         return console.log(error);
     }
 

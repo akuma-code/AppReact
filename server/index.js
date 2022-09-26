@@ -2,9 +2,8 @@ require('dotenv').config()
 require('dayjs/locale/ru')
 const dayjs = require('dayjs')
 dayjs.locale('ru')
-// import 'dayjs/locale/de' // ES 2015 
+const os = require("os");
 
-// dayjs.locale('ru')
 const express = require("express");
 const path = require('path');
 const sequelize = require('./db')
@@ -16,7 +15,7 @@ const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 const errHandler = require('./middleware/ErrorHandlingMW')
 const PORT = process.env.PORT || 5000
-const HOST = `http://${process.env.HOST}:${PORT}`
+const HOST = `http://${os.hostname}:${PORT}`
 const App = express();
 
 App.use(cors());
