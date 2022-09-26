@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize')
 
 const Warehouse = sequelize.define('warehouse', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    quant: { type: DataTypes.INTEGER, allowNull: false },
+    quant: { type: DataTypes.INTEGER, allowNull: true },
     typename: { type: DataTypes.STRING, unique: true, allowNull: false },
     img_main: { type: DataTypes.STRING, allowNull: true },
     img_sec: { type: DataTypes.STRING, allowNull: true },
