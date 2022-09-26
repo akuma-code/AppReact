@@ -104,18 +104,18 @@ class WhProductionController {
     }
 }
 
-function autoCheck(infoArray = [], days = 0) {
+function autoCheck(infoArray = [], hours = 0) {
     const diff = (date) => {
-        const d = dayjs(date).diff(dayjs(), 'days')
+        const d = dayjs(date).diff(dayjs(), 'hours')
         console.log(`DIFF TODAY(${dayjs()}) AND DATE(${dayjs(date)}) = ${d}`);
         return d
     }
-    const passed = (date) => diff(date) <= days ? true : false
+    const passed = (date) => diff(date) <= hours ? true : false
     const filtered = infoArray.filter(i => passed(i.dateReady))
-    console.log(`##### elements <= ${days},  amount:`, filtered.length)
+    console.log(`##### elements <= ${hours},  amount:`, filtered.length)
 
 
-    // filtered.forEach(f => EndTaskAndRestoreQuant(f.id))
+    filtered.forEach(f => EndTaskAndRestoreQuant(f.id))
 
 
     return filtered
