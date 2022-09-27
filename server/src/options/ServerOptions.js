@@ -9,7 +9,7 @@ const initOptions = async () => {
     },
     {
         param: "host_url",
-        value: "http://localhost:5000"
+        value: "http://prodnyan:5000"
     }]
     const op = await ServerOptions.bulkCreate(init_values)
     return op
@@ -25,6 +25,7 @@ const setUrlFromOs = async () => {
     const host = os.hostname()
     const PORT = process.env.PORT
     const url = `http://${host}:${PORT}`
+
     const op = await ServerOptions.findOne({ where: { param: "host_url" } })
     op.update({ value: url })
     return op

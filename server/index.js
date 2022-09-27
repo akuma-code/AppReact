@@ -41,7 +41,7 @@ async function start() {
     try {
         await sequelize.authenticate()
         await sequelize.sync({ alter: true })
-
+        // options.initOptions()
         const host_url = await options.getUrlFromDB("host_url")
         console.clear()
         App.listen(PORT, () => {
@@ -49,7 +49,7 @@ async function start() {
 
         })
         // await createModels()
-        // options.setUrlFromOs()
+        options.setUrlFromOs()
     } catch (e) {
         console.log(e);
     }
