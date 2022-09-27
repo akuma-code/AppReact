@@ -25,6 +25,9 @@ const ServerOptions = sequelize.define('options', {
     value: { type: DataTypes.STRING, allowNull: true },
 }, { freezeTableName: true, timestamps: false })
 
+
+
+
 Warehouse.hasMany(ProductionInfo, { as: 'prod_info' })
 ProductionInfo.belongsTo(Warehouse)
 

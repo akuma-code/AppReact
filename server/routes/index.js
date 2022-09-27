@@ -11,9 +11,13 @@ const OfferRouter = require('./OfferRouter');
 const fullEditRouter = require('./fullEditRouter');
 const WhProdInfoRouter = require('./whProdInfoRouter')
 const SettingsRouter = require('./SettingsRouter')
+const AuthRouter = require('./AuthRouter')
 // router.use('/nets', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // })
+
+
+
 router.use('/user', userRouter)
 router.use('/shop', shopRouter)
 router.use('/type', typeRouter)
@@ -23,6 +27,7 @@ router.use('/offer', OfferRouter)
 router.use('/fulledit', fullEditRouter)
 router.use('/whinfo', WhProdInfoRouter)
 router.use('/settings', SettingsRouter)
+router.use('/auth', AuthRouter)
 
 
 
