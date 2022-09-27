@@ -20,10 +20,9 @@ const ProductionInfo = sequelize.define('prod_info', {
 }, { freezeTableName: true, timestamps: false })
 
 const ServerOptions = sequelize.define('options', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    param: { type: DataTypes.STRING, allowNull: false },
+    // id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    param: { type: DataTypes.STRING, allowNull: false, unique: true, primaryKey: true },
     value: { type: DataTypes.STRING, allowNull: true },
-    boolvalue: { type: DataTypes.BOOLEAN, allowNull: true },
 }, { freezeTableName: true, timestamps: false })
 
 Warehouse.hasMany(ProductionInfo, { as: 'prod_info' })

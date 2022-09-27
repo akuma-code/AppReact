@@ -14,7 +14,6 @@ const models = names.map(numb => ({
 
 
 const createModels = async () => {
-    const url = await getUrlFromDB('host_url')
     try {
         const m = await Warehouse.bulkCreate(models)
         console.log(m.length, " Models created");

@@ -41,15 +41,14 @@ async function start() {
     try {
         await sequelize.authenticate()
         await sequelize.sync({ alter: true })
-        // options.initOptions()
-        const host_url = await options.getUrlFromDB("host_url")
-        console.clear()
+
+        const host_url = await options.getUrlFromDB("host_url") || "http://localhost:5000"
         App.listen(PORT, () => {
+            console.clear()
             console.log("<<< SERVER STARTED on", host_url, ">>>");
 
         })
-        // await createModels()
-        options.setUrlFromOs()
+
     } catch (e) {
         console.log(e);
     }

@@ -9,10 +9,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
   "dependencies": {
+    "nodemon": "^2.0.15",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
