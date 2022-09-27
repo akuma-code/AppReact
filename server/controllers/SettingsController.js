@@ -46,8 +46,9 @@ class SettingsController {
 
     async initModels(req, res, next) {
         try {
-            await Warehouse.destroy({ truncate: true })
-            await createModels()
+            await Warehouse.destroy({ truncate: true, cascade: true })
+            createModels()
+            res.json("Models restarted")
         } catch (error) {
             console.log("InitError", error);
         }

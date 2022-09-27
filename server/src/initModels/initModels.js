@@ -6,7 +6,7 @@ const names = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 const models = names.map(numb => ({
     typename: "OK-" + numb,
-    price: 0,
+    price: "0",
     quant: 5,
     img_main: `assets/OK-${numb}.jpg`,
     img_sec: `assets/sec_ok(${numb}).jpg`
