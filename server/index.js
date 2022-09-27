@@ -46,7 +46,7 @@ async function start() {
         App.listen(PORT, () => {
             console.clear()
             console.log("<<< SERVER STARTED on", host_url, ">>>");
-
+            // createModels()
         })
 
     } catch (e) {
