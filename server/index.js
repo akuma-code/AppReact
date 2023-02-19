@@ -10,6 +10,7 @@ const sequelize = require('./db')
 // const models = require('./models/models')
 // const typeModels = require('./models/typeModels')
 const prodModels = require('./models/ProdModels')
+const CkoOffModel = require('./models/CkoOffersListModel')
 const cors = require('cors');
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
