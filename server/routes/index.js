@@ -1,6 +1,5 @@
 const Router = require('express')
 const router = new Router();
-const os = require("os");
 
 const userRouter = require('./userRouter')
 const skladRouter = require('./skladRouter')
@@ -12,6 +11,7 @@ const fullEditRouter = require('./fullEditRouter');
 const WhProdInfoRouter = require('./whProdInfoRouter')
 const SettingsRouter = require('./SettingsRouter')
 const AuthRouter = require('./AuthRouter')
+
 // router.use('/nets', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // })
@@ -23,7 +23,7 @@ router.use('/shop', shopRouter)
 router.use('/type', typeRouter)
 router.use('/sklad', skladRouter)
 router.use('/prod', pQueryRouter)
-router.use('/offer', OfferRouter)
+router.use('/offers', OfferRouter)
 router.use('/fulledit', fullEditRouter)
 router.use('/whinfo', WhProdInfoRouter)
 router.use('/settings', SettingsRouter)
