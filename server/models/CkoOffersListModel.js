@@ -11,7 +11,7 @@ const GlobalOffersList = sequelize.define('cko_offers', {
     status: { type: DataTypes.STRING, unique: false, allowNull: true },
     desc: { type: DataTypes.STRING, unique: false, allowNull: true },
     isDocSigned: { type: DataTypes.BOOLEAN, unique: false, allowNull: true },
-    isDocRequest: { type: DataTypes.BOOLEAN, unique: false, allowNull: true },
+    isDocRequested: { type: DataTypes.BOOLEAN, unique: false, allowNull: true },
 
 
 }, { freezeTableName: true, timestamps: false })

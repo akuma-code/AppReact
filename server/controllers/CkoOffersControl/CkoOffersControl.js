@@ -29,12 +29,21 @@ class CkoOffersController {
 
 
     async getAll(req, res, next) {
-        try {
-            const offers = await GlobalOffersList.findAll()
-            return res.json(offers)
-        } catch (error) {
-            next(ApiError.badRequest(error.message))
-        }
+        if (req.query) {
+            const searchParams = req.query
+            try {
+                const offers_query = await GlobalOffersList.findAll({ where: searchParams, order: [['dateReady', 'ASC']] })
+                return res.json(offers_query)
+            } catch (error) {
+                next(ApiError.badRequest(error.message))
+            }
+        } else
+            try {
+                const offers = await GlobalOffersList.findAll({ order: [['dateReady', 'ASC']] })
+                return res.json(offers)
+            } catch (error) {
+                next(ApiError.badRequest(error.message))
+            }
     }
     async getAllByStatus(req, res, next) {
         const { status } = req.params
@@ -61,9 +70,10 @@ class CkoOffersController {
     async edit(req, res, next) {
         const { id } = req.params
         const offer = await GlobalOffersList.findOne({ where: { id } })
-        const { offer_id, companyName, companyTag, dateReady, isDocSigned, isDocRequested, status } = req.body
+        const new_offer = req.body
+        const { offer_id, companyName, companyTag, dateReady, isDocSigned, isDocRequested, status } = new_offer
         try {
-            offer.update({ offer_id, companyName, companyTag, dateReady, isDocSigned, isDocRequest, status }, { where: { id } })
+            offer.update(new_offer, { where: { id } })
             console.log("Updated Offer: ", offer.dataValues);
             return res.json(offer)
 
