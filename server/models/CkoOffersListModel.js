@@ -3,7 +3,9 @@ const { DataTypes } = require('sequelize')
 
 
 const GlobalOffersList = sequelize.define('cko_offers', {
-    id: { type: DataTypes.STRING, primaryKey: true },
+    pgID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+
+    id: { type: DataTypes.STRING, unique: true, allowNull: false },
     offerId: { type: DataTypes.STRING, unique: true, allowNull: false },
     companyName: { type: DataTypes.STRING, unique: false, allowNull: false },
     companyTag: { type: DataTypes.STRING, unique: false, allowNull: false },
