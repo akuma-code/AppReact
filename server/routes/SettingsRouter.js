@@ -5,7 +5,7 @@ const router = new Router();
 router.post('/reset', SettingsController.reset)
 router.post('/set_host', SettingsController.setHostUrl)
 router.get('/edit?:param', SettingsController.getOptions)
-router.get('/get_host', SettingsController.getHostUrl)
+router.get('/get_host', SettingsController.showUrl)
 router.post('/reset_models', SettingsController.initModels)
 
 

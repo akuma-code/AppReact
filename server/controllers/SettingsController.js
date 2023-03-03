@@ -1,7 +1,7 @@
 const { ServerOptions, Warehouse } = require('../models/WarehouseModel');
 const createModels = require('../src/initModels/initModels');
 const OPT = require('../src/options/ServerOptions')
-
+const os = require('os')
 class SettingsController {
     async reset(req, res, next) {
         try {
@@ -43,7 +43,12 @@ class SettingsController {
             next(error)
         }
     }
-
+    async showUrl(req, res, next) {
+        const host = os.hostname()
+        const port = process.env.PORT
+        const urlstring = `http://${host}:${port}`
+        return res.json(urlstring)
+    }
     async initModels(req, res, next) {
         try {
             await Warehouse.destroy({ truncate: true, cascade: true })
